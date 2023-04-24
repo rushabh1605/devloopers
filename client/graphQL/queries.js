@@ -1,0 +1,70 @@
+import { gql } from '@apollo/client';
+
+const LOAD_LEAGUES = gql`   
+    query LeagueInformation($pageNum: Int) {
+        LeagueInformation {
+            id
+            leagueName
+            logo
+            countryName
+        }
+}`;
+
+const LOAD_STANDINGS = gql`
+    query StandingInformation($league: Int!, $season: Int!){
+        StandingInformation(league: $league, season: $season) {
+            rank,
+            teamName,
+            logo,
+            points,
+            matchesPlayed,
+            matchesWon,
+            matchesLost,
+            matchesDraw,
+            homeMatches,
+            awayMatches,
+            goalsScored,
+            goalsConceded
+        }
+    }
+`;
+
+const LOAD_FIXTURES = gql`
+    query FixtureByDateInformation($date: Date!){
+        FixtureByDateInformation(matchDate: $date) {
+            id,
+            venueName,
+            venueName,
+            matchDate,
+            matchTime,
+            matchTimeZone,
+            matchStatus,
+            league,
+            country,
+            leagueLogo,
+            season,
+            homeTeamName,
+            homeTeamID,
+            homeTeamLogo,
+            awayTeamName,
+            awayTeamID,
+            awayTeamLogo,
+            homeTeamGoals,
+            awayTeamGoals,
+            homeHalfTimeScore,
+            homeFullTimeScore,
+            awayHalfTimeScore,
+            awayFullTimeScore 
+        }
+    }
+`;
+
+
+
+
+
+export default {
+    LOAD_LEAGUES,
+    LOAD_STANDINGS,
+    LOAD_FIXTURES
+};
