@@ -59,12 +59,35 @@ const LOAD_FIXTURES = gql`
     }
 `;
 
-
-
-
+const LOAD_TOP_SCORER = gql`
+    query TopScorerByLeague($league: Int!, $season: Int!){
+        TopScorerByLeague(league: $league, season: $season) {
+            playerID,
+            firstName,
+            lastName,
+            age,
+            Nationality,
+            playerImage,
+            playerHeight,
+            playerWeight,
+            playerPosition,
+            isInjured,
+            teamName,
+            teamLogo,
+            appearances,
+            lineUps,
+            season,
+            goals,
+            assists,
+            penaltyScored,
+            penaltyMissed 
+        }
+    }
+`;
 
 export default {
     LOAD_LEAGUES,
     LOAD_STANDINGS,
-    LOAD_FIXTURES
+    LOAD_FIXTURES,
+    LOAD_TOP_SCORER
 };
