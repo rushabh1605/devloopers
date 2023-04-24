@@ -9,24 +9,23 @@ const typeDefs = gql`
   }
 
   type TableStandings {
-    rank: Int!
-    teamName: String!
-    logo: String!
-    points: Int!
-    matchesPlayed: Int!
-    matchesWon: Int!
-    matchesLost: Int!
-    matchesDraw: Int!
-    homeMatches: Int!
-    awayMatches: Int!
-    goalsScored: Int!
-    goalsConceded: Int!
+    rank: Int
+    teamName: String
+    logo: String
+    points: Int
+    matchesPlayed: Int
+    matchesWon: Int
+    matchesLost: Int
+    matchesDraw: Int
+    homeMatches: Int
+    awayMatches: Int
+    goalsScored: Int
+    goalsConceded: Int
   }
 
   type Query {
     LeagueInformation: [League]
-    standingInformation: [TableStandings]
-
+    StandingInformation(league: Int!, season: Int!): [TableStandings]
   }
 `;
 
