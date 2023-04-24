@@ -1,6 +1,8 @@
+const moment = require('moment');
 const axios = require("axios");
 const redis = require("redis");
 const uuid = require("uuid");
+
 
 const API_KEY = '3df39a1cbamsh63f95b9f20d493ep18c3d2jsnaa9a8f6d3181';
 const API_HOST = 'api-football-v1.p.rapidapi.com';
@@ -11,7 +13,7 @@ const config = {
   }
 };
 
-module.exports = {
+module.exports = { 
   Query: {
     LeagueInformation : async () => {
       //const desiredLeagues=['world', 'germany', 'england', 'france','spain', 'italy']
@@ -58,5 +60,53 @@ module.exports = {
         standingsList.push(singleTeam);        
       });               
       return standingsList;
+    },
+
+
+    FixtureByDateInformation : async (_, args) => {
+      let fixtureList=[]; 
+      console.log(typeof(args.matchDate));
+      const parsedDate = moment.utc(args.matchDate);
+      const formattedDate = parsedDate.format('YYYY-MM-DD');
+
+      console.log(formattedDate)
+      const { data } = await axios.get
+            ("https://api-football-v1.p.rapidapi.com/v3/fixtures?date="+ formattedDate, config);
+
+      //console.log(data)
+
+      data.response.forEach(fixture => {
+        let singleFixture = {
+          id: fixture.fixture.id,
+          venueName: fixture.fixture.venue.name,
+          venueCity: fixture.fixture.venue.city,
+          matchDate: formattedDate,
+          matchTime: fixture.fixture.timestamp,
+          matchTimeZone: fixture.fixture.timezone,
+          matchStatus: fixture.fixture.status.long,
+          league: fixture.league.name,
+          country: fixture.league.country,
+          leagueLogo: fixture.league.logo,
+          season: fixture.league.season,
+          homeTeamName: fixture.teams.home.name,
+          homeTeamID: fixture.teams.home.id,
+          homeTeamLogo: fixture.teams.home.logo,
+          awayTeamName: fixture.teams.away.name,
+          awayTeamID: fixture.teams.away.id,
+          awayTeamLogo: fixture.teams.away.logo,
+          homeTeamGoals: fixture.goals.home,
+          awayTeamGoals: fixture.goals.away,
+          homeHalfTimeScore: fixture.score.halftime.home,
+          homeFullTimeScore: fixture.score.fulltime.home,
+          awayHalfTimeScore: fixture.score.halftime.away,
+          awayFullTimeScore: fixture.score.fulltime.away
+          // homeHalfTimeScore: fixture.score.halftime.home + " - "+ fixture.score.halftime.away ,
+          // homeFullTimeScore: fixture.score.fulltime.home + " - "+ fixture.score.fulltime.away ,
+        }          
+        fixtureList.push(singleFixture);       
+      });
+
+      console.log(fixtureList.slice(0,2));            
+      return fixtureList;
     },
 }}
