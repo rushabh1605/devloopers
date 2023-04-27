@@ -72,13 +72,27 @@ const typeDefs = gql`
     
   }
 
-  scalar Date
+  type TeamManager {
+    managerID: Int!
+    managerName: String
+    firstName: String
+    lastName: String
+    age: Int
+    Nationality: String
+    managerImage: String
+    teamName: String
+    teamLogo: String
+    startDate: String   
+  }
+
+   scalar Date
 
   type Query {
     LeagueInformation: [League]
     StandingInformation(league: Int!, season: Int!): [TableStandings]
     FixtureByDateInformation(matchDate: Date!) : [FixtureByDate]
     TopScorerByLeague(league: Int!, season: Int!): [LeagueTopScorer]
+    ManagerInformation(team: Int!) : TeamManager  
   }
 `;
 

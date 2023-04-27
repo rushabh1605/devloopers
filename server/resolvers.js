@@ -146,6 +146,27 @@ module.exports = {
       return topScorersList;
     },
 
+    ManagerInformation : async (_, args) => {
+        const { data } = await axios.get
+            ("https://api-football-v1.p.rapidapi.com/v3/coachs?team="+ args.team, config);
+        
+        let responseData= data.response[0];
+        let singleManager={
+          managerID: responseData.id,
+          managerName: responseData.name,
+          firstName: responseData.firstname,
+          lastName: responseData.lastname,
+          age: responseData.age,
+          Nationality: responseData.nationality,
+          managerImage: responseData.photo,
+          teamName: responseData.career[0].team.name,
+          teamLogo: responseData.career[0].team.logo,
+          startDate: responseData.career[0].start
+        }         
+    
+      return singleManager;
+    },
+
 
 
 }}
