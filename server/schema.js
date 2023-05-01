@@ -8,6 +8,19 @@ const typeDefs = gql`
     countryName: String
   }
 
+  type PlayersForFixture {
+    id: Int!
+    playerName: String
+    jerseyNumber: Int
+    position: String
+  }
+
+  type TeamsForFixture {
+    id: Int!
+    teamName: String
+    logo: String
+  }
+
   type TableStandings {
     rank: Int
     teamName: String
@@ -83,6 +96,19 @@ const typeDefs = gql`
     teamName: String
     teamLogo: String
     startDate: String   
+  }
+
+  type FixtureLineUps {
+    team1: TeamsForFixture
+    team2: TeamsForFixture
+    managerID: Int
+    managerName: String
+    managerImage: String
+    formation: String
+    startElevenTeam1: [PlayersForFixture]
+    startElevenTeam2: [PlayersForFixture]
+    substitutesTeam1: [PlayersForFixture]
+    substitutesTeam2: [PlayersForFixture]
   }
 
    scalar Date
