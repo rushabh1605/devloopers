@@ -162,8 +162,7 @@ module.exports = {
           teamName: responseData.career[0].team.name,
           teamLogo: responseData.career[0].team.logo,
           startDate: responseData.career[0].start
-        }         
-    
+        }            
       return singleManager;
     },
 
