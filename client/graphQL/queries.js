@@ -85,9 +85,28 @@ const LOAD_TOP_SCORER = gql`
     }
 `;
 
+const LOAD_MANAGER_INFO = gql`
+    query ManagerInformation($team: Int!){
+        ManagerInformation(team: $team) {
+            managerID,
+            managerName,
+            firstName,
+            lastName,
+            age,
+            Nationality,
+            managerImage,
+            teamName,
+            teamLogo,
+            startDate,
+        
+        }
+    }
+`;
+
 export default {
     LOAD_LEAGUES,
     LOAD_STANDINGS,
     LOAD_FIXTURES,
     LOAD_TOP_SCORER
+
 };
