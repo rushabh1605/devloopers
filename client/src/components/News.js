@@ -59,7 +59,7 @@ function News() {
                         <li key={index}>
                             <CardHeader className={classes.titleHead} title={article.title} />
                             <CardContent>
-                                <Typography>>
+                                <Typography>
                                     {/* <h2>{article.title}</h2> */}
                                     <p>Description: {article.description}</p>
                                     <a href={article.url}>Read more</a>
