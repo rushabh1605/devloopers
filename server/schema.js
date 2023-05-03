@@ -113,6 +113,8 @@ const typeDefs = gql`
 
    scalar Date
 
+   
+
   type Query {
     LeagueInformation: [League]
     StandingInformation(league: Int!, season: Int!): [TableStandings]
