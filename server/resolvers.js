@@ -16,7 +16,7 @@ const config = {
 module.exports = { 
   Query: {
     LeagueInformation : async () => {
-      //const desiredLeagues=['world', 'germany', 'england', 'france','spain', 'italy']
+      //const desiredLeagues=['World', 'germany', 'england', 'france','spain', 'italy']
       let leagueList=[];           
       const { data } = await axios.get("https://api-football-v1.p.rapidapi.com/v3/leagues", config);
 
@@ -33,6 +33,30 @@ module.exports = {
       console.log(leagueList.slice(0,7)); 
       return leagueList;
     },
+
+    TopLeaguesInformation : async () => {
+
+      const desiredLeagues=['germany', 'england', 'france','spain', 'italy'];    
+      const { data } = await axios.get("https://api-football-v1.p.rapidapi.com/v3/leagues", config);
+
+      let leagueList=[]; 
+      //const topLeagues = data.response.filter(league => desiredLeagues.includes(league.country.name));
+      const topLeagues = data.response.filter(league => desiredLeagues.includes(league.country.name.toLowerCase()));
+
+      console.log(topLeagues);
+      topLeagues.forEach(league => {
+        let singleLeague = {
+          id : league.league.id,
+          leagueName : league.league.name,
+          logo :  league.league.logo,
+          countryName : league.country.name
+        } 
+
+        leagueList.push(singleLeague);
+      })
+        return leagueList.slice(0,10);   
+    },
+
 
     StandingInformation : async (_, args) => {
       let standingsList=[]; 
@@ -76,12 +100,20 @@ module.exports = {
       //console.log(data)
 
       data.response.forEach(fixture => {
+        
+        const matchTimeUTC = new Date(parseInt(fixture.fixture.timestamp) * 1000);
+        console.log(matchTimeUTC)
+        const matchTimeEST = new Date(matchTimeUTC.toLocaleString("en-US", {timeZone: "America/New_York"}));
+        const matchTimeESTString = matchTimeEST.toLocaleTimeString("en-US", {hour12: true});
+
+        console.log("Match time in EST: ", matchTimeESTString);
+
         let singleFixture = {
           id: fixture.fixture.id,
           venueName: fixture.fixture.venue.name,
           venueCity: fixture.fixture.venue.city,
           matchDate: formattedDate,
-          matchTime: fixture.fixture.timestamp,
+          matchTime: matchTimeESTString,
           matchTimeZone: fixture.fixture.timezone,
           matchStatus: fixture.fixture.status.long,
           league: fixture.league.name,
@@ -109,6 +141,7 @@ module.exports = {
       console.log(fixtureList.slice(0,2));            
       return fixtureList;
     },
+
 
     TopScorerByLeague : async (_, args) => {
       let topScorersList=[]; 
