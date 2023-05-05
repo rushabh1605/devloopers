@@ -30,7 +30,7 @@ module.exports = {
            
       leagueList.push(singleLeague);       
       });
-      console.log(leagueList.slice(0,7)); 
+      //console.log(leagueList.slice(0,7)); 
       return leagueList;
     },
 
@@ -43,7 +43,7 @@ module.exports = {
       //const topLeagues = data.response.filter(league => desiredLeagues.includes(league.country.name));
       const topLeagues = data.response.filter(league => desiredLeagues.includes(league.league.id));
 
-      console.log(topLeagues);
+      //console.log(topLeagues);
       topLeagues.forEach(league => {
         let singleLeague = {
           id : league.league.id,
@@ -89,11 +89,11 @@ module.exports = {
 
     FixtureByDateInformation : async (_, args) => {
       let fixtureList=[]; 
-      console.log(typeof(args.matchDate));
+      //console.log(typeof(args.matchDate));
       const parsedDate = moment.utc(args.matchDate);
       const formattedDate = parsedDate.format('YYYY-MM-DD');
 
-      console.log(formattedDate)
+      //console.log(formattedDate)
       const { data } = await axios.get
             ("https://api-football-v1.p.rapidapi.com/v3/fixtures?date="+ formattedDate, config);
 
@@ -102,11 +102,20 @@ module.exports = {
       data.response.forEach(fixture => {
         
         const matchTimeUTC = new Date(parseInt(fixture.fixture.timestamp) * 1000);
-        console.log(matchTimeUTC)
+        //console.log(matchTimeUTC)
         const matchTimeEST = new Date(matchTimeUTC.toLocaleString("en-US", {timeZone: "America/New_York"}));
-        const matchTimeESTString = matchTimeEST.toLocaleTimeString("en-US", {hour12: true});
+        let matchTimeESTString = matchTimeEST.toLocaleTimeString("en-US", {hour12: false});
+        
 
-        console.log("Match time in EST: ", matchTimeESTString);
+        console.log("Match time in EST: ", matchTimeESTString.slice(0,5) + " ET");
+        matchTimeESTString = matchTimeESTString.slice(0,5) + " ET";
+
+        // if(matchTimeESTString.indexOf(":")=== 2){
+        //   matchTimeESTString=matchTimeESTString.slice(0,5) + matchTimeESTString.slice(8,11) + " ET";
+        // }
+        // else
+        // {matchTimeESTString=matchTimeESTString.slice(0,4) +matchTimeESTString.slice(7,10) + " ET";}
+        
 
         let singleFixture = {
           id: fixture.fixture.id,
@@ -138,7 +147,7 @@ module.exports = {
         fixtureList.push(singleFixture);       
       });
 
-      console.log(fixtureList.slice(0,2));            
+      //console.log(fixtureList.slice(0,2));            
       return fixtureList;
     },
 
@@ -175,7 +184,7 @@ module.exports = {
         topScorersList.push(singlePlayer);       
       });
 
-      console.log(topScorersList.slice(0,2));            
+      //console.log(topScorersList.slice(0,2));            
       return topScorersList;
     },
 
