@@ -36,12 +36,12 @@ module.exports = {
 
     TopLeaguesInformation : async () => {
 
-      const desiredLeagues=['germany', 'england', 'france','spain', 'italy'];    
+      const desiredLeagues=[1, 2, 3, 4, 79, 45, 46, 9, 61, 135, 39, 140, ];    
       const { data } = await axios.get("https://api-football-v1.p.rapidapi.com/v3/leagues", config);
 
       let leagueList=[]; 
       //const topLeagues = data.response.filter(league => desiredLeagues.includes(league.country.name));
-      const topLeagues = data.response.filter(league => desiredLeagues.includes(league.country.name.toLowerCase()));
+      const topLeagues = data.response.filter(league => desiredLeagues.includes(league.league.id));
 
       console.log(topLeagues);
       topLeagues.forEach(league => {
@@ -54,7 +54,7 @@ module.exports = {
 
         leagueList.push(singleLeague);
       })
-        return leagueList.slice(0,10);   
+        return leagueList;   
     },
 
 
@@ -198,7 +198,5 @@ module.exports = {
         }            
       return singleManager;
     },
-
-
 
 }}
