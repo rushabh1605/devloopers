@@ -36,7 +36,7 @@ module.exports = {
 
     TopLeaguesInformation : async () => {
 
-      const desiredLeagues=['world', 'germany', 'england', 'france','spain', 'italy'];    
+      const desiredLeagues=['germany', 'england', 'france','spain', 'italy'];    
       const { data } = await axios.get("https://api-football-v1.p.rapidapi.com/v3/leagues", config);
 
       let leagueList=[]; 
@@ -54,7 +54,7 @@ module.exports = {
 
         leagueList.push(singleLeague);
       })
-        return leagueList;   
+        return leagueList.slice(0,10);   
     },
 
 
