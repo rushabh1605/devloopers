@@ -10,6 +10,7 @@ import SignUp from './SignUp';
 import { AuthProvider } from '../firebase/Auth';
 import PrivateRoute from './PrivateRoute';
 import About from './About';
+import Leagues from './Leagues'
 import News from './News';
 import NotFound from './NotFound';
 //import logo from '../logo.jpg';
@@ -85,7 +86,7 @@ function App() {
               <Routes>
                 <Route path='/' element={<Landing />} />
                 <Route path='/home' element={<PrivateRoute />}>
-                  <Route path='/home' element={<Home />} />
+                  <Route path='/home' element={<Landing />} />
                 </Route>
                 <Route path='/account' element={<PrivateRoute />}>
                   <Route path='/account' element={<Account />} />
@@ -93,6 +94,7 @@ function App() {
                 <Route path='/signin' element={<SignIn />} />
                 <Route path='/signup' element={<SignUp />} />
                 <Route path='/about' element={<About />} />
+                <Route path='/leagues' element={<Leagues />} />
                 <Route path='/news' element={<News />} />
                 <Route path="/404" element={<NotFound />} />
               </Routes>
