@@ -3,13 +3,14 @@ import queries from '../queries';
 import '../App.css';
 import  {useState,useEffect} from 'react';
 import {useQuery,useMutation} from '@apollo/client';
+import { Link, useParams } from "react-router-dom";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Accordion from 'react-bootstrap/Accordion';
 const moment = require('moment');
+
 function Landing() {
- 
   // console.log(id)
   let now = new Date();
   let dateString = moment(now).format('YYYY-MM-DD');
@@ -56,7 +57,6 @@ function Landing() {
         date: date}
     );
     }
-
    
 
     if (data && LeagueData && AllLeagueData) {
@@ -70,23 +70,28 @@ function Landing() {
                 <div className="wsk-cp-matches" >
                   <h1 className='tl_header'>Top Leagues</h1> <br></br>
                   {TopLeaguesInformation.map((x) => {
+                    //console.log(x)
                     return(
-                      <div className='row col-md-12'>
-                        <button type="button" class="btn top-leagues">
-                        <div class="row m-6">
-                          <div class="col-md-4">
-                            <div>
-                            <img alt="Leaguelogo" class=" ml-auto img-fluid leagueimg" src={x.logo} />  
+                      <Link to={`/league/${x.id}`}>
+                        <div className='row col-md-12'>
+                          <button type="button" class="btn top-leagues" >
+                          <div class="row m-6">
+                            <div class="col-md-4">
+                              <div>
+                              <img alt="Leaguelogo" class=" ml-auto img-fluid leagueimg" src={x.logo} />  
+                              </div>
+                            </div>
+                            <div class="col-md-6  ">
+                              <div>
+                                <p>{x.leagueName}</p>
+                              </div>
                             </div>
                           </div>
-                          <div class="col-md-6  ">
-                            <div>
-                              <p>{x.leagueName}</p>
-                            </div>
-                          </div>
-                          </div>
-                          </button> <br></br>
-                      </div>
+                          </button>
+                        
+                         <br></br>
+                        </div>
+                      </Link>
                     )
                   })}
                   <br></br>
