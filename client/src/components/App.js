@@ -61,9 +61,8 @@ function App() {
             <div className='App-body'>
               <Routes>
                 <Route path='/' element={<Landing />} />
-                <Route path='/home' element={<PrivateRoute />}>
-                  <Route path='/home' element={<Landing />} />
-                </Route>
+                <Route path='/home' element={<Landing />} />
+
                 <Route path='/account' element={<PrivateRoute />}>
                   <Route path='/account' element={<Account />} />
                 </Route>
