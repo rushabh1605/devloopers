@@ -51,31 +51,7 @@ function App() {
                   <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                   <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="ml-auto" >
-                      <NavLink className='nav-links' to='/'>
-                        Home
-                      </NavLink>
-
-                      <NavLink className='nav-links' to='/about'>
-                        About
-                      </NavLink>
-
-                      <NavLink className='nav-links' to='/leagues'>
-                        Leagues
-                      </NavLink>
-
-                      <NavLink className='nav-links' to='/account'>
-                        Account
-                      </NavLink>
-
-                      <NavLink className='nav-links' to='/signin'>
-                        LogIn
-                      </NavLink>
-
-                      <NavLink className='nav-links' to='/signup'>
-                        SignUp
-                      </NavLink>
-
-
+                      <Navigation />
                     </Nav>
                   </Navbar.Collapse>
                 </Container>
