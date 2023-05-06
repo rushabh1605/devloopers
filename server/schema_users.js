@@ -31,6 +31,9 @@ const typeDefs = gql`
         followingPlayerID: [String]
 
     }
+    type userLogin {
+        userId: String
+      }
     type Query 
     {
         getUserById(id: ID!): User
