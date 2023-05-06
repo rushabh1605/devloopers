@@ -31,6 +31,7 @@ module.exports = {
       leagueList.push(singleLeague);       
       });
       //console.log(leagueList.slice(0,7)); 
+      // console.log(leagueList.slice(0,7)); 
       return leagueList;
     },
 
@@ -111,7 +112,7 @@ module.exports = {
       const { data } = await axios.get
             ("https://api-football-v1.p.rapidapi.com/v3/fixtures?date="+ formattedDate, config);
 
-      //console.log(data)
+      // console.log(data)
 
       data.response.forEach(fixture => {
         
@@ -202,6 +203,43 @@ module.exports = {
       return topScorersList;
     },
 
+    TopAssistsByLeague : async (_, args) => {
+      let topScorersList=[]; 
+      const { data } = await axios.get
+            ("https://api-football-v1.p.rapidapi.com/v3/players/topassists?league="+ args.league +"&season="+ args.season, config);
+
+      //console.log(data)
+
+      data.response.forEach(player => {
+        let singlePlayer = {
+          playerID: player.player.id,   
+          firstName: player.player.firstname,
+          lastName: player.player.lastname,
+          age: player.player.age,
+          Nationality: player.player.nationality,
+          playerImage: player.player.photo,
+          playerHeight: player.player.height,
+          playerWeight: player.player.weight,
+          playerPosition: player.statistics[0].games.position,
+          isInjured: player.player.injured,
+          teamName: player.statistics[0].team.name,
+          teamLogo: player.statistics[0].team.logo,
+          appearances: player.statistics[0].games.appearences,
+          lineUps: player.statistics[0].games.lineups,
+          season: player.statistics[0].league.season,
+          goals:  player.statistics[0].goals.total,
+          assists: player.statistics[0].goals.assists,
+          penaltyScored: player.statistics[0].penalty.scored,
+          penaltyMissed: player.statistics[0].penalty.missed
+        }          
+        topScorersList.push(singlePlayer);       
+      });
+
+      //console.log(topScorersList.slice(0,2));            
+      return topScorersList;
+    },
+
+
     ManagerInformation : async (_, args) => {
         const { data } = await axios.get
             ("https://api-football-v1.p.rapidapi.com/v3/coachs?team="+ args.team, config);
@@ -221,5 +259,4 @@ module.exports = {
         }            
       return singleManager;
     },
-
 }}
