@@ -73,44 +73,20 @@ const typeDefs = gql`
     playerID: Int!
     firstName: String
     lastName: String
-    age: Int
-    Nationality: String
     playerImage: String
-    playerHeight: String
-    playerWeight: String
-    playerPosition: String
-    isInjured: Boolean
     teamName: String
     teamLogo: String
-    appearances: Int
-    lineUps: Int
-    season: Int
-    goals: Int
-    assists: Int
-    penaltyScored: Int
-    penaltyMissed: Int   
+    goals: Int  
   }
 
   type LeagueTopAssists {
     playerID: Int!
     firstName: String
     lastName: String
-    age: Int
-    Nationality: String
     playerImage: String
-    playerHeight: String
-    playerWeight: String
-    playerPosition: String
-    isInjured: Boolean
     teamName: String
     teamLogo: String
-    appearances: Int
-    lineUps: Int
-    season: Int
-    goals: Int
-    assists: Int
-    penaltyScored: Int
-    penaltyMissed: Int   
+    goals: Int 
   }
 
   type PlayerByID {

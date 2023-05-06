@@ -51,7 +51,7 @@ module.exports = {
 
     TopLeaguesInformation : async () => {
 
-      const desiredLeagues=[1, 2, 3, 4, 79, 45, 46, 9, 61, 135, 39, 140, ];    
+      const desiredLeagues=[1, 2, 3, 4, 79, 45, 46, 9, 61, 135, 39, 140];    
       const { data } = await axios.get("https://api-football-v1.p.rapidapi.com/v3/leagues", config);
 
       let leagueList=[]; 
@@ -163,34 +163,18 @@ module.exports = {
       const { data } = await axios.get
             ("https://api-football-v1.p.rapidapi.com/v3/players/topscorers?league="+ args.league +"&season="+args.season, config);
 
-      //console.log(data)
-
       data.response.forEach(player => {
         let singlePlayer = {
           playerID: player.player.id,   
           firstName: player.player.firstname,
           lastName: player.player.lastname,
-          age: player.player.age,
-          Nationality: player.player.nationality,
           playerImage: player.player.photo,
-          playerHeight: player.player.height,
-          playerWeight: player.player.weight,
-          playerPosition: player.statistics[0].games.position,
-          isInjured: player.player.injured,
           teamName: player.statistics[0].team.name,
           teamLogo: player.statistics[0].team.logo,
-          appearances: player.statistics[0].games.appearences,
-          lineUps: player.statistics[0].games.lineups,
-          season: player.statistics[0].league.season,
           goals:  player.statistics[0].goals.total,
-          assists: player.statistics[0].goals.assists,
-          penaltyScored: player.statistics[0].penalty.scored,
-          penaltyMissed: player.statistics[0].penalty.missed
         }          
         topScorersList.push(singlePlayer);       
-      });
-
-      //console.log(topScorersList.slice(0,2));            
+      });           
       return topScorersList;
     },
 
@@ -238,22 +222,10 @@ module.exports = {
           playerID: player.player.id,   
           firstName: player.player.firstname,
           lastName: player.player.lastname,
-          age: player.player.age,
-          Nationality: player.player.nationality,
           playerImage: player.player.photo,
-          playerHeight: player.player.height,
-          playerWeight: player.player.weight,
-          playerPosition: player.statistics[0].games.position,
-          isInjured: player.player.injured,
           teamName: player.statistics[0].team.name,
           teamLogo: player.statistics[0].team.logo,
-          appearances: player.statistics[0].games.appearences,
-          lineUps: player.statistics[0].games.lineups,
-          season: player.statistics[0].league.season,
           goals:  player.statistics[0].goals.total,
-          assists: player.statistics[0].goals.assists,
-          penaltyScored: player.statistics[0].penalty.scored,
-          penaltyMissed: player.statistics[0].penalty.missed
         }          
         topScorersList.push(singlePlayer);       
       });

@@ -76,22 +76,10 @@ const LOAD_TOP_SCORER = gql`
             playerID,
             firstName,
             lastName,
-            age,
-            Nationality,
             playerImage,
-            playerHeight,
-            playerWeight,
-            playerPosition,
-            isInjured,
             teamName,
             teamLogo,
-            appearances,
-            lineUps,
-            season,
-            goals,
-            assists,
-            penaltyScored,
-            penaltyMissed 
+            goals
         }
     }
 `;
@@ -102,22 +90,10 @@ const LOAD_TOP_ASSISTS = gql`
             playerID,
             firstName,
             lastName,
-            age,
-            Nationality,
             playerImage,
-            playerHeight,
-            playerWeight,
-            playerPosition,
-            isInjured,
             teamName,
             teamLogo,
-            appearances,
-            lineUps,
-            season,
-            goals,
-            assists,
-            penaltyScored,
-            penaltyMissed 
+            goals
         }
     }
 `;
