@@ -122,7 +122,7 @@ module.exports = {
         let matchTimeESTString = matchTimeEST.toLocaleTimeString("en-US", {hour12: false});
         
 
-        console.log("Match time in EST: ", matchTimeESTString.slice(0,5) + " ET");
+        // console.log("Match time in EST: ", matchTimeESTString.slice(0,5) + " ET");
         matchTimeESTString = matchTimeESTString.slice(0,5) + " ET";
 
         // if(matchTimeESTString.indexOf(":")=== 2){
