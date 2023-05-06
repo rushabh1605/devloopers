@@ -22,9 +22,7 @@ const NavigationAuth = () => {
         About
       </NavLink>
 
-      <NavLink className='nav-links' to='/leagues'>
-        Leagues
-      </NavLink>
+     
 
       <NavLink className='nav-links' to='/account'>
         Account
@@ -45,10 +43,6 @@ const NavigationNonAuth = () => {
 
       <NavLink className='nav-links' to='/about'>
         About
-      </NavLink>
-
-      <NavLink className='nav-links' to='/leagues'>
-        Leagues
       </NavLink>
 
       <NavLink className='nav-links' to='/signin'>

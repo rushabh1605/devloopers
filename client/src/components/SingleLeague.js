@@ -6,25 +6,16 @@ import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useQuery } from "@apollo/client";
 import NotFoundPage from "./NotFound"
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
+import Standings from "./Standings";
+import LeagueStats from "./LeagueStats";
 
 const SingleLeague = () => {
 
     let { leagueId } = useParams();
 
     leagueId = parseInt(leagueId)
-    console.log(leagueId)
-
-    // const { loading, error, data, refetch } = useQuery(
-    //     queries.LOAD_STANDINGS, {
-    //         fetchPolicy: 'cache-and-network',
-    //         variables:{league: leagueId, season: 2022},
-    //         manual: true,
-    //         refetchOnWindowFocus: false,
-    //         enabled: false
-    //     }
-    // )
-    // console.log(error)
-
 
     const {loading, error, data, refetch } = useQuery(
         queries.LOAD_LEAGUE_BY_ID, {
@@ -36,14 +27,7 @@ const SingleLeague = () => {
             }
     )
 
-    console.log(error)
-    console.log(data)
-    
-
-    // return(
-    //     <p>{data}</p>
-    // )
-
+ 
 
     if(loading){
         return(
@@ -57,149 +41,86 @@ const SingleLeague = () => {
         )
     }
 
-    console.log(data.SingleLeagueInformation)
-
     if(data){
+        const {SingleLeagueInformation} = data
         return(
             <div class="row justify-content-center" id='home' >
-               
-                <div className="wsk-cp-matches" >
-                </div>
-                <Link to={`\standings`}>
-                        <button> Standing </button>
-                    </Link>
-                    <Link to={`\stats`}>
-                        <button> Stats page</button>
-                </Link>
+                <div className="row col-md-10 mt-3">
+                    <div className="wsk-cp-leagues" >
+                        <div className="row d-flex">
+                            
+                                <div className="col-md-3 d-flex">
+                                    <img alt="SingleLeaguelogo" class="img-fluid SingleLeaguelogo" src={SingleLeagueInformation.logo} />
+                                
+                                <div className="ml-2 d-block">
+                                    <p className='teamname mr-4 mb-0'>{SingleLeagueInformation.countryName}</p>
+                                    <p className='singleLeagueh1'>{SingleLeagueInformation.leagueName}</p>
+                                </div>
+                                </div>
+                            
+                        </div>
+                        <Tabs defaultActiveKey="second">
+                            <Tab eventKey="first" title="Stats">
+                                <LeagueStats></LeagueStats>
+                            </Tab>
+                            <Tab eventKey="second" title="Standings">
+                                <Standings></Standings>
+                            </Tab>
 
-                <div class="col-md-3  d-flex align-items-center mt-3 mt-md-0">
-                    <div>
-                        <p className='teamname'>{data.SingleLeagueInformation.leagueName}</p>
-                    </div>
-                </div>
-
-                <div class="col-md-1">
-                    <div>
-                        <img alt="Home team"  src={data.SingleLeagueInformation.logo} />
-                    </div>
-                </div>
-                <br/><br/><br/><br/>
-
-                <div class="col-md-3  d-flex align-items-center mt-3 mt-md-0">
-                    <div>
-                        <p className='teamname'>{data.SingleLeagueInformation.countryName}</p>
+                        </Tabs>
                     </div>
                 </div>
 
             </div>
 
-            // Nav Bar
 
-
-
-
-            
         )
     }
 
     // if(data){
     //     return(
     //         <div class="row justify-content-center" id='home' >
-    //             <div class="col-md-10">
-    //                 <Link to={`\standings`}>
+               
+    //             <div className="wsk-cp-matches" >
+    //             </div>
+    //             <Link to={`\standings`}>
     //                     <button> Standing </button>
     //                 </Link>
     //                 <Link to={`\stats`}>
     //                     <button> Stats page</button>
-    //                 </Link>
-    //                 <div className="wsk-cp-matches" >
-    //                     <p className='teamname'>
-    //                     Logo, matches playes, matches won, matches draw, matches lost, points, home matchs, away matches, goals scored, goals conceded
-    //                     </p>
-    //                     {data.StandingInformation.map((x) => {
-    //                         // Logo, matches playes, matches won, matches draw, matches lost, points, home matchs, away matches, goals scored, goals conceded
-    //                         return (
-    //                             <div class="row matches m-10">
-    //                                 <div class="col-md-3  d-flex align-items-center mt-3 mt-md-0">
-    //                                     <div>
-    //                                         <p className='teamname'>{x.rank}</p>
-    //                                     </div>
-    //                                 </div>
-    //                                 <div class="col-md-1">
-    //                                     <div>
-    //                                         <img alt="Home team" class="img-fluid teamimg" src={x.logo} />
-    //                                     </div>
-    //                                 </div>
-    //                                 <div class="col-md-2">
-    //                                     <div>
-    //                                         <p className='teamname'>{x.teamName}</p>
-    //                                     </div>
-    //                                 </div>
-    //                                 <div class="col-md-2">
-    //                                     <div>
-    //                                         <p className='teamname'>{x.matchesPlayed}</p>
-    //                                     </div>
-    //                                 </div>
-    //                                 <div class="col-md-2">
-    //                                     <div>
-    //                                         <p className='teamname'>{x.matchesWon}</p>
-    //                                     </div>
-    //                                 </div>
-    //                                 <div class="col-md-2">
-    //                                     <div>
-    //                                         <p className='teamname'>{x.matchesDraw}</p>
-    //                                     </div>
-    //                                 </div>
-    //                                 <div class="col-md-2">
-    //                                     <div>
-    //                                         <p className='teamname'>{x.matchesLost}</p>
-    //                                     </div>
-    //                                 </div>
-    //                                 <div class="col-md-2">
-    //                                     <div>
-    //                                         <p className='teamname'>{x.points}</p>
-    //                                     </div>
-    //                                 </div>
-    //                                 <div class="col-md-2">
-    //                                     <div>
-    //                                         <p className='teamname'>{x.homeMatches}</p>
-    //                                     </div>
-    //                                 </div>
-    //                                 <div class="col-md-2">
-    //                                     <div>
-    //                                         <p className='teamname'>{x.awayMatches}</p>
-    //                                     </div>
-    //                                 </div>
-    //                                 <div class="col-md-2">
-    //                                     <div>
-    //                                         <p className='teamname'>{x.goalsScored}</p>
-    //                                     </div>
-    //                                 </div>
-    //                                 <div class="col-md-2">
-    //                                     <div>
-    //                                         <p className='teamname'>{x.goalsConceded}</p>
-    //                                     </div>
-    //                                 </div>
-    //                             </div>
-                                            
-    //                         )
-    //                     })}
+    //             </Link>
+
+    //             <div class="col-md-3  d-flex align-items-center mt-3 mt-md-0">
+    //                 <div>
+    //                     <p className='teamname'>{data.SingleLeagueInformation.leagueName}</p>
     //                 </div>
     //             </div>
+
+    //             <div class="col-md-1">
+    //                 <div>
+    //                     <img alt="Home team"  src={data.SingleLeagueInformation.logo} />
+    //                 </div>
+    //             </div>
+    //             <br/><br/><br/><br/>
+
+    //             <div class="col-md-3  d-flex align-items-center mt-3 mt-md-0">
+    //                 <div>
+    //                     <p className='teamname'>{data.SingleLeagueInformation.countryName}</p>
+    //                 </div>
+    //             </div>
+
     //         </div>
-            
+
+    //         // Nav Bar
+
+
+
+
             
     //     )
     // }
 
-
-
-return (
-    
-    <Accordion.Body>
-        <p>Hi League data </p>
-    </Accordion.Body>
-)
+ 
 }
 
 export default SingleLeague
