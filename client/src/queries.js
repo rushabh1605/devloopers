@@ -11,9 +11,10 @@ const LOAD_LEAGUES = gql`
     }
 `;
 
+
 const LOAD_STANDINGS = gql`
     query StandingInformation($league: Int!, $season: Int!){
-        StandingInformation(league: $league, season: 2022) {
+        StandingInformation(league: $league, season: $season) {
             rank,
             teamName,
             logo,

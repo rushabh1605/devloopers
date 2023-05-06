@@ -7,10 +7,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useQuery } from "@apollo/client";
 import NotFoundPage from "./NotFound"
 
-const SingleLeague = () => {
-
+const Standings = () => {
     let { leagueId } = useParams();
-
     leagueId = parseInt(leagueId)
     console.log(leagueId)
 
@@ -43,12 +41,6 @@ const SingleLeague = () => {
         return(
             <div class="row justify-content-center" id='home' >
                 <div class="col-md-10">
-                    <Link to={`\standings`}>
-                        <button> Standing </button>
-                    </Link>
-                    <Link to={`\stats`}>
-                        <button> Stats page</button>
-                    </Link>
                     <div className="wsk-cp-matches" >
                         <p className='teamname'>
                         Logo, matches playes, matches won, matches draw, matches lost, points, home matchs, away matches, goals scored, goals conceded
@@ -124,19 +116,9 @@ const SingleLeague = () => {
                     </div>
                 </div>
             </div>
-            
-            
         )
     }
 
-
-
-return (
-    
-    <Accordion.Body>
-        <p>Hi League data</p>
-    </Accordion.Body>
-)
 }
 
-export default SingleLeague
+export default Standings

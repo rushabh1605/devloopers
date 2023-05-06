@@ -70,7 +70,7 @@ function Landing() {
                 <div className="wsk-cp-matches" >
                   <h1 className='tl_header'>Top Leagues</h1> <br></br>
                   {TopLeaguesInformation.map((x) => {
-                    //console.log(x)
+                    // console.log(x.id)
                     return(
                       <Link to={`/league/${x.id}`}>
                         <div className='row col-md-12'>
@@ -88,7 +88,6 @@ function Landing() {
                             </div>
                           </div>
                           </button>
-                        
                          <br></br>
                         </div>
                       </Link>
@@ -142,28 +141,28 @@ function Landing() {
                     <div>
                       <p className='teamname'>{x.homeTeamName}</p>
                     </div>
-                  </div>
-                  <div class="col-md-2">
+                    </div>
+                    <div class="col-md-2">
+                      <div>
+                        <img alt="Home team" class="img-fluid teamimg" src={x.homeTeamLogo} />
+                      </div>
+                    </div>
+                    <div class="col-md-2">
                     <div>
-                      <img alt="Home team" class="img-fluid teamimg" src={x.homeTeamLogo} />
+                      <p className='teamname'>{x.matchTime}</p>
+                    </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div>
+                        <img alt="Home team" class="img-fluid teamimg" src={x.awayTeamLogo} />
+                      </div>
+                    </div>
+                    <div class="col-md-3  d-flex align-items-center mt-4 mt-md-0">
+                      <div>
+                        <p className='teamname align-text-left'>{x.awayTeamName}</p>
+                      </div>
                     </div>
                   </div>
-                  <div class="col-md-2">
-                  <div>
-                    <p className='teamname'>{x.matchTime}</p>
-                  </div>
-                  </div>
-                  <div class="col-md-2">
-                    <div>
-                      <img alt="Home team" class="img-fluid teamimg" src={x.awayTeamLogo} />
-                    </div>
-                  </div>
-                  <div class="col-md-3  d-flex align-items-center mt-4 mt-md-0">
-                    <div>
-                      <p className='teamname align-text-left'>{x.awayTeamName}</p>
-                    </div>
-                  </div>
-                </div>
                 )
               })}
              </div>
