@@ -40,6 +40,7 @@ if(loading){
 
 if(data){
     const {GetPlayerByID} = data
+    console.log(GetPlayerByID)
     return(
         
         <div class="row justify-content-center" id='home'  >
@@ -49,12 +50,10 @@ if(data){
                                                                 <img alt="playerlogo" class=" img-fluid leagueimg" src={GetPlayerByID.playerImage} />
                                                                 <div className="d-block">
                                                                
-                                                                    <p className="ml-2 tablehead">{GetPlayerByID.playerName}</p>
+                                                                    <p className="mr-4 tablehead">{GetPlayerByID.playerName}</p>
                                                                
 
-                                                                <div className="d-flex">
-                                                                    
-                                                                    <img alt="Leaguelogo" class=" ml-2" width="20" height="20" src={GetPlayerByID.teamLogo} /> 
+                                                                <div className="d-flex"> 
                                                                     <p className="ml-2 tablehead">{GetPlayerByID.teamName}</p>
                                                                 </div>
                                                                 
@@ -65,9 +64,14 @@ if(data){
                 </div>
 
                 <div className='col-md-11'>
-                    <div className='col-md-4 mr-auto p-0'>
+                    <div className='row'>
+                    <div className='col-md-3 mr-5 ml-2 p-0'>
                         <div className="wsk-cp-matches " >
                             <div className='row'>
+                            <h5 className='tablehead'>General Information</h5>
+                        </div>
+                    
+                            <div className='row mt-4'>
                                 <div className='col-md-4'>
                                     <p className="tablehead">Height</p>
                                 </div>
@@ -99,32 +103,104 @@ if(data){
                             />
                             <div className='row'>
                                 <div className='col-md-4'>
-                                    <p className="tablehead">Height</p>
+                                    <p className="tablehead">Nationality</p>
                                 </div>
                                 <div className='col-md-4'>
-                                    <p className="tablehead">Weight</p>
+                                    <p className="tablehead">Position</p>
                                 </div>
-                                <div className='col-md-4'>
-                                    <p className="tablehead">Age</p>
-                                </div>
+                                
                             </div>
                             <div className='row'>
                                 <div className='col-md-4'>
-                                    <p className="tablehead">{GetPlayerByID.playerHeight}</p>
+                                    <p className="tablehead">{GetPlayerByID.Nationality}</p>
                                 </div>
                                 <div className='col-md-4'>
-                                    <p className="tablehead">{GetPlayerByID.playerWeight}</p>
+                                    <p className="tablehead">{GetPlayerByID.playerPosition}</p>
                                 </div>
-                                <div className='col-md-4'>
-                                    <p className="tablehead">{GetPlayerByID.age}</p>
-                                </div>
+
                             </div>
                         </div>
 
                     </div>
 
+                    {/* card 2 */}
+
+                    <div className='col-md-3  p-0'>
+                        <div className="wsk-cp-matches " >
+                            <div className='row'>
+                                <h5 className='tablehead'>{GetPlayerByID.leagueName} 2022</h5>
+                            </div>
+                            
+                            <div className='row mt-4'>
+                            <div className='col-md-4'>
+                                    <p className="tablehead">Matches</p>
+                                </div>
+                                <div className='col-md-4'>
+                                    <p className="tablehead">Goals</p>
+                                </div>
+                                <div className='col-md-4'>
+                                    <p className="tablehead">Assists</p>
+                                </div>
+                                
+                                
+                            </div>
+                            <div className='row '>
+                                <div className='col-md-4'>
+                                    <p className="tablehead">{GetPlayerByID.appearances}</p>
+                                </div>
+                                <div className='col-md-4'>
+                                    <p className="tablehead">{GetPlayerByID.goals}</p>
+                                </div>
+                                <div className='col-md-4'>
+                                    <p className="tablehead">{GetPlayerByID.assists}</p>
+                                </div>
+                                
+                            </div>
+                            <hr
+                                                                style={{
+                                                                background: "#D3D3D3",
+                                                                height: "2px",
+                                                                border: "none",
+                                                                opacity:0.1
+                                                                }}
+                            />
+<div className='row'>
+                                <div className='col-md-4'>
+                                    <p className="tablehead">Penalty</p>
+                                </div>
+                                <div className='col-md-4'>
+                                    <p className="tablehead">Yellow Card</p>
+                                </div>
+                                <div className='col-md-4'>
+                                    <p className="tablehead">Red Card</p>
+                                </div>
+                                
+                            </div>
+                            <div className='row'>
+                                <div className='col-md-4'>
+                                    <p className="tablehead">{GetPlayerByID.penaltyScored}</p>
+                                </div>
+                                <div className='col-md-4'>
+                                    <p className="tablehead">{GetPlayerByID.yellowCard || 0 }</p>
+                                </div>
+
+                                <div className='col-md-4'>
+                                    <p className="tablehead">{GetPlayerByID.redCard || 0}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                    </div>
+
+                    </div>
                 </div>
                 
+                
+
+
+
+
         </div>
             
       

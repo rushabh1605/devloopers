@@ -12,7 +12,7 @@ function Search(props) {
             e.preventDefault();
           }}
           name='formName'
-          className='center m-2'
+          className='center '
         >
           <label>
             <span className='searchbar'> Search Players: &nbsp;

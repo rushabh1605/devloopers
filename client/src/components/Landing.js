@@ -13,7 +13,7 @@ const moment = require('moment');
 
 function Landing() {
   // console.log(id)
-  const [searchTerm, setSearchTerm] = useState('A');
+  const [searchTerm, setSearchTerm] = useState('Kevi');
   let now = new Date();
   let dateString = moment(now).format('YYYY-MM-DD');
   // console.log(dateString)
@@ -80,7 +80,7 @@ function Landing() {
     }, [searchTerm]);
   
     const searchValue = async (value) => {
-      if(value.length === 7 || value.length > 7){
+      if(value.length === 4 ){
         setSearchTerm(value);
       }
       
@@ -222,32 +222,30 @@ function Landing() {
                 <br></br>
                 <br></br>
                 
-                <div className='row'>
-                                <div className='col-md-6'>
-                                    <p className="tablehead">Name</p>
-                                </div>
-                                <div className='col-md-6'>
-                                    <p className="tablehead">Nationality</p>
-                                </div>
-                </div>
+              
                 {searchFlag ? (
                     SearchPlayerByName.map((x) =>{
 
                       return(
                         <div className='row'>
-                                <div className='col-md-6'>
-                                    <p className="tablehead">{x.playerName}</p>
-                                </div>
-                                <div className='col-md-6'>
-                                    <p className="tablehead">{x.nationality}</p>
-                                </div>
+                                <Link to={`/player/${x.playerID}`}>
+                                    <p className="tablehead text-left">{x.playerName}</p>
+                                </Link>
+                                <hr
+                                                                style={{
+                                                                background: "#D3D3D3",
+                                                                height: "2px",
+                                                                border: "none",
+                                                                opacity:0.1
+                                                                }}
+                                />
                         </div>
                       )
                     })
                   ) : (
                     
                         <div class="alert alert-danger" role="alert">
-                    No search data !! please enter atleast 7 character to search player!
+                    No search data !! please enter 4 character to search player!
                     </div>
                    
                   )}
