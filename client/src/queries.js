@@ -122,6 +122,36 @@ const LOAD_TOP_ASSISTS = gql`
     }
 `;
 
+
+const LOAD_PLAYER_BY_ID_INFO = gql`
+        query GetPlayerByID($playerId: Int!) {
+            GetPlayerByID(playerId: $playerId) {
+                playerID
+                playerName
+                firstName
+                lastName
+                age
+                Nationality
+                playerHeight
+                playerWeight
+                playerPosition
+                playerRating
+                teamName
+                leagueName
+                season
+                appearances
+                lineUps
+                goals
+                assists
+                penaltyScored
+                penaltyMissed
+                yellowCard
+                redCard
+
+            }
+        }
+`;
+
 const LOAD_MANAGER_INFO = gql`
     query ManagerInformation($team: Int!){
         ManagerInformation(team: $team) {
@@ -159,6 +189,6 @@ export default {
     LOAD_TOP_ASSISTS,
     LOAD_TOP_LEAGUES,
     LOAD_LEAGUE_BY_ID,
-    LOAD_MANAGER_INFO
-
+    LOAD_MANAGER_INFO,
+    LOAD_PLAYER_BY_ID_INFO,
 };

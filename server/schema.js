@@ -113,6 +113,30 @@ const typeDefs = gql`
     penaltyMissed: Int   
   }
 
+  type PlayerByID {
+    playerID: Int!
+    playerName: String
+    firstName: String
+    lastName: String
+    age: Int
+    Nationality: String
+    playerHeight: String
+    playerWeight: String
+    playerPosition: String
+    playerRating: String
+    teamName: String
+    leagueName: String
+    season: String
+    appearances: Int
+    lineUps: Int
+    goals: Int
+    assists: Int
+    penaltyScored: Int
+    penaltyMissed: Int  
+    yellowCard: Int
+    redCard: Int 
+  }
+
   type TeamManager {
     managerID: Int!
     managerName: String
@@ -151,7 +175,8 @@ const typeDefs = gql`
     FixtureByDateInformation(matchDate: Date!) : [FixtureByDate]
     TopScorerByLeague(league: Int!, season: Int!): [LeagueTopScorer]
     TopAssistsByLeague(league: Int!, season: Int!): [LeagueTopAssists]
-    ManagerInformation(team: Int!) : TeamManager  
+    ManagerInformation(team: Int!) : TeamManager 
+    GetPlayerByID(playerId: Int!) : PlayerByID 
   }
 `;
 

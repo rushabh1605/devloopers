@@ -120,17 +120,8 @@ module.exports = {
         //console.log(matchTimeUTC)
         const matchTimeEST = new Date(matchTimeUTC.toLocaleString("en-US", {timeZone: "America/New_York"}));
         let matchTimeESTString = matchTimeEST.toLocaleTimeString("en-US", {hour12: false});
-        
 
-        // console.log("Match time in EST: ", matchTimeESTString.slice(0,5) + " ET");
-        matchTimeESTString = matchTimeESTString.slice(0,5) + " ET";
-
-        // if(matchTimeESTString.indexOf(":")=== 2){
-        //   matchTimeESTString=matchTimeESTString.slice(0,5) + matchTimeESTString.slice(8,11) + " ET";
-        // }
-        // else
-        // {matchTimeESTString=matchTimeESTString.slice(0,4) +matchTimeESTString.slice(7,10) + " ET";}
-        
+        matchTimeESTString = matchTimeESTString.slice(0,5) + " ET";     
 
         let singleFixture = {
           id: fixture.fixture.id,
@@ -203,12 +194,44 @@ module.exports = {
       return topScorersList;
     },
 
+    GetPlayerByID : async (_, args) => {
+      console.log(args.playerId); 
+      const { data } = await axios.get("https://api-football-v1.p.rapidapi.com/v2/players/player/"+ args.playerId, config);
+
+      // console.log(data)
+      let singlePlayerData = data.api.players[0];
+      // console.log(singlePlayerData)
+
+        let singlePlayer = {
+          playerID: singlePlayerData.player_id,
+          playerName: singlePlayerData.player_name,
+          firstName: singlePlayerData.firstname,
+          lastName: singlePlayerData.lastname,
+          age: singlePlayerData.age,
+          Nationality: singlePlayerData.birth_country,
+          playerHeight: singlePlayerData.height,
+          playerWeight: singlePlayerData.weight,
+          playerPosition: singlePlayerData.position,
+          playerRating: singlePlayerData.rating,
+          teamName: singlePlayerData.team_name,
+          leagueName : singlePlayerData.team_name,
+          season : singlePlayerData.season,
+          appearances: singlePlayerData.games.appearences,
+          lineUps: singlePlayerData.games.lineups,
+          goals:  singlePlayerData.goals.total,
+          assists: singlePlayerData.goals.assists,
+          penaltyScored: singlePlayerData.penalty.success,
+          penaltyMissed: singlePlayerData.penalty.missed,
+          yellowCard: singlePlayerData.cards.yellow,
+          redCard: singlePlayerData.cards.red
+        }                
+      return singlePlayer;
+    },
+
     TopAssistsByLeague : async (_, args) => {
       let topScorersList=[]; 
       const { data } = await axios.get
             ("https://api-football-v1.p.rapidapi.com/v3/players/topassists?league="+ args.league +"&season="+ args.season, config);
-
-      //console.log(data)
 
       data.response.forEach(player => {
         let singlePlayer = {
