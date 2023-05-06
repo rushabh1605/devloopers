@@ -13,6 +13,9 @@ import About from './About';
 import Leagues from './Leagues'
 import News from './News';
 import NotFound from './NotFound';
+import SingleLeague from './SingleLeague';
+import LeagueStats from './LeagueStats';
+import Standings from './Standings';
 //import logo from '../logo.jpg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
@@ -24,9 +27,6 @@ import {
   InMemoryCache,
   ApolloProvider
 } from '@apollo/client';
-
-
-
 
 
 const client = new ApolloClient({
@@ -66,6 +66,9 @@ function App() {
                 <Route path='/account' element={<PrivateRoute />}>
                   <Route path='/account' element={<Account />} />
                 </Route>
+                <Route path='/league/:leagueId' element={<SingleLeague />} />
+                <Route path='/league/:leagueId/standings' element={<Standings />} />
+                <Route path='/league/:leagueId/stats' element={<LeagueStats />} />
                 <Route path='/signin' element={<SignIn />} />
                 <Route path='/signup' element={<SignUp />} />
                 <Route path='/about' element={<About />} />
