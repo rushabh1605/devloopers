@@ -16,6 +16,7 @@ import NotFound from './NotFound';
 import SingleLeague from './SingleLeague';
 import LeagueStats from './LeagueStats';
 import Standings from './Standings';
+import SinglePlayer from './SinglePlayer';
 //import logo from '../logo.jpg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
@@ -69,6 +70,7 @@ function App() {
                 <Route path='/league/:leagueId' element={<SingleLeague />} />
                 <Route path='/league/:leagueId/standings' element={<Standings />} />
                 <Route path='/league/:leagueId/stats' element={<LeagueStats />} />
+                <Route path='/player/:playerId' element={<SinglePlayer />} />
                 <Route path='/signin' element={<SignIn />} />
                 <Route path='/signup' element={<SignUp />} />
                 <Route path='/about' element={<About />} />
