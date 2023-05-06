@@ -84,7 +84,7 @@ const typeDefs = gql`
     playerImage: String
     teamName: String
     teamLogo: String
-    goals: Int 
+    assists: Int 
   }
 
   type PlayerByID {
@@ -94,6 +94,7 @@ const typeDefs = gql`
     lastName: String
     age: Int
     Nationality: String
+    playerImage: String
     playerHeight: String
     playerWeight: String
     playerPosition: String
@@ -136,9 +137,14 @@ const typeDefs = gql`
     substitutesTeam1: [PlayersForFixture]
     substitutesTeam2: [PlayersForFixture]
   }
+
+  type searchedPlayers {
+    playerID: Int!
+    playerName: String
+    nationality: String
+  }
+
    scalar Date
-
-
 
   type Query {
     LeagueInformation: [League]
@@ -149,7 +155,8 @@ const typeDefs = gql`
     TopScorerByLeague(league: Int!, season: Int!): [LeagueTopScorer]
     TopAssistsByLeague(league: Int!, season: Int!): [LeagueTopAssists]
     ManagerInformation(team: Int!) : TeamManager 
-    GetPlayerByID(playerId: Int!) : PlayerByID 
+    GetPlayerByID(playerId: Int!, season: Int!) : PlayerByID 
+    SearchPlayerByName(playerName: String!) : [searchedPlayers]
   }
 `;
 

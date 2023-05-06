@@ -22,6 +22,17 @@ const LOAD_LEAGUE_BY_ID = gql`
 }
 `;
 
+const SEARCH_PLAYER_BY_NAME = gql`   
+    query SingleLeagueInformation($id: Int!) {
+        SingleLeagueInformation(id: $id) {
+            id
+            leagueName
+            logo
+            countryName
+        }
+}
+`;
+
 const LOAD_STANDINGS = gql`
     query StandingInformation($league: Int!, $season: Int!){
         StandingInformation(league: $league, season: $season) {
@@ -84,15 +95,13 @@ const LOAD_TOP_SCORER = gql`
 `;
 
 const LOAD_TOP_ASSISTS = gql`
-    query TopScorerByLeague($league: Int!, $season: Int!){
-        TopScorerByLeague(league: $league, season: $season) {
+    query SearchPlayerByName($playerName: String!) {
+        SearchPlayerByName(playerName: $playerName) {
             playerID,
             playerName
-            playerImage,
-            teamName,
-            teamLogo,
-            goals
-        }
+            nationality
+        
+        } 
     }
 `;
 
@@ -165,4 +174,5 @@ export default {
     LOAD_LEAGUE_BY_ID,
     LOAD_MANAGER_INFO,
     LOAD_PLAYER_BY_ID_INFO,
+    SEARCH_PLAYER_BY_NAME
 };

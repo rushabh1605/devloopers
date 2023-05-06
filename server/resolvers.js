@@ -180,34 +180,32 @@ module.exports = {
 
     GetPlayerByID : async (_, args) => {
       console.log(args.playerId); 
-      const { data } = await axios.get("https://api-football-v1.p.rapidapi.com/v2/players/player/"+ args.playerId, config);
-
-      // console.log(data)
-      let singlePlayerData = data.api.players[0];
-      // console.log(singlePlayerData)
-
+      const {data} = await axios.get("https://api-football-v1.p.rapidapi.com/v3/players?id="+ args.playerId+"&season="+ args.season, config);
+      
+      let singlePlayerData = data.response[0];
         let singlePlayer = {
-          playerID: singlePlayerData.player_id,
-          playerName: singlePlayerData.player_name,
-          firstName: singlePlayerData.firstname,
-          lastName: singlePlayerData.lastname,
-          age: singlePlayerData.age,
-          Nationality: singlePlayerData.birth_country,
-          playerHeight: singlePlayerData.height,
-          playerWeight: singlePlayerData.weight,
-          playerPosition: singlePlayerData.position,
-          playerRating: singlePlayerData.rating,
-          teamName: singlePlayerData.team_name,
-          leagueName : singlePlayerData.team_name,
-          season : singlePlayerData.season,
-          appearances: singlePlayerData.games.appearences,
-          lineUps: singlePlayerData.games.lineups,
-          goals:  singlePlayerData.goals.total,
-          assists: singlePlayerData.goals.assists,
-          penaltyScored: singlePlayerData.penalty.success,
-          penaltyMissed: singlePlayerData.penalty.missed,
-          yellowCard: singlePlayerData.cards.yellow,
-          redCard: singlePlayerData.cards.red
+          playerID: singlePlayerData.player.id,
+          playerName: singlePlayerData.player.name,
+          firstName: singlePlayerData.player.firstname,
+          lastName: singlePlayerData.player.lastname,
+          age: singlePlayerData.player.age,
+          Nationality: singlePlayerData.player.nationality,
+          playerImage: singlePlayerData.player.photo,
+          playerHeight: singlePlayerData.player.height,
+          playerWeight: singlePlayerData.player.weight,
+          playerPosition: singlePlayerData.statistics[0].games.position,
+          playerRating: singlePlayerData.statistics[0].games.rating,
+          teamName: singlePlayerData.statistics[0].team.name,
+          leagueName : singlePlayerData.statistics[0].league.name,
+          season : singlePlayerData.statistics[0].league.season,
+          appearances: singlePlayerData.statistics[0].games.appearences,
+          lineUps: singlePlayerData.statistics[0].games.lineups,
+          goals:  singlePlayerData.statistics[0].goals.total,
+          assists: singlePlayerData.statistics[0].goals.assists,
+          penaltyScored: singlePlayerData.statistics[0].penalty.scored,
+          penaltyMissed: singlePlayerData.statistics[0].penalty.missed,
+          yellowCard: singlePlayerData.statistics[0].cards.yellow,
+          redCard: singlePlayerData.statistics[0].cards.red
         }                
       return singlePlayer;
     },
@@ -224,13 +222,35 @@ module.exports = {
           playerImage: player.player.photo,
           teamName: player.statistics[0].team.name,
           teamLogo: player.statistics[0].team.logo,
-          goals:  player.statistics[0].goals.total,
+          assists:  player.statistics[0].goals.assists,
         }          
         topScorersList.push(singlePlayer);       
       });
 
       //console.log(topScorersList.slice(0,2));            
       return topScorersList;
+    },
+
+    SearchPlayerByName : async (_, args) => {
+      let searchedPlayers=[]; 
+      const { data } = await axios.get
+            ("https://api-football-v1.p.rapidapi.com/v2/players/search/"+ args.playerName, config);
+
+      let playersData= data.api.players;
+
+      //console.log(data.api.players)
+
+      playersData.forEach(player => {
+        let singlePlayer = {
+          playerID: player.player_id,   
+          playerName: player.player_name,
+          nationality: player.nationality
+        }          
+        searchedPlayers.push(singlePlayer);       
+      });
+
+      //console.log(topScorersList.slice(0,2));            
+      return searchedPlayers;
     },
 
 
