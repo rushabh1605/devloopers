@@ -1,1 +1,14 @@
 nav bar: leagues are left
+
+Stats-> assist is left
+
+signup login left
+
+uri
+Search
+
+
+Data function 
+get player by ID is required
+
+
