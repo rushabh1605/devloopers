@@ -151,6 +151,13 @@ const LOAD_TOP_LEAGUES = gql`
     }
 `;
 
+const LOGIN = gql`
+    query LoginUser($email: String!, $password: String!) {
+      loginUser(email: $email, password: $password) {
+        token
+        userId
+      }
+    }`;
 export default {
     LOAD_LEAGUES,
     LOAD_STANDINGS,
@@ -159,6 +166,6 @@ export default {
     LOAD_TOP_ASSISTS,
     LOAD_TOP_LEAGUES,
     LOAD_LEAGUE_BY_ID,
-    LOAD_MANAGER_INFO
-
+    LOAD_MANAGER_INFO,
+    LOGIN
 };
