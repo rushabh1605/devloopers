@@ -31,6 +31,7 @@ module.exports = {
       leagueList.push(singleLeague);       
       });
       //console.log(leagueList.slice(0,7)); 
+      // console.log(leagueList.slice(0,7)); 
       return leagueList;
     },
 
@@ -111,7 +112,7 @@ module.exports = {
       const { data } = await axios.get
             ("https://api-football-v1.p.rapidapi.com/v3/fixtures?date="+ formattedDate, config);
 
-      //console.log(data)
+      // console.log(data)
 
       data.response.forEach(fixture => {
         
@@ -258,5 +259,4 @@ module.exports = {
         }            
       return singleManager;
     },
-
 }}
