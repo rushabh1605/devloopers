@@ -104,7 +104,7 @@ const LOAD_MANAGER_INFO = gql`
 `;
 
 const LOAD_TOP_LEAGUES = gql`
-    query TopLeaguesInformation() {
+    query TopLeaguesInformation {
         TopLeaguesInformation {
             id
             leagueName
