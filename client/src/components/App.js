@@ -7,8 +7,7 @@ import Landing from './Landing';
 import Navigation from './Navigation';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
-import { AuthProvider } from '../firebase/Auth';
-import PrivateRoute from './PrivateRoute';
+// import PrivateRoute from './PrivateRoute';
 import About from './About';
 import Leagues from './Leagues'
 import News from './News';
@@ -18,10 +17,14 @@ import LeagueStats from './LeagueStats';
 import Standings from './Standings';
 import SinglePlayer from './SinglePlayer';
 //import logo from '../logo.jpg';
+
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+
+
 import {
   ApolloClient,
   HttpLink,
@@ -40,7 +43,6 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <AuthProvider>
         <Router>
           <div className='App'>
             <header className='App-header'>
@@ -64,9 +66,9 @@ function App() {
                 <Route path='/' element={<Landing />} />
                 <Route path='/home' element={<Landing />} />
 
-                <Route path='/account' element={<PrivateRoute />}>
+                {/* <Route path='/account' element={<PrivateRoute />}>
                   <Route path='/account' element={<Account />} />
-                </Route>
+                </Route> */}
 
                 <Route path='/leagues' element={<Leagues />} />
                 <Route path='/league/:leagueId' element={<SingleLeague />} />
@@ -86,7 +88,6 @@ function App() {
 
           </div>
         </Router>
-      </AuthProvider>
     </ApolloProvider>
   );
 }

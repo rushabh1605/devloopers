@@ -4,7 +4,7 @@ const { deleteUser } = require("./data/users");
 const user = data.users;
 const resolvers = {
     Query:{
-        getAllUsers: async () => {
+        GetAllUsers: async () => {
             
                 const user_list = await user.getAllUsers();
                 if(user_list.errors){
@@ -17,7 +17,7 @@ const resolvers = {
              
 
         },
-        getUserById: async (_, args) => {
+        GetUserById: async (_, args) => {
             
                 const oneUser = await user.getUserById(args.id);
                 if(oneUser.errors){
@@ -32,7 +32,7 @@ const resolvers = {
         }
     },
     Mutation:{
-        createUser: async (_, args) => {
+        CreateUser: async (_, args) => {
             
                 const oneUser = await user.createUser(args.username,args.password,args.dob,args.phone, 
                     args.email, 
@@ -49,7 +49,7 @@ const resolvers = {
                
               
         },
-        deleteUser: async(_,args)=>{
+        DeleteUser: async(_,args)=>{
             const deleteone = await user.deleteUser(args.id);
                 if(deleteone.errors){
                 
@@ -59,7 +59,7 @@ const resolvers = {
                     return (deleteone);
                 }
         },
-        login: async(_,args)=>{
+        Login: async(_,args)=>{
             const loggedIn = await user.checkUser(args.username,args.password);
                 if(loggedIn.errors){
                 
@@ -69,7 +69,7 @@ const resolvers = {
                     return (loggedIn);
                 }
         },
-        addTeamFollowing: async(_,args)=>{
+        AddTeamFollowing: async(_,args)=>{
             const addTeam = await user.addTeamFollowing(args.userId,args.teamID);
                 if(addTeam.errors){
                 
@@ -79,7 +79,7 @@ const resolvers = {
                     return (addTeam);
                 }
         },
-        addPlayerFollowing: async(_,args)=>{
+        AddPlayerFollowing: async(_,args)=>{
             const addPlayer = await user.addPlayerFollowing(args.userId,args.PlayerID);
                 if(addPlayer.errors){
                 
@@ -89,7 +89,7 @@ const resolvers = {
                     return (addPlayer);
                 }
         },
-        deleteTeamFollowing: async(_,args)=>{
+        DeleteTeamFollowing: async(_,args)=>{
             const deleteTeam = await user.deleteTeamFollowing(args.userId,args.teamID);
                 if(deleteTeam.errors){
                 
@@ -99,7 +99,7 @@ const resolvers = {
                     return (deleteTeam);
                 }
         },
-        deletePlayerFollowing: async(_,args)=>{
+        DeletePlayerFollowing: async(_,args)=>{
             const deletePlayer = await user.deletePlayerFollowing(args.userId,args.PlayerID);
                 if(deletePlayer.errors){
                 

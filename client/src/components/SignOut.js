@@ -1,12 +1,12 @@
 import React from 'react';
-import {doSignOut} from '../firebase/FirebaseFunctions';
 
-const SignOutButton = () => {
-  return (
-    <button type='button' onClick={doSignOut}>
-      Sign Out
-    </button>
-  );
+const SignOut = () => {
+    return (
+        <div>
+            <h1>404 Page Not Found</h1>
+            <p>The page you are looking for does not exist.</p>
+        </div>
+    );
 };
 
-export default SignOutButton;
+export default SignOut;

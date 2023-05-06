@@ -40,6 +40,7 @@ const getUserById = async (userId) => {
 
 const createUser = async (
     username,
+    password,
     dob, 
     phone, 
     email, 

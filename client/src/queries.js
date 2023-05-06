@@ -151,6 +151,62 @@ const LOAD_TOP_LEAGUES = gql`
     }
 `;
 
+const CREATE_USER = gql`
+    mutation CreateUser (
+        $username: String!,
+        $password: String!,
+        $dob: String,
+        $phone: String,
+        $email: String!, 
+        $country: String,
+        $profilePic: String,
+        $bio: String,
+        $isPremium: Boolean
+    ) {
+        CreateUser (
+            username: $username,
+            password: $password,
+            dob: $dob,
+            phone: $phone,
+            email: $email, 
+            country: $country,
+            profilePic: $profilePic,
+            bio: $bio,
+            isPremium: $isPremium   
+        ) {
+            username
+            password
+            dob
+            phone
+            email
+            country
+            profilePic
+            bio
+            isPremium
+        }
+    }
+`;
+
+const GET_ALL_USER = gql `
+    query GetAllUsers{
+        GetAllUsers{
+            _id
+            username
+            email
+        }
+    }
+`
+
+const GET_USER_BY_ID = gql `
+    query GetUserById ($id: ID!){
+        GetUserById(id: $id){
+            _id
+            username
+            email
+        }
+    }
+`
+
 export default {
     LOAD_LEAGUES,
     LOAD_STANDINGS,
@@ -159,6 +215,10 @@ export default {
     LOAD_TOP_ASSISTS,
     LOAD_TOP_LEAGUES,
     LOAD_LEAGUE_BY_ID,
-    LOAD_MANAGER_INFO
+    LOAD_MANAGER_INFO,
+    CREATE_USER,
+    GET_ALL_USER,
+    GET_USER_BY_ID
+
 
 };
