@@ -62,54 +62,38 @@ const typeDefs = gql`
 
   type FixtureByDate {
     id: Int!
-    venueName: String
-    venueCity: String
     matchDate: Date
     matchTime: String
     matchTimeZone: String
-    matchStatus: String
-    league: String
-    country: String
-    leagueLogo: String
-    season: Int
     homeTeamName: String
     homeTeamID: String
     homeTeamLogo: String
     awayTeamName: String
     awayTeamID: String
     awayTeamLogo: String
-    homeTeamGoals: Int
-    awayTeamGoals: Int
-    homeHalfTimeScore: Int
-    homeFullTimeScore: Int
-    awayHalfTimeScore: Int
-    awayFullTimeScore: Int
   }
-
+ 
   type LeagueTopScorer {
     playerID: Int!
-    firstName: String
-    lastName: String
-    age: Int
-    Nationality: String
+    playerName: String
     playerImage: String
-    playerHeight: String
-    playerWeight: String
-    playerPosition: String
-    isInjured: Boolean
     teamName: String
     teamLogo: String
-    appearances: Int
-    lineUps: Int
-    season: Int
-    goals: Int
-    assists: Int
-    penaltyScored: Int
-    penaltyMissed: Int   
+    goals: Int  
   }
 
   type LeagueTopAssists {
     playerID: Int!
+    playerName: String
+    playerImage: String
+    teamName: String
+    teamLogo: String
+    assists: Int 
+  }
+
+  type PlayerByID {
+    playerID: Int!
+    playerName: String
     firstName: String
     lastName: String
     age: Int
@@ -118,16 +102,18 @@ const typeDefs = gql`
     playerHeight: String
     playerWeight: String
     playerPosition: String
-    isInjured: Boolean
+    playerRating: String
     teamName: String
-    teamLogo: String
+    leagueName: String
+    season: String
     appearances: Int
     lineUps: Int
-    season: Int
     goals: Int
     assists: Int
     penaltyScored: Int
-    penaltyMissed: Int   
+    penaltyMissed: Int  
+    yellowCard: Int
+    redCard: Int 
   }
 
   type TeamManager {
@@ -156,9 +142,13 @@ const typeDefs = gql`
     substitutesTeam2: [PlayersForFixture]
   }
 
+  type searchedPlayers {
+    playerID: Int!
+    playerName: String
+    nationality: String
+  }
+
    scalar Date
-
-
 
   type Query {
     LeagueInformation: [League]
@@ -171,6 +161,10 @@ const typeDefs = gql`
     ManagerInformation(team: Int!) : TeamManager  
     GetUserById(id: ID!): User
     GetAllUsers: [User]
+    ManagerInformation(team: Int!) : TeamManager 
+    GetPlayerByID(playerId: Int!, season: Int!) : PlayerByID 
+    SearchPlayerByName(playerName: String!) : [searchedPlayers]
+
   }
 
   type Mutation
