@@ -10,6 +10,7 @@ import SignUp from './SignUp';
 import { AuthProvider } from '../firebase/Auth';
 import PrivateRoute from './PrivateRoute';
 import About from './About';
+import Leagues from './Leagues'
 import News from './News';
 import NotFound from './NotFound';
 //import logo from '../logo.jpg';
@@ -50,31 +51,7 @@ function App() {
                   <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                   <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="ml-auto" >
-                      <NavLink className='nav-links' to='/'>
-                        Home
-                      </NavLink>
-
-                      <NavLink className='nav-links' to='/about'>
-                        About
-                      </NavLink>
-
-                      <NavLink className='nav-links' to='/leagues'>
-                        Leagues
-                      </NavLink>
-
-                      <NavLink className='nav-links' to='/account'>
-                        Account
-                      </NavLink>
-
-                      <NavLink className='nav-links' to='/signin'>
-                        LogIn
-                      </NavLink>
-
-                      <NavLink className='nav-links' to='/signup'>
-                        SignUp
-                      </NavLink>
-
-
+                      <Navigation />
                     </Nav>
                   </Navbar.Collapse>
                 </Container>
@@ -84,15 +61,15 @@ function App() {
             <div className='App-body'>
               <Routes>
                 <Route path='/' element={<Landing />} />
-                <Route path='/home' element={<PrivateRoute />}>
-                  <Route path='/home' element={<Home />} />
-                </Route>
+                <Route path='/home' element={<Landing />} />
+
                 <Route path='/account' element={<PrivateRoute />}>
                   <Route path='/account' element={<Account />} />
                 </Route>
                 <Route path='/signin' element={<SignIn />} />
                 <Route path='/signup' element={<SignUp />} />
                 <Route path='/about' element={<About />} />
+                <Route path='/leagues' element={<Leagues />} />
                 <Route path='/news' element={<News />} />
                 <Route path="/404" element={<NotFound />} />
               </Routes>

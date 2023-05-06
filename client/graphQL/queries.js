@@ -8,7 +8,8 @@ const LOAD_LEAGUES = gql`
             logo
             countryName
         }
-}`;
+    }
+`;
 
 const LOAD_STANDINGS = gql`
     query StandingInformation($league: Int!, $season: Int!){
@@ -33,7 +34,6 @@ const LOAD_FIXTURES = gql`
     query FixtureByDateInformation($date: Date!){
         FixtureByDateInformation(matchDate: $date) {
             id,
-            venueName,
             venueName,
             matchDate,
             matchTime,
@@ -103,10 +103,22 @@ const LOAD_MANAGER_INFO = gql`
     }
 `;
 
+const LOAD_TOP_LEAGUES = gql`
+    query TopLeaguesInformation {
+        TopLeaguesInformation {
+            id
+            leagueName
+            logo
+            countryName
+        }
+    }
+`;
+
 export default {
     LOAD_LEAGUES,
     LOAD_STANDINGS,
     LOAD_FIXTURES,
-    LOAD_TOP_SCORER
+    LOAD_TOP_SCORER,
+    LOAD_TOP_LEAGUES
 
 };

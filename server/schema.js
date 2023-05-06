@@ -8,6 +8,13 @@ const typeDefs = gql`
     countryName: String
   }
 
+  type SingleLeague {
+    id: Int!
+    leagueName: String
+    logo: String
+    countryName: String
+  }
+
   type PlayersForFixture {
     id: Int!
     playerName: String
@@ -117,6 +124,7 @@ const typeDefs = gql`
 
   type Query {
     LeagueInformation: [League]
+    SingleLeagueInformation(id: Int!): SingleLeague
     TopLeaguesInformation: [League]
     StandingInformation(league: Int!, season: Int!): [TableStandings]
     FixtureByDateInformation(matchDate: Date!) : [FixtureByDate]

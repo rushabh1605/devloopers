@@ -11,6 +11,17 @@ const LOAD_LEAGUES = gql`
     }
 `;
 
+const LOAD_LEAGUE_BY_ID = gql`   
+    query SingleLeagueInformation($id: Int!) {
+        SingleLeagueInformation(id: $id) {
+            id
+            leagueName
+            logo
+            countryName
+        }
+}
+`;
+
 const LOAD_STANDINGS = gql`
     query StandingInformation($league: Int!, $season: Int!){
         StandingInformation(league: $league, season: $season) {
@@ -119,6 +130,7 @@ export default {
     LOAD_STANDINGS,
     LOAD_FIXTURES,
     LOAD_TOP_SCORER,
-    LOAD_TOP_LEAGUES
+    LOAD_TOP_LEAGUES,
+    LOAD_LEAGUE_BY_ID
 
 };
