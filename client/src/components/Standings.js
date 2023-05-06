@@ -10,7 +10,6 @@ import NotFoundPage from "./NotFound"
 const Standings = () => {
     let { leagueId } = useParams();
     leagueId = parseInt(leagueId)
-    console.log(leagueId)
 
     const { loading, error, data, refetch } = useQuery(
         queries.LOAD_STANDINGS, {
@@ -21,7 +20,7 @@ const Standings = () => {
             enabled: false
         }
     )
-    console.log(error)
+
 
     if(loading){
         return(
@@ -35,87 +34,86 @@ const Standings = () => {
         )
     }
 
-    console.log(data.StandingInformation)
-
     if(data){
         return(
-            <div class="row justify-content-center" id='home' >
-                <div class="col-md-10">
+            
+                <div class="col-md-12">
                     <div className="wsk-cp-matches" >
-                        <p className='teamname'>
-                        Logo, matches playes, matches won, matches draw, matches lost, points, home matchs, away matches, goals scored, goals conceded
-                        </p>
-                        {data.StandingInformation.map((x) => {
-                            // Logo, matches playes, matches won, matches draw, matches lost, points, home matchs, away matches, goals scored, goals conceded
-                            return (
-                                <div class="row matches m-10">
-                                    <div class="col-md-3  d-flex align-items-center mt-3 mt-md-0">
-                                        <div>
-                                            <p className='teamname'>{x.rank}</p>
-                                        </div>
+                       
+                                <div class="row matches">
+                                    <div className="col-md-1">
+                                        <p className="tablehead">#</p>
                                     </div>
-                                    <div class="col-md-1">
-                                        <div>
-                                            <img alt="Home team" class="img-fluid teamimg" src={x.logo} />
-                                        </div>
+                                    <div className="col-md-4 d-flex">
+                                        <p  className="tablehead ml-5" >Team</p>
+                                        {/* <img alt="Leaguelogo" class=" ml-auto img-fluid leagueimg" src={x.logo} /> 
+                                        <p>{x.leagueName}</p> */}
                                     </div>
-                                    <div class="col-md-2">
-                                        <div>
-                                            <p className='teamname'>{x.teamName}</p>
-                                        </div>
+                                    <div className="col-md-1">
+                                        <p className="tablehead">PL</p>
                                     </div>
-                                    <div class="col-md-2">
-                                        <div>
-                                            <p className='teamname'>{x.matchesPlayed}</p>
-                                        </div>
+                                    <div className="col-md-1">
+                                        <p className="tablehead">W</p>
                                     </div>
-                                    <div class="col-md-2">
-                                        <div>
-                                            <p className='teamname'>{x.matchesWon}</p>
-                                        </div>
+                                    <div className="col-md-1">
+                                        <p className="tablehead">D</p>
                                     </div>
-                                    <div class="col-md-2">
-                                        <div>
-                                            <p className='teamname'>{x.matchesDraw}</p>
-                                        </div>
+                                    <div className="col-md-1">
+                                        <p className="tablehead">L</p>
                                     </div>
-                                    <div class="col-md-2">
-                                        <div>
-                                            <p className='teamname'>{x.matchesLost}</p>
-                                        </div>
+                                    <div className="col-md-1">
+                                        <p className="tablehead">+/-</p>
                                     </div>
-                                    <div class="col-md-2">
-                                        <div>
-                                            <p className='teamname'>{x.points}</p>
-                                        </div>
+                                    <div className="col-md-1">
+                                        <p className="tablehead">GD</p>
                                     </div>
-                                    <div class="col-md-2">
-                                        <div>
-                                            <p className='teamname'>{x.homeMatches}</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div>
-                                            <p className='teamname'>{x.awayMatches}</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div>
-                                            <p className='teamname'>{x.goalsScored}</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div>
-                                            <p className='teamname'>{x.goalsConceded}</p>
-                                        </div>
+                                    <div className="col-md-1">
+                                        <p className="tablehead">PTS</p>
                                     </div>
                                 </div>
+                            {data.StandingInformation.map((x) => {
+                                  return (
+                                <div className="row matches">
+                                    <div className="col-md-1">
+                                        <p className="tablehead">{x.rank}</p>
+                                    </div>
+                                <div className="col-md-4 d-flex">
+                                   
+                                    <img alt="Leaguelogo" class="img-fluid leagueimg" src={x.logo} /> 
+                                    <p className=" tablehead ml-3">{x.teamName}</p>
+                                </div>
+                                <div className="col-md-1">
+                                    <p className="tablehead">{x.matchesPlayed}</p>
+                                </div>
+                                <div className="col-md-1">
+                                    <p className="tablehead">{x.matchesWon}</p>
+                                </div>
+                                <div className="col-md-1">
+                                    <p className="tablehead">{x.matchesDraw}</p>
+                                </div>
+                                <div className="col-md-1">
+                                    <p className="tablehead">{x.matchesLost}</p>
+                                </div>
+                                <div className="col-md-1">
+                                    <p className="tablehead">{x.goalsScored}- {x.goalsConceded}</p>
+                                </div>
+                                <div className="col-md-1">
+                                    <p className="tablehead">{x.goalsScored - x.goalsConceded}</p>
+                                </div>
+                                <div className="col-md-1">
+                                    <p className="tablehead">{x.points}</p>
+
+                                </div>
+                            </div>
+                               
                                             
                             )
+
                         })}
+                         </div>
                     </div>
-                </div>
-            </div>
+                
+          
         )
     }
 

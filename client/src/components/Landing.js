@@ -8,10 +8,12 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Accordion from 'react-bootstrap/Accordion';
+import  Search  from './Search';
 const moment = require('moment');
 
 function Landing() {
   // console.log(id)
+  const [searchTerm, setSearchTerm] = useState('Kevi');
   let now = new Date();
   let dateString = moment(now).format('YYYY-MM-DD');
   // console.log(dateString)
@@ -50,7 +52,40 @@ function Landing() {
         
       }
     );
+    const {loading:searchLoading, error:searchError, data:termData,refetch:searchRefetch} = useQuery(
+      queries.SEARCH_PLAYER_BY_NAME,
+      {
+        fetchPolicy: 'cache-and-network',
+        variables:{playerName:searchTerm},
+        manual: true,
+        refetchOnWindowFocus: false,
+        enabled: false
+        
+      }
+    );
+    useEffect(() => {
+        
+      async function fetchData() {
+        // console.log(searchTerm)
+        searchRefetch({ 
+          playerName: searchTerm}
+      );
+            
+         
+        
+      }
+      if (searchTerm) {
+        fetchData();
+      }
+    }, [searchTerm]);
   
+    const searchValue = async (value) => {
+      if(value.length === 4 ){
+        setSearchTerm(value);
+      }
+      
+    };
+
     const handleDate = (date) => {
       setDate(date)
       refetch({ 
@@ -59,10 +94,21 @@ function Landing() {
     }
    
 
-    if (data && LeagueData && AllLeagueData) {
+    if (data && LeagueData && AllLeagueData && termData) {
       const {FixtureByDateInformation} = data;
       const {TopLeaguesInformation} = LeagueData;
       const {LeagueInformation} = AllLeagueData;
+      const {SearchPlayerByName} = termData;
+      let searchFlag = false
+      if(SearchPlayerByName === null){
+        searchFlag = false
+        
+         
+      }
+      else{
+        searchFlag = true
+        
+      }
       return (
           <div class="row justify-content-center" id='home' >
              
@@ -168,35 +214,46 @@ function Landing() {
              </div>
             </div>
 
-            <div className='col-md-3'>
-
-            </div>
-            {/* <div class="col-md-3">
+            
+            <div class="col-md-3">
               
-                <div className="wsk-cp-product" key="1">
-                  <div className="wsk-cp-img">
-                        <img src="https://www.supastrikas.com/sites/default/files/team/badges/Supa_Strikas_0.png" alt="news" className="img-responsive" />
-                  </div>
-                  <div className="wsk-cp-text">
-                      <div className="title-product">
-                        <h1>News Title</h1>
-                      </div>
-                      <div className="description-prod">
-                        <p><strong>Description</strong> : Description for the news
-                            <br></br>
-                        </p>               
-                      </div>
-                                      
-                                      
-                                
-                  </div>
+                <div className="wsk-cp-matches">
+                <Search searchValue={searchValue} />
+                <br></br>
+                <br></br>
+                
+              
+                {searchFlag ? (
+                    SearchPlayerByName.map((x) =>{
+
+                      return(
+                        <div className='row'>
+                                <Link to={`/player/${x.playerID}`}>
+                                    <p className="tablehead text-left">{x.playerName}</p>
+                                </Link>
+                                <hr
+                                                                style={{
+                                                                background: "#D3D3D3",
+                                                                height: "2px",
+                                                                border: "none",
+                                                                opacity:0.1
+                                                                }}
+                                />
+                        </div>
+                      )
+                    })
+                  ) : (
+                    
+                        <div class="alert alert-danger" role="alert">
+                    No search data !! please enter 4 character to search player!
+                    </div>
+                   
+                  )}
+               
+
                 </div>
 
-            
-
-
-
-            </div> */}
+            </div>
                           
                             
            
@@ -207,17 +264,17 @@ function Landing() {
         )
           
     } 
-    else if (loading || LeagueLoading || AllLeagueLoading ) 
+    else if (loading || LeagueLoading || AllLeagueLoading || searchLoading ) 
     {
 
       return <div class="spinner-border m-5" role="status">
       
     </div>
     }
-    else if (error || LeagueError || AllLeagueError) 
+    else if (error || LeagueError || AllLeagueError || searchError) 
     {
       return <div class="alert alert-danger" role="alert">
-          {error.message || LeagueError.message || AllLeagueError.message}
+          {error.message || LeagueError.message || AllLeagueError.message || searchError.message}
           </div>;
     }
 
