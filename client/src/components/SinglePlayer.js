@@ -15,10 +15,6 @@ const SinglePlayer = () => {
    playerId = parseInt(playerId)
    console.log(playerId)
 
-
-
-
-
     return (
         <div>
             <p>Single player details {playerId}</p>

@@ -67,14 +67,18 @@ function App() {
                 <Route path='/account' element={<PrivateRoute />}>
                   <Route path='/account' element={<Account />} />
                 </Route>
+
+                <Route path='/leagues' element={<Leagues />} />
                 <Route path='/league/:leagueId' element={<SingleLeague />} />
                 <Route path='/league/:leagueId/standings' element={<Standings />} />
                 <Route path='/league/:leagueId/stats' element={<LeagueStats />} />
+
                 <Route path='/player/:playerId' element={<SinglePlayer />} />
+                
                 <Route path='/signin' element={<SignIn />} />
                 <Route path='/signup' element={<SignUp />} />
                 <Route path='/about' element={<About />} />
-                <Route path='/leagues' element={<Leagues />} />
+                
                 <Route path='/news' element={<News />} />
                 <Route path="/404" element={<NotFound />} />
               </Routes>
