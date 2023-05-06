@@ -74,8 +74,7 @@ const LOAD_TOP_SCORER = gql`
     query TopScorerByLeague($league: Int!, $season: Int!){
         TopScorerByLeague(league: $league, season: $season) {
             playerID,
-            firstName,
-            lastName,
+            playerName
             playerImage,
             teamName,
             teamLogo,
@@ -88,8 +87,7 @@ const LOAD_TOP_ASSISTS = gql`
     query TopScorerByLeague($league: Int!, $season: Int!){
         TopScorerByLeague(league: $league, season: $season) {
             playerID,
-            firstName,
-            lastName,
+            playerName
             playerImage,
             teamName,
             teamLogo,

@@ -71,8 +71,7 @@ const typeDefs = gql`
 
   type LeagueTopScorer {
     playerID: Int!
-    firstName: String
-    lastName: String
+    playerName: String
     playerImage: String
     teamName: String
     teamLogo: String
@@ -81,8 +80,7 @@ const typeDefs = gql`
 
   type LeagueTopAssists {
     playerID: Int!
-    firstName: String
-    lastName: String
+    playerName: String
     playerImage: String
     teamName: String
     teamLogo: String
@@ -138,7 +136,6 @@ const typeDefs = gql`
     substitutesTeam1: [PlayersForFixture]
     substitutesTeam2: [PlayersForFixture]
   }
-
    scalar Date
 
 

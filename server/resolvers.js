@@ -51,7 +51,8 @@ module.exports = {
 
     TopLeaguesInformation : async () => {
 
-      const desiredLeagues=[1, 2, 3, 4, 79, 45, 46, 9, 61, 135, 39, 140];    
+      const desiredLeagues=[39, 79, 61, 135, 140]; 
+      const nationalLeagues = [1, 2, 3, 4, 9, 45, 46];
       const { data } = await axios.get("https://api-football-v1.p.rapidapi.com/v3/leagues", config);
 
       let leagueList=[]; 
@@ -166,8 +167,7 @@ module.exports = {
       data.response.forEach(player => {
         let singlePlayer = {
           playerID: player.player.id,   
-          firstName: player.player.firstname,
-          lastName: player.player.lastname,
+          playerName: player.player.name,
           playerImage: player.player.photo,
           teamName: player.statistics[0].team.name,
           teamLogo: player.statistics[0].team.logo,
@@ -220,8 +220,7 @@ module.exports = {
       data.response.forEach(player => {
         let singlePlayer = {
           playerID: player.player.id,   
-          firstName: player.player.firstname,
-          lastName: player.player.lastname,
+          playerName: player.player.name,
           playerImage: player.player.photo,
           teamName: player.statistics[0].team.name,
           teamLogo: player.statistics[0].team.logo,
