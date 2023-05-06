@@ -23,14 +23,14 @@ const LOAD_LEAGUE_BY_ID = gql`
 `;
 
 const SEARCH_PLAYER_BY_NAME = gql`   
-    query SingleLeagueInformation($id: Int!) {
-        SingleLeagueInformation(id: $id) {
-            id
-            leagueName
-            logo
-            countryName
-        }
-}
+    query SearchPlayerByName( $playerName: String!) {
+        SearchPlayerByName(playerName: $playerName) {
+            playerID,
+            playerName
+            nationality
+        
+        } 
+    }
 `;
 
 const LOAD_STANDINGS = gql`
@@ -56,27 +56,16 @@ const LOAD_FIXTURES = gql`
     query FixtureByDateInformation($date: Date!){
         FixtureByDateInformation(matchDate: $date) {
             id,
-            venueName,
             matchDate,
             matchTime,
             matchTimeZone,
-            matchStatus,
-            league,
-            country,
-            leagueLogo,
-            season,
             homeTeamName,
             homeTeamID,
             homeTeamLogo,
             awayTeamName,
             awayTeamID,
             awayTeamLogo,
-            homeTeamGoals,
-            awayTeamGoals,
-            homeHalfTimeScore,
-            homeFullTimeScore,
-            awayHalfTimeScore,
-            awayFullTimeScore 
+
         }
     }
 `;
@@ -95,13 +84,16 @@ const LOAD_TOP_SCORER = gql`
 `;
 
 const LOAD_TOP_ASSISTS = gql`
-    query SearchPlayerByName($playerName: String!) {
-        SearchPlayerByName(playerName: $playerName) {
-            playerID,
+    query TopAssistsByLeague( $league: Int!, $season: Int!) {
+        TopAssistsByLeague(league: $league, season: $season) {
+            playerID
             playerName
-            nationality
-        
-        } 
+            playerImage
+            teamName
+            teamLogo
+            assists
+
+        }
     }
 `;
 
@@ -113,6 +105,7 @@ const LOAD_PLAYER_BY_ID_INFO = gql`
                 playerName
                 firstName
                 lastName
+                playerImage
                 age
                 Nationality
                 playerHeight

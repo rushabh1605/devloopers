@@ -45,30 +45,17 @@ const typeDefs = gql`
 
   type FixtureByDate {
     id: Int!
-    venueName: String
-    venueCity: String
     matchDate: Date
     matchTime: String
     matchTimeZone: String
-    matchStatus: String
-    league: String
-    country: String
-    leagueLogo: String
-    season: Int
     homeTeamName: String
     homeTeamID: String
     homeTeamLogo: String
     awayTeamName: String
     awayTeamID: String
     awayTeamLogo: String
-    homeTeamGoals: Int
-    awayTeamGoals: Int
-    homeHalfTimeScore: Int
-    homeFullTimeScore: Int
-    awayHalfTimeScore: Int
-    awayFullTimeScore: Int
   }
-
+ 
   type LeagueTopScorer {
     playerID: Int!
     playerName: String
@@ -157,6 +144,7 @@ const typeDefs = gql`
     ManagerInformation(team: Int!) : TeamManager 
     GetPlayerByID(playerId: Int!, season: Int!) : PlayerByID 
     SearchPlayerByName(playerName: String!) : [searchedPlayers]
+
   }
 `;
 

@@ -2,6 +2,7 @@ const moment = require('moment');
 const axios = require("axios");
 const redis = require("redis");
 const uuid = require("uuid");
+const { result } = require('lodash');
 
 
 const API_KEY = '3df39a1cbamsh63f95b9f20d493ep18c3d2jsnaa9a8f6d3181';
@@ -104,55 +105,104 @@ module.exports = {
 
 
     FixtureByDateInformation : async (_, args) => {
-      let fixtureList=[]; 
-      //console.log(typeof(args.matchDate));
+
+      let fixtureList=[]
+      const desiredLeagues =[39, 79, 61, 135, 140]; 
+
+
+      const runApiForLeague = async (leagueId) => {
       const parsedDate = moment.utc(args.matchDate);
       const formattedDate = parsedDate.format('YYYY-MM-DD');
 
-      //console.log(formattedDate)
-      const { data } = await axios.get
-            ("https://api-football-v1.p.rapidapi.com/v3/fixtures?date="+ formattedDate, config);
+      const { data } = await axios.get(`https://api-football-v1.p.rapidapi.com/v3/fixtures?league=${leagueId}&date=${formattedDate}&season=2022`, config);   
 
-      // console.log(data)
+      data.response.forEach(element => {
 
-      data.response.forEach(fixture => {
-        
-        const matchTimeUTC = new Date(parseInt(fixture.fixture.timestamp) * 1000);
+        const matchTimeUTC = new Date(parseInt(element.fixture.timestamp) * 1000);
         //console.log(matchTimeUTC)
         const matchTimeEST = new Date(matchTimeUTC.toLocaleString("en-US", {timeZone: "America/New_York"}));
         let matchTimeESTString = matchTimeEST.toLocaleTimeString("en-US", {hour12: false});
+        matchTimeESTString = matchTimeESTString.slice(0,5) + " ET"; 
+        let singleFixture= {
+          id: element.fixture.id,
+          matchDate : formattedDate,
+          matchTime : matchTimeESTString,
+          matchTimeZone : element.fixture.timezone,
+          homeTeamName : element.teams.home.name,
+          homeTeamID : element.teams.home.id,
+          homeTeamLogo: element.teams.home.logo,
+          awayTeamName : element.teams.away.name,
+          awayTeamID: element.teams.away.name,
+          awayTeamLogo: element.teams.away.logo,
+        } 
+        fixtureList.push(singleFixture);     
+      });      
+      };
 
-        matchTimeESTString = matchTimeESTString.slice(0,5) + " ET";     
+      const runApiForAllLeagues = async () => {
+        for (const leagueId of desiredLeagues) {
+          await runApiForLeague(leagueId);
+        }
+      };
+      await runApiForAllLeagues();
 
-        let singleFixture = {
-          id: fixture.fixture.id,
-          venueName: fixture.fixture.venue.name,
-          venueCity: fixture.fixture.venue.city,
-          matchDate: formattedDate,
-          matchTime: matchTimeESTString,
-          matchTimeZone: fixture.fixture.timezone,
-          matchStatus: fixture.fixture.status.long,
-          league: fixture.league.name,
-          country: fixture.league.country,
-          leagueLogo: fixture.league.logo,
-          season: fixture.league.season,
-          homeTeamName: fixture.teams.home.name,
-          homeTeamID: fixture.teams.home.id,
-          homeTeamLogo: fixture.teams.home.logo,
-          awayTeamName: fixture.teams.away.name,
-          awayTeamID: fixture.teams.away.id,
-          awayTeamLogo: fixture.teams.away.logo,
-          homeTeamGoals: fixture.goals.home,
-          awayTeamGoals: fixture.goals.away,
-          homeHalfTimeScore: fixture.score.halftime.home,
-          homeFullTimeScore: fixture.score.fulltime.home,
-          awayHalfTimeScore: fixture.score.halftime.away,
-          awayFullTimeScore: fixture.score.fulltime.away
-          // homeHalfTimeScore: fixture.score.halftime.home + " - "+ fixture.score.halftime.away ,
-          // homeFullTimeScore: fixture.score.fulltime.home + " - "+ fixture.score.fulltime.away ,
-        }          
-        fixtureList.push(singleFixture);       
-      });
+
+
+      // let fixtureList=[]; 
+      // const desiredLeagues=[39, 79, 61, 135, 140]; 
+      // //console.log(typeof(args.matchDate));
+      // const parsedDate = moment.utc(args.matchDate);
+      // const formattedDate = parsedDate.format('YYYY-MM-DD');
+
+      // //console.log(formattedDate)
+      // // const { data } = await axios.get
+      // //       ("https://api-football-v1.p.rapidapi.com/v3/fixtures?date="+ formattedDate, config);
+
+      // desiredLeagues.forEach(league => {
+      //   const { data } = await axios.get
+      //       ("https://api-football-v1.p.rapidapi.com/v3/fixtures?date="+ formattedDate, config);
+      // });
+      
+
+      // // console.log(data)
+      // data.response.forEach(fixture => {   
+      //   const topLeagues = data.response.filter(league => desiredLeagues.includes(league.league.id));
+      //   console.log(topLeagues)
+      // });
+
+        
+
+    
+
+      //   let singleFixture = {
+      //     id: fixture.fixture.id,
+      //     venueName: fixture.fixture.venue.name,
+      //     venueCity: fixture.fixture.venue.city,
+      //     matchDate: formattedDate,
+      //     matchTime: matchTimeESTString,
+      //     matchTimeZone: fixture.fixture.timezone,
+      //     matchStatus: fixture.fixture.status.long,
+      //     league: fixture.league.name,
+      //     country: fixture.league.country,
+      //     leagueLogo: fixture.league.logo,
+      //     season: fixture.league.season,
+      //     homeTeamName: fixture.teams.home.name,
+      //     homeTeamID: fixture.teams.home.id,
+      //     homeTeamLogo: fixture.teams.home.logo,
+      //     awayTeamName: fixture.teams.away.name,
+      //     awayTeamID: fixture.teams.away.id,
+      //     awayTeamLogo: fixture.teams.away.logo,
+      //     homeTeamGoals: fixture.goals.home,
+      //     awayTeamGoals: fixture.goals.away,
+      //     homeHalfTimeScore: fixture.score.halftime.home,
+      //     homeFullTimeScore: fixture.score.fulltime.home,
+      //     awayHalfTimeScore: fixture.score.halftime.away,
+      //     awayFullTimeScore: fixture.score.fulltime.away
+      //     // homeHalfTimeScore: fixture.score.halftime.home + " - "+ fixture.score.halftime.away ,
+      //     // homeFullTimeScore: fixture.score.fulltime.home + " - "+ fixture.score.fulltime.away ,
+      //   }          
+      //   fixtureList.push(singleFixture);       
+      // });
 
       //console.log(fixtureList.slice(0,2));            
       return fixtureList;
