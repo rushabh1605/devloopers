@@ -2,6 +2,7 @@ const moment = require('moment');
 const axios = require("axios");
 const redis = require("redis");
 const uuid = require("uuid");
+const { result } = require('lodash');
 
 
 const API_KEY = '3df39a1cbamsh63f95b9f20d493ep18c3d2jsnaa9a8f6d3181';
@@ -51,7 +52,8 @@ module.exports = {
 
     TopLeaguesInformation : async () => {
 
-      const desiredLeagues=[1, 2, 3, 4, 79, 45, 46, 9, 61, 135, 39, 140, ];    
+      const desiredLeagues=[39, 79, 61, 135, 140]; 
+      const nationalLeagues = [1, 2, 3, 4, 9, 45, 46];
       const { data } = await axios.get("https://api-football-v1.p.rapidapi.com/v3/leagues", config);
 
       let leagueList=[]; 
@@ -103,64 +105,104 @@ module.exports = {
 
 
     FixtureByDateInformation : async (_, args) => {
-      let fixtureList=[]; 
-      //console.log(typeof(args.matchDate));
+
+      let fixtureList=[]
+      const desiredLeagues =[39, 79, 61, 135, 140]; 
+
+
+      const runApiForLeague = async (leagueId) => {
       const parsedDate = moment.utc(args.matchDate);
       const formattedDate = parsedDate.format('YYYY-MM-DD');
 
-      //console.log(formattedDate)
-      const { data } = await axios.get
-            ("https://api-football-v1.p.rapidapi.com/v3/fixtures?date="+ formattedDate, config);
+      const { data } = await axios.get(`https://api-football-v1.p.rapidapi.com/v3/fixtures?league=${leagueId}&date=${formattedDate}&season=2022`, config);   
 
-      // console.log(data)
+      data.response.forEach(element => {
 
-      data.response.forEach(fixture => {
-        
-        const matchTimeUTC = new Date(parseInt(fixture.fixture.timestamp) * 1000);
+        const matchTimeUTC = new Date(parseInt(element.fixture.timestamp) * 1000);
         //console.log(matchTimeUTC)
         const matchTimeEST = new Date(matchTimeUTC.toLocaleString("en-US", {timeZone: "America/New_York"}));
         let matchTimeESTString = matchTimeEST.toLocaleTimeString("en-US", {hour12: false});
+        matchTimeESTString = matchTimeESTString.slice(0,5) + " ET"; 
+        let singleFixture= {
+          id: element.fixture.id,
+          matchDate : formattedDate,
+          matchTime : matchTimeESTString,
+          matchTimeZone : element.fixture.timezone,
+          homeTeamName : element.teams.home.name,
+          homeTeamID : element.teams.home.id,
+          homeTeamLogo: element.teams.home.logo,
+          awayTeamName : element.teams.away.name,
+          awayTeamID: element.teams.away.name,
+          awayTeamLogo: element.teams.away.logo,
+        } 
+        fixtureList.push(singleFixture);     
+      });      
+      };
+
+      const runApiForAllLeagues = async () => {
+        for (const leagueId of desiredLeagues) {
+          await runApiForLeague(leagueId);
+        }
+      };
+      await runApiForAllLeagues();
+
+
+
+      // let fixtureList=[]; 
+      // const desiredLeagues=[39, 79, 61, 135, 140]; 
+      // //console.log(typeof(args.matchDate));
+      // const parsedDate = moment.utc(args.matchDate);
+      // const formattedDate = parsedDate.format('YYYY-MM-DD');
+
+      // //console.log(formattedDate)
+      // // const { data } = await axios.get
+      // //       ("https://api-football-v1.p.rapidapi.com/v3/fixtures?date="+ formattedDate, config);
+
+      // desiredLeagues.forEach(league => {
+      //   const { data } = await axios.get
+      //       ("https://api-football-v1.p.rapidapi.com/v3/fixtures?date="+ formattedDate, config);
+      // });
+      
+
+      // // console.log(data)
+      // data.response.forEach(fixture => {   
+      //   const topLeagues = data.response.filter(league => desiredLeagues.includes(league.league.id));
+      //   console.log(topLeagues)
+      // });
+
         
 
-        // console.log("Match time in EST: ", matchTimeESTString.slice(0,5) + " ET");
-        matchTimeESTString = matchTimeESTString.slice(0,5) + " ET";
+    
 
-        // if(matchTimeESTString.indexOf(":")=== 2){
-        //   matchTimeESTString=matchTimeESTString.slice(0,5) + matchTimeESTString.slice(8,11) + " ET";
-        // }
-        // else
-        // {matchTimeESTString=matchTimeESTString.slice(0,4) +matchTimeESTString.slice(7,10) + " ET";}
-        
-
-        let singleFixture = {
-          id: fixture.fixture.id,
-          venueName: fixture.fixture.venue.name,
-          venueCity: fixture.fixture.venue.city,
-          matchDate: formattedDate,
-          matchTime: matchTimeESTString,
-          matchTimeZone: fixture.fixture.timezone,
-          matchStatus: fixture.fixture.status.long,
-          league: fixture.league.name,
-          country: fixture.league.country,
-          leagueLogo: fixture.league.logo,
-          season: fixture.league.season,
-          homeTeamName: fixture.teams.home.name,
-          homeTeamID: fixture.teams.home.id,
-          homeTeamLogo: fixture.teams.home.logo,
-          awayTeamName: fixture.teams.away.name,
-          awayTeamID: fixture.teams.away.id,
-          awayTeamLogo: fixture.teams.away.logo,
-          homeTeamGoals: fixture.goals.home,
-          awayTeamGoals: fixture.goals.away,
-          homeHalfTimeScore: fixture.score.halftime.home,
-          homeFullTimeScore: fixture.score.fulltime.home,
-          awayHalfTimeScore: fixture.score.halftime.away,
-          awayFullTimeScore: fixture.score.fulltime.away
-          // homeHalfTimeScore: fixture.score.halftime.home + " - "+ fixture.score.halftime.away ,
-          // homeFullTimeScore: fixture.score.fulltime.home + " - "+ fixture.score.fulltime.away ,
-        }          
-        fixtureList.push(singleFixture);       
-      });
+      //   let singleFixture = {
+      //     id: fixture.fixture.id,
+      //     venueName: fixture.fixture.venue.name,
+      //     venueCity: fixture.fixture.venue.city,
+      //     matchDate: formattedDate,
+      //     matchTime: matchTimeESTString,
+      //     matchTimeZone: fixture.fixture.timezone,
+      //     matchStatus: fixture.fixture.status.long,
+      //     league: fixture.league.name,
+      //     country: fixture.league.country,
+      //     leagueLogo: fixture.league.logo,
+      //     season: fixture.league.season,
+      //     homeTeamName: fixture.teams.home.name,
+      //     homeTeamID: fixture.teams.home.id,
+      //     homeTeamLogo: fixture.teams.home.logo,
+      //     awayTeamName: fixture.teams.away.name,
+      //     awayTeamID: fixture.teams.away.id,
+      //     awayTeamLogo: fixture.teams.away.logo,
+      //     homeTeamGoals: fixture.goals.home,
+      //     awayTeamGoals: fixture.goals.away,
+      //     homeHalfTimeScore: fixture.score.halftime.home,
+      //     homeFullTimeScore: fixture.score.fulltime.home,
+      //     awayHalfTimeScore: fixture.score.halftime.away,
+      //     awayFullTimeScore: fixture.score.fulltime.away
+      //     // homeHalfTimeScore: fixture.score.halftime.home + " - "+ fixture.score.halftime.away ,
+      //     // homeFullTimeScore: fixture.score.fulltime.home + " - "+ fixture.score.fulltime.away ,
+      //   }          
+      //   fixtureList.push(singleFixture);       
+      // });
 
       //console.log(fixtureList.slice(0,2));            
       return fixtureList;
@@ -172,29 +214,65 @@ module.exports = {
       const { data } = await axios.get
             ("https://api-football-v1.p.rapidapi.com/v3/players/topscorers?league="+ args.league +"&season="+args.season, config);
 
-      //console.log(data)
+      data.response.forEach(player => {
+        let singlePlayer = {
+          playerID: player.player.id,   
+          playerName: player.player.name,
+          playerImage: player.player.photo,
+          teamName: player.statistics[0].team.name,
+          teamLogo: player.statistics[0].team.logo,
+          goals:  player.statistics[0].goals.total,
+        }          
+        topScorersList.push(singlePlayer);       
+      });           
+      return topScorersList;
+    },
+
+    GetPlayerByID : async (_, args) => {
+      console.log(args.playerId); 
+      const {data} = await axios.get("https://api-football-v1.p.rapidapi.com/v3/players?id="+ args.playerId+"&season="+ args.season, config);
+      
+      let singlePlayerData = data.response[0];
+        let singlePlayer = {
+          playerID: singlePlayerData.player.id,
+          playerName: singlePlayerData.player.name,
+          firstName: singlePlayerData.player.firstname,
+          lastName: singlePlayerData.player.lastname,
+          age: singlePlayerData.player.age,
+          Nationality: singlePlayerData.player.nationality,
+          playerImage: singlePlayerData.player.photo,
+          playerHeight: singlePlayerData.player.height,
+          playerWeight: singlePlayerData.player.weight,
+          playerPosition: singlePlayerData.statistics[0].games.position,
+          playerRating: singlePlayerData.statistics[0].games.rating,
+          teamName: singlePlayerData.statistics[0].team.name,
+          leagueName : singlePlayerData.statistics[0].league.name,
+          season : singlePlayerData.statistics[0].league.season,
+          appearances: singlePlayerData.statistics[0].games.appearences,
+          lineUps: singlePlayerData.statistics[0].games.lineups,
+          goals:  singlePlayerData.statistics[0].goals.total,
+          assists: singlePlayerData.statistics[0].goals.assists,
+          penaltyScored: singlePlayerData.statistics[0].penalty.scored,
+          penaltyMissed: singlePlayerData.statistics[0].penalty.missed,
+          yellowCard: singlePlayerData.statistics[0].cards.yellow,
+          redCard: singlePlayerData.statistics[0].cards.red
+        }                
+      return singlePlayer;
+    },
+
+    TopAssistsByLeague : async (_, args) => {
+      let topScorersList=[]; 
+      const { data } = await axios.get
+            ("https://api-football-v1.p.rapidapi.com/v3/players/topassists?league="+ args.league +"&season="+ args.season, config);
 
       data.response.forEach(player => {
         let singlePlayer = {
           playerID: player.player.id,   
-          firstName: player.player.firstname,
-          lastName: player.player.lastname,
-          age: player.player.age,
-          Nationality: player.player.nationality,
+          playerName: player.player.name,
           playerImage: player.player.photo,
-          playerHeight: player.player.height,
-          playerWeight: player.player.weight,
-          playerPosition: player.statistics[0].games.position,
-          isInjured: player.player.injured,
           teamName: player.statistics[0].team.name,
           teamLogo: player.statistics[0].team.logo,
-          appearances: player.statistics[0].games.appearences,
-          lineUps: player.statistics[0].games.lineups,
-          season: player.statistics[0].league.season,
-          goals:  player.statistics[0].goals.total,
-          assists: player.statistics[0].goals.assists,
-          penaltyScored: player.statistics[0].penalty.scored,
-          penaltyMissed: player.statistics[0].penalty.missed
+          assists:  player.statistics[0].goals.assists,
         }          
         topScorersList.push(singlePlayer);       
       });
@@ -203,40 +281,26 @@ module.exports = {
       return topScorersList;
     },
 
-    TopAssistsByLeague : async (_, args) => {
-      let topScorersList=[]; 
+    SearchPlayerByName : async (_, args) => {
+      let searchedPlayers=[]; 
       const { data } = await axios.get
-            ("https://api-football-v1.p.rapidapi.com/v3/players/topassists?league="+ args.league +"&season="+ args.season, config);
+            ("https://api-football-v1.p.rapidapi.com/v2/players/search/"+ args.playerName, config);
 
-      //console.log(data)
+      let playersData= data.api.players;
 
-      data.response.forEach(player => {
+      //console.log(data.api.players)
+
+      playersData.forEach(player => {
         let singlePlayer = {
-          playerID: player.player.id,   
-          firstName: player.player.firstname,
-          lastName: player.player.lastname,
-          age: player.player.age,
-          Nationality: player.player.nationality,
-          playerImage: player.player.photo,
-          playerHeight: player.player.height,
-          playerWeight: player.player.weight,
-          playerPosition: player.statistics[0].games.position,
-          isInjured: player.player.injured,
-          teamName: player.statistics[0].team.name,
-          teamLogo: player.statistics[0].team.logo,
-          appearances: player.statistics[0].games.appearences,
-          lineUps: player.statistics[0].games.lineups,
-          season: player.statistics[0].league.season,
-          goals:  player.statistics[0].goals.total,
-          assists: player.statistics[0].goals.assists,
-          penaltyScored: player.statistics[0].penalty.scored,
-          penaltyMissed: player.statistics[0].penalty.missed
+          playerID: player.player_id,   
+          playerName: player.player_name,
+          nationality: player.nationality
         }          
-        topScorersList.push(singlePlayer);       
+        searchedPlayers.push(singlePlayer);       
       });
 
       //console.log(topScorersList.slice(0,2));            
-      return topScorersList;
+      return searchedPlayers;
     },
 
 

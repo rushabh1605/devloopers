@@ -12,3 +12,11 @@ Data function
 get player by ID is required
 
 
+4 characters req for search
+matches show uI
+single player
+search fix
+fixture by date
+
+
+
