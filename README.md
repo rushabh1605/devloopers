@@ -1,4 +1,4 @@
-<p align="center">Devloopers - SupaStrikers </p>
+< align="center">Devloopers - SupaStrikers </p>
 
 <p align="center">
 <img src="https://img.shields.io/badge/-React-eee?style=flat-square&logo=react" />
