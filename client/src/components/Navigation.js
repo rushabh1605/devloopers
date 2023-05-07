@@ -13,7 +13,7 @@ const NavigationAuth = () => {
   return (
     <nav className='navigation'>
       <h1 className='App-title'>
-        Welcome to the SupaStrika
+        Welcome to the SupaStrikers
       </h1>
       <Link className='nav-links' to='/'>
         Home
