@@ -7,13 +7,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useQuery } from "@apollo/client";
 import NotFoundPage from "./NotFound"
 import {Card} from 'react-bootstrap'
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 
 const LeagueStats = () => {
 
    let { leagueId } = useParams();
 
    leagueId = parseInt(leagueId)
-   console.log(leagueId)
 
    const {loading: LeagueLoading, error: LeagueError, data: LeagueData } = useQuery(
       queries.LOAD_LEAGUE_BY_ID, {
@@ -34,56 +35,144 @@ const LeagueStats = () => {
           enabled: false
       }
   )
+  const { loading:AssitLoading, error:AssitError, data:AssitData } = useQuery(
+    queries.LOAD_TOP_ASSISTS, {
+        fetchPolicy: 'cache-and-network',
+        variables:{league: leagueId, season: 2022},
+        manual: true,
+        refetchOnWindowFocus: false,
+        enabled: false
+    }
+)
+ 
 
-  console.log(data)
-
-  if(loading || LeagueLoading){
+  if(loading || LeagueLoading || AssitLoading){
    return(
        <div class="spinner-border m-5" role="status">
  
        </div>
       )
-   } else if (error || LeagueError) {
+   } else if (error || LeagueError || AssitError) {
       return(
          <NotFoundPage />
       )
    }
 
-   if(LeagueData & data){
+   if(LeagueData && data && AssitData){
+    
       return(
-          <div class="row justify-content-center" id='home' >
-              <div class="col-md-10">
-              <div className="wsk-cp-matches" >
-              </div>
-              <Link to={`\standings`}>
-                      <button> Top Scorers </button>
-                  </Link>
-                  <Link to={`\stats`}>
-                      <button> Top Assets </button>
-              </Link>
+        <div class="col-md-12">
+            
+               
+                                 <div className="row">
+                                
+                                    <div className="col-md-5">
+                                        
+                       
+                                                
+                                                    <div className="row mt-3  wsk-cp-matches">
+                                                        <h3 className="mt-2 mb-2"
+                                                        style={{
+                                                            color:"white",
+                                                            }}>
+                                                                Top Scorer</h3> <br></br> <br></br>
+                                                        {data.TopScorerByLeague.map((x) => {
+                                                        return (
+                                                        <div className="row">
+                                                            <div className="col-md-10 d-flex">
+                                                                <img alt="playerlogo" class=" img-fluid leagueimg" src={x.playerImage} />
+                                                                <div className="d-block">
+                                                                <Link to={`/player/${x.playerID}`}>
+                                                                    <p className="ml-2 tablehead">{x.playerName}</p>
+                                                                </Link>
 
-              <div class="col-md-3  d-flex align-items-center mt-3 mt-md-0">
-                  <div>
-                      <p className='teamname'>{LeagueData.SingleLeagueInformation.leagueName}</p>
-                  </div>
-              </div>
+                                                                <div className="d-flex">
+                                                                    
+                                                                    <img alt="Leaguelogo" class=" ml-2" width="20" height="20" src={x.teamLogo} /> 
+                                                                    <p className="ml-2 tablehead">{x.teamName}</p>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <div className="col-md-2 ml-auto">
+                                                                    <button className="btn-primary">{x.goals}</button>
+                                                            </div>
+                                                            </div>
+                                                            <hr
+                                                                style={{
+                                                                background: "#D3D3D3",
+                                                                height: "2px",
+                                                                border: "none",
+                                                                opacity:0.1
+                                                                }}
+                                                            />
+                                                        </div>
+                                                          )
+                                                        })}
+                                                    </div>
 
-              <div class="col-md-1">
-                  <div>
-                      <img alt="Home team"  src={LeagueData.SingleLeagueInformation.logo} />
-                  </div>
-              </div>
-              <br/><br/><br/><br/>
+                                                  
+                                              
+                                    </div>
+                                    <div className="col-md-2">
 
-              <div class="col-md-3  d-flex align-items-center mt-3 mt-md-0">
-                  <div>
-                      <p className='teamname'>{LeagueData.SingleLeagueInformation.countryName}</p>
-                  </div>
-              </div>
-              </div>
-          </div>
+</div>
+                                    <div className="col-md-5">
+                                        
+                       
+                                                
+                                                    <div className="row mt-3  wsk-cp-matches">
+                                                        <h3 className="mt-2 mb-2"
+                                                        style={{
+                                                            color:"white",
+                                                            }}>
+                                                                Assists</h3> <br></br> <br></br>
+                                                        {AssitData.TopAssistsByLeague.map((y) => {
+                                                        return (
+                                                        <div className="row">
+                                                            <div className="col-md-10 d-flex">
+                                                                <img alt="playerlogo" class=" img-fluid leagueimg" src={y.playerImage} />
+                                                                <div className="d-block">
+                                                                <Link to={`/player/${y.playerID}`}>
+                                                                    <p className="ml-2 tablehead">{y.playerName}</p>
+                                                                </Link>
 
-          // Nav Bar
+                                                                <div className="d-flex">
+                                                                    
+                                                                    <img alt="Leaguelogo" class=" ml-2" width="20" height="20" src={y.teamLogo} /> 
+                                                                    <p className="ml-2 tablehead">{y.teamName}</p>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <div className="col-md-2 ml-auto">
+                                                                    <button className="btn-primary">{y.assists}</button>
+                                                            </div>
+                                                            </div>
+                                                            <hr
+                                                                style={{
+                                                                background: "#D3D3D3",
+                                                                height: "2px",
+                                                                border: "none",
+                                                                opacity:0.1
+                                                                }}
+                                                            />
+                                                        </div>
+                                                          )
+                                                        })}
+                                                    </div>
+
+                                                    
+                                              
+                                    </div>
+
+                                 </div>
+                                
+                        
+            </div>
+        
+      
+         
+
+          
 
 
 
@@ -95,39 +184,39 @@ const LeagueStats = () => {
   }
 //Displaying data of top Scorers.
 
-  if(data){
-   return(
-       <div class="row justify-content-center" id='home' >
-           <div class="col-md-10">
-               <div className="wsk-cp-matches" >
-                   <p className='teamname'>
-                     Players
-                   </p>
+//   if(data){
+//    return(
+       
+//            <div class="col-md-12">
+//                <div className="wsk-cp-matches" >
+//                    <p className='teamname'>
+//                      Players
+//                    </p>
 
-                   {data.TopScorerByLeague.map((x) => {
-                       // Logo, matches playes, matches won, matches draw, matches lost, points, home matchs, away matches, goals scored, goals conceded
-                       return (
-                        <Card key={x.playerID} style={{ width: '18rem' }}>
-                           <Link to={`/player/${x.playerID}`}>
-                              <Card.Img variant="top" src={x.playerImage} />
-                           </Link>
+//                    {data.TopScorerByLeague.map((x) => {
+//                        // Logo, matches playes, matches won, matches draw, matches lost, points, home matchs, away matches, goals scored, goals conceded
+//                        return (
+//                         <Card key={x.playerID} style={{ width: '18rem' }}>
+//                            <Link to={`/player/${x.playerID}`}>
+//                               <Card.Img variant="top" src={x.playerImage} />
+//                            </Link>
                            
-                           <Card.Body>
-                           <Card.Title>{x.firstName} {x.lastName}</Card.Title>
-                           <Card.Text>
-                              Age: {x.age}
-                              <br />
-                              Position: {x.playerPosition}
-                           </Card.Text>
-                           </Card.Body>
-                        </Card>
-                       )
-                   })}
-               </div>
-           </div>
-       </div>
-   )
-}
+//                            <Card.Body>
+//                            <Card.Title>{x.firstName} {x.lastName}</Card.Title>
+//                            <Card.Text>
+//                               Age: {x.age}
+//                               <br />
+//                               Position: {x.playerPosition}
+//                            </Card.Text>
+//                            </Card.Body>
+//                         </Card>
+//                        )
+//                    })}
+//                </div>
+//            </div>
+       
+//    )
+// }
 
 
 
