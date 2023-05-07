@@ -147,6 +147,16 @@ const typeDefs = gql`
     nationality: String
   }
 
+  type Game {
+    id: Int!
+    fixtureID: Int!
+    userID: String
+    awayTeam: Int
+    homeTeam: Int
+    betField: Int
+    result: Int
+  }
+
    scalar Date
 
   type Query {
@@ -162,7 +172,8 @@ const typeDefs = gql`
     GetAllUsers: [User] 
     GetPlayerByID(playerId: Int!, season: Int!) : PlayerByID 
     SearchPlayerByName(playerName: String!) : [searchedPlayers]
-
+    getGameByfixtureId(fixtureID:Int!): Game
+    getGameById(GameID:Int!):Game
   }
 
   type Mutation
@@ -175,6 +186,22 @@ const typeDefs = gql`
     DeleteTeamFollowing(userId:ID!,teamID: ID!) : User
     DeletePlayerFollowing(userId:ID!,PlayerID: ID!) : User
   }
+  type Mutation {
+    createGame(fixtureID:Int!, userID:String!, awayTeam: Int!, homeTeam: Int!, betField: Int!): Game
+    updateGame(gameID:String! ): Game
+  }
+
+  type Mutation
+  {
+    CreateUser(username:String!,password:String!, dob:String, phone:String, email:String!, country:String, profilePic:String, bio:String, isPremium:Boolean): User
+    Login(username:String!,password:String!):Boolean
+    DeleteUser(id: ID!): [User]
+    AddTeamFollowing(userId:ID!,teamID: ID!) : User
+    AddPlayerFollowing(userId:ID!,PlayerID: ID!) : User
+    DeleteTeamFollowing(userId:ID!,teamID: ID!) : User
+    DeletePlayerFollowing(userId:ID!,PlayerID: ID!) : User
+  }
+
 `;
 
 module.exports = typeDefs;

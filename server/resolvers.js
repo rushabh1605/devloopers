@@ -146,67 +146,7 @@ module.exports = {
           await runApiForLeague(leagueId);
         }
       };
-      await runApiForAllLeagues();
-
-
-
-      // let fixtureList=[]; 
-      // const desiredLeagues=[39, 79, 61, 135, 140]; 
-      // //console.log(typeof(args.matchDate));
-      // const parsedDate = moment.utc(args.matchDate);
-      // const formattedDate = parsedDate.format('YYYY-MM-DD');
-
-      // //console.log(formattedDate)
-      // // const { data } = await axios.get
-      // //       ("https://api-football-v1.p.rapidapi.com/v3/fixtures?date="+ formattedDate, config);
-
-      // desiredLeagues.forEach(league => {
-      //   const { data } = await axios.get
-      //       ("https://api-football-v1.p.rapidapi.com/v3/fixtures?date="+ formattedDate, config);
-      // });
-      
-
-      // // console.log(data)
-      // data.response.forEach(fixture => {   
-      //   const topLeagues = data.response.filter(league => desiredLeagues.includes(league.league.id));
-      //   console.log(topLeagues)
-      // });
-
-        
-
-    
-
-      //   let singleFixture = {
-      //     id: fixture.fixture.id,
-      //     venueName: fixture.fixture.venue.name,
-      //     venueCity: fixture.fixture.venue.city,
-      //     matchDate: formattedDate,
-      //     matchTime: matchTimeESTString,
-      //     matchTimeZone: fixture.fixture.timezone,
-      //     matchStatus: fixture.fixture.status.long,
-      //     league: fixture.league.name,
-      //     country: fixture.league.country,
-      //     leagueLogo: fixture.league.logo,
-      //     season: fixture.league.season,
-      //     homeTeamName: fixture.teams.home.name,
-      //     homeTeamID: fixture.teams.home.id,
-      //     homeTeamLogo: fixture.teams.home.logo,
-      //     awayTeamName: fixture.teams.away.name,
-      //     awayTeamID: fixture.teams.away.id,
-      //     awayTeamLogo: fixture.teams.away.logo,
-      //     homeTeamGoals: fixture.goals.home,
-      //     awayTeamGoals: fixture.goals.away,
-      //     homeHalfTimeScore: fixture.score.halftime.home,
-      //     homeFullTimeScore: fixture.score.fulltime.home,
-      //     awayHalfTimeScore: fixture.score.halftime.away,
-      //     awayFullTimeScore: fixture.score.fulltime.away
-      //     // homeHalfTimeScore: fixture.score.halftime.home + " - "+ fixture.score.halftime.away ,
-      //     // homeFullTimeScore: fixture.score.fulltime.home + " - "+ fixture.score.fulltime.away ,
-      //   }          
-      //   fixtureList.push(singleFixture);       
-      // });
-
-      //console.log(fixtureList.slice(0,2));            
+      await runApiForAllLeagues();           
       return fixtureList;
     },
 
@@ -233,6 +173,10 @@ module.exports = {
       console.log(args.playerId); 
       const {data} = await axios.get("https://api-football-v1.p.rapidapi.com/v3/players?id="+ args.playerId+"&season="+ args.season, config);
       
+      if(data.response.length===0){
+        return null;
+      }
+
       let singlePlayerData = data.response[0];
         let singlePlayer = {
           playerID: singlePlayerData.player.id,
@@ -435,5 +379,31 @@ module.exports = {
             }
     },
   },
+
+,
+
+Mutation:{
+  createGame: async (_, args) => {
+      const game = await user.createGame(args.fixtureID, args.userID, args.awayTeam, args.homeTeam, args.betField);
+      if(game.errors){
+        return oneUser.errors[0].message
+      }
+      else{
+        return game;
+      }       
+  },
+
+
+  updateGame: async (_, args) => {     
+    const updatedGame = await user.updateGame(args.fixtureID);
+    if(updatedGame.errors){
+      return updatedGame.errors[0].message
+    }
+    else{
+      return (updatedGame);
+    }       
+  },
+  
+},
 
 }

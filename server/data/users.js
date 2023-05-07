@@ -1,9 +1,12 @@
 const mongoCollections = require('../config/mongoCollections');
 const validation = require('../helpers');
+const axios = require("axios");
 const users = mongoCollections.users;
+const games = mongoCollections.games;
 const {ObjectId} = require('mongodb');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+c
 
 const getAllUsers = async () => {
     
@@ -170,6 +173,90 @@ const deletePlayerFollowing = async (userId,playerID) => {
   return data;
 };
 
+
+const createGame = async (fixtureID, userID, awayTeam, homeTeam, betField) => {
+ 
+  const gamescollection = await games();
+  let creategame = {
+    fixtureID:fixtureID,
+    userID:userID,
+    awayTeam:awayTeam,
+    homeTeam:homeTeam,
+    betField:betField,
+    result:[]
+  };
+
+  const insert_game = await gamesCollection.insertOne(createuser);
+  if(!insert_game.insertedId || !insert_game.acknowledged) throw {error:'Unable to bet on the game', statusCode:500};
+  const created = insert_game.insertedId.toString();
+  const data = await getGameById(created);
+  
+  return data;
+
+};
+
+const getGameById = async (gameId) => {
+  if(validation.valid_id(gameId,"ID"));
+  userId = userId.trim();
+  const gamesCollection = await games();
+  const game_data = await gamesCollection.findOne({_id: new ObjectId(gameId)});
+  if(game_data === null) throw {error:'No game found with '+userId, statusCode:404};
+
+  return game_data; 
+};
+
+const getGameByfixtureId = async (fixtureID) => {
+  if(validation.valid_id(gameId,"ID"));
+  userId = userId.trim();
+  const gamesCollection = await games();
+  const game_data = await gamesCollection.findOne({fixtureID: fixtureID});
+  if(game_data === null) throw {error:'No game found with '+userId, statusCode:404};
+
+  return game_data; 
+};
+
+const updateGame = async (fixtureID) => {
+  if(validation.valid_id(fixtureID,"ID"));
+  fixtureID = fixtureID.trim();
+
+  const API_KEY = '3df39a1cbamsh63f95b9f20d493ep18c3d2jsnaa9a8f6d3181';
+  const API_HOST = 'api-football-v1.p.rapidapi.com';
+  const config = {
+    headers:{
+      'X-RapidAPI-Host' : API_HOST,
+      'X-RapidAPI-Key' : API_KEY
+    }
+  };
+
+  const { data } = await axios.get("https://api-football-v1.p.rapidapi.com/v3/fixtures"+ fixtureID, config);   
+
+  if(data.response[0].fixture.status.short !== 'FT'){
+    throw {error:'Cannot Add the team to following listThe Match is not declared yet, the result will be declare once the match is over! ', statusCode:200}
+
+  }
+
+  let gameResult = []
+
+  if(data.response[0].score.fulltime.home > data.response[0].score.fulltime.away){
+    gameResult.push(data.response[0].teams.home.id);
+  }  
+  else if(data.response[0].score.fulltime.home < data.response[0].score.fulltime.away){
+    gameResult.push(data.response[0].teams.away.id);
+  } 
+  else
+  {
+    gameResult.push(data.response[0].teams.home.id);
+    gameResult.push(data.response[0].teams.away.id);
+  }
+  
+  const gamesCollection = await games(); 
+  const game_data = await gamesCollection.updateOne({fixtureID: fixtureID}, { $push: { result: gameResult}});
+  
+  if (game_data.modifiedCount === 0) throw {error:'Cannot Update Result ', statusCode:500};
+
+  return game_data; 
+};
+
   module.exports = {
     getAllUsers,
     getUserById,
@@ -179,5 +266,9 @@ const deletePlayerFollowing = async (userId,playerID) => {
     addTeamFollowing,
     addPlayerFollowing,
     deleteTeamFollowing,
-    deletePlayerFollowing
+    deletePlayerFollowing,
+    createGame,
+    getGameById,
+    getGameByfixtureId,
+    updateGame
   };
