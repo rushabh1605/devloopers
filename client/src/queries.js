@@ -233,5 +233,8 @@ export default {
     CREATE_USER,
     GET_ALL_USER,
     GET_USER_BY_ID,
-    LOGIN
+    LOGIN,
+    SEARCH_PLAYER_BY_NAME,
+    LOAD_PLAYER_BY_ID_INFO
+
 };
