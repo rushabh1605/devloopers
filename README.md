@@ -1,8 +1,8 @@
-<h3 align="center">Devloopers - SupaStrikers</h3>
+<h1 align="center">Devloopers - SupaStrikers</h1>
 
 <p align="center">
 <img src="https://img.shields.io/badge/-React-eee?style=flat-square&logo=react" />
-<img src="https://img.shields.io/badge/-NodeJS-eee?style=flat-square&logo=node.js" />
+<img src="https://img.shields.io/badge/-GraphQL-eee?style=flat-square&logo=graphql" />
 <img src="https://img.shields.io/badge/-MongoDB-eee?style=flat-square&logo=mongodb" />
 </p>
 
