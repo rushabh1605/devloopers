@@ -20,8 +20,8 @@ About to be added
 * [Material UI](https://mui.com/)
 * [Redis](https://redis.com)
 * [mongoDB](https://www.mongodb.com)
-* [Docker](https://socket.io/)
-* [Azure](https://cloud.google.com/)
+* [Docker]http://docker.com)
+* [Azure](https://azure.microsoft.com/en-us)
 
 ## Set up
 
