@@ -1,7 +1,6 @@
 <h1 align="center">Devloopers- SupaStrikers
 <p align="center">
 <img src="https://img.shields.io/badge/-React-eee?style=flat-square&logo=react" />
-<img src="https://img.shields.io/badge/-TypeScript-eee?style=flat-square&logo=typescript" />
 <img src="https://img.shields.io/badge/-NodeJS-eee?style=flat-square&logo=node.js" />
 <img src="https://img.shields.io/badge/-MongoDB-eee?style=flat-square&logo=mongodb" />
 </p>
@@ -18,7 +17,7 @@ About to be added
 * [GraphQL](https://graphql.org)
 * [Material UI](https://mui.com/)
 * [Redis](https://redis.com)
-* [monoDB](https://www.mongodb.com)
+* [mongoDB](https://www.mongodb.com)
 * [Docker](https://socket.io/)
 * [Azure](https://cloud.google.com/)
 
