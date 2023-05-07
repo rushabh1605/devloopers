@@ -6,7 +6,7 @@ const games = mongoCollections.games;
 const {ObjectId} = require('mongodb');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-c
+
 
 const getAllUsers = async () => {
     
@@ -16,7 +16,8 @@ const getAllUsers = async () => {
     
     return users_data;
   };
-const getUserById = async (userId) => {
+
+ const getUserById = async (userId) => {
     if(validation.valid_id(userId,"ID"));
     userId = userId.trim();
     const userscollection = await users();
@@ -175,17 +176,17 @@ const deletePlayerFollowing = async (userId,playerID) => {
 
 const createGame = async (fixtureID, userID, awayTeam, homeTeam, betField) => {
  
-  const gamescollection = await games();
+  const gamesCollection = await games();
   let creategame = {
     fixtureID:fixtureID,
     userID:userID,
     awayTeam:awayTeam,
     homeTeam:homeTeam,
     betField:betField,
-    result:[]
+    result:null
   };
 
-  const insert_game = await gamesCollection.insertOne(createuser);
+  const insert_game = await gamesCollection.insertOne(creategame);
   if(!insert_game.insertedId || !insert_game.acknowledged) throw {error:'Unable to bet on the game', statusCode:500};
   const created = insert_game.insertedId.toString();
   const data = await getGameById(created);
@@ -194,22 +195,21 @@ const createGame = async (fixtureID, userID, awayTeam, homeTeam, betField) => {
 
 };
 
-const getGameById = async (gameId) => {
-  if(validation.valid_id(gameId,"ID"));
-  userId = userId.trim();
+const getGameByUserId = async (userId) => {
+ 
   const gamesCollection = await games();
-  const game_data = await gamesCollection.findOne({_id: new ObjectId(gameId)});
+  const game_data = await gamesCollection.find({userID: userId}).toArray();;
   if(game_data === null) throw {error:'No game found with '+userId, statusCode:404};
-
+  
   return game_data; 
 };
 
 const getGameByfixtureId = async (fixtureID) => {
-  if(validation.valid_id(gameId,"ID"));
-  userId = userId.trim();
+  if(validation.valid_id(fixtureID,"ID"));
+  fixtureID = fixtureID.trim();
   const gamesCollection = await games();
   const game_data = await gamesCollection.findOne({fixtureID: fixtureID});
-  if(game_data === null) throw {error:'No game found with '+userId, statusCode:404};
+  if(game_data === null) throw {error:'No game found with '+fixtureID, statusCode:404};
 
   return game_data; 
 };
@@ -230,22 +230,20 @@ const updateGame = async (fixtureID) => {
   const { data } = await axios.get("https://api-football-v1.p.rapidapi.com/v3/fixtures"+ fixtureID, config);   
 
   if(data.response[0].fixture.status.short !== 'FT'){
-    throw {error:'Cannot Add the team to following listThe Match is not declared yet, the result will be declare once the match is over! ', statusCode:200}
+    throw {error:'Cannot Add the team to following list. The Match is not declared yet, the result will be declare once the match is over! ', statusCode:200}
 
   }
 
-  let gameResult = []
+  let gameResult;
 
   if(data.response[0].score.fulltime.home > data.response[0].score.fulltime.away){
-    gameResult.push(data.response[0].teams.home.id);
+    gameResult = 1;
   }  
   else if(data.response[0].score.fulltime.home < data.response[0].score.fulltime.away){
-    gameResult.push(data.response[0].teams.away.id);
+    gameResult = 2;
   } 
-  else
-  {
-    gameResult.push(data.response[0].teams.home.id);
-    gameResult.push(data.response[0].teams.away.id);
+  else{
+    gameResult= 0;
   }
   
   const gamesCollection = await games(); 
@@ -253,6 +251,25 @@ const updateGame = async (fixtureID) => {
   
   if (game_data.modifiedCount === 0) throw {error:'Cannot Update Result ', statusCode:500};
 
+  const userData = await getUserById(userId);
+  if(gameResult===0){
+    userData.coins = userData.coins + 50;
+  }
+  else if(gameResult===1){
+   if(data.response[0].score.fulltime.home===game_data.betField){
+      userData.coins = userData.coins + 100;
+    }
+  }
+  else if(gameResult===2){
+    if(data.response[0].score.fulltime.away===game_data.betField){
+       userData.coins = userData.coins + 100;
+     }
+   }
+
+  if(userData.coins>200){
+    userData.isPremium=true;
+  }
+  
   return game_data; 
 };
 
@@ -267,7 +284,8 @@ const updateGame = async (fixtureID) => {
     deleteTeamFollowing,
     deletePlayerFollowing,
     createGame,
-    getGameById,
+    getGameByUserId,
     getGameByfixtureId,
-    updateGame
+    updateGame,
+    getGameByUserId
   };
