@@ -3,7 +3,8 @@ const axios = require("axios");
 const redis = require("redis");
 const uuid = require("uuid");
 const { result } = require('lodash');
-
+const data = require("./data");
+const user = data.users;
 
 const API_KEY = '3df39a1cbamsh63f95b9f20d493ep18c3d2jsnaa9a8f6d3181';
 const API_HOST = 'api-football-v1.p.rapidapi.com';
@@ -132,7 +133,7 @@ module.exports = {
           homeTeamID : element.teams.home.id,
           homeTeamLogo: element.teams.home.logo,
           awayTeamName : element.teams.away.name,
-          awayTeamID: element.teams.away.name,
+          awayTeamID: element.teams.away.id,
           awayTeamLogo: element.teams.away.logo,
         } 
         fixtureList.push(singleFixture);     
@@ -231,19 +232,16 @@ module.exports = {
             ("https://api-football-v1.p.rapidapi.com/v2/players/search/"+ args.playerName, config);
 
       let playersData= data.api.players;
-
-      //console.log(data.api.players)
-
       playersData.forEach(player => {
         let singlePlayer = {
           playerID: player.player_id,   
           playerName: player.player_name,
           nationality: player.nationality
         }          
-        searchedPlayers.push(singlePlayer);       
+        searchedPlayers.push(singlePlayer); 
       });
-
-      //console.log(topScorersList.slice(0,2));            
+      searchedPlayers.sort((a, b) => a.playerID - b.playerID);
+      console.log(searchedPlayers);           
       return searchedPlayers;
     },
 
@@ -267,13 +265,23 @@ module.exports = {
         }            
       return singleManager;
     },
+
+
+    getGameByUserId : async (_, args) => {
+      const gameData = await user.getGameByUserId(args.id);
+      if(gameData.errors){    
+          return gameData.errors[0].message
+      }
+      return gameData
+  },
 },
 
 Mutation:{
   createGame: async (_, args) => {
+
       const game = await user.createGame(args.fixtureID, args.userID, args.awayTeam, args.homeTeam, args.betField);
       if(game.errors){
-        return oneUser.errors[0].message
+        return game.errors[0].message
       }
       else{
         return game;

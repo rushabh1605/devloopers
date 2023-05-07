@@ -132,7 +132,7 @@ const typeDefs = gql`
   }
 
   type Game {
-    id: Int!
+    _id: String!
     fixtureID: Int!
     userID: String
     awayTeam: Int
@@ -156,11 +156,12 @@ const typeDefs = gql`
     SearchPlayerByName(playerName: String!) : [searchedPlayers]
     getGameByfixtureId(fixtureID:Int!): Game
     getGameById(GameID:Int!):Game
+    getGameByUserId(id:String!):[Game]
   }
 
   type Mutation {
     createGame(fixtureID:Int!, userID:String!, awayTeam: Int!, homeTeam: Int!, betField: Int!): Game
-    updateGame(gameID:String! ): Game
+    updateGame(gameID:String! ): Game 
   }
 
 `;
