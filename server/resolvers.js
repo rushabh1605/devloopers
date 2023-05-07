@@ -240,8 +240,7 @@ module.exports = {
         }          
         searchedPlayers.push(singlePlayer); 
       });
-      searchedPlayers.sort((a, b) => a.playerID - b.playerID);
-      console.log(searchedPlayers);           
+      searchedPlayers.sort((a, b) => a.playerID - b.playerID);          
       return searchedPlayers;
     },
 
@@ -265,6 +264,32 @@ module.exports = {
         }            
       return singleManager;
     },
+
+
+    TeamInformation : async (_, args) => {
+      console.log("heyyyyy")
+      console.log(args)
+      console.log(args.teamID)
+ 
+      const { data } = await axios.get("https://api-football-v1.p.rapidapi.com/v3/teams?id="+ args.teamID, config);
+
+      let responseData= data.response[0];
+      let singleTeam={
+        teamID : responseData.team.id,
+        teamName: responseData.team.name,
+        teamLogo: responseData.team.logo,
+        founded: responseData.team.founded,
+        teamCode: responseData.team.code,
+        countryName: responseData.team.country,
+        venueName: responseData.venue.name,
+        address: responseData.venue.address,
+        city: responseData.venue.city,
+        capacity: responseData.venue.capacity,
+        venueImage: responseData.venue.image
+      }  
+      console.log(singleTeam);          
+    return singleTeam;
+  },
 
 
     getGameByUserId : async (_, args) => {

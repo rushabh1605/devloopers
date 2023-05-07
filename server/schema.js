@@ -125,6 +125,20 @@ const typeDefs = gql`
     substitutesTeam2: [PlayersForFixture]
   }
 
+  type TeamInfo {
+    teamID : Int
+    teamName: String
+    teamLogo: String
+    founded: Int
+    teamCode: String
+    countryName: String
+    venueName: String
+    address: String
+    city: String
+    capacity: Int
+    venueImage: String
+  }
+
   type searchedPlayers {
     playerID: Int!
     playerName: String
@@ -157,6 +171,7 @@ const typeDefs = gql`
     getGameByfixtureId(fixtureID:Int!): Game
     getGameById(GameID:Int!):Game
     getGameByUserId(id:String!):[Game]
+    TeamInformation(teamID: Int!): TeamInfo
   }
 
   type Mutation {
