@@ -20,3 +20,5 @@ fixture by date
 
 
 
+validations to be done in server/client
+xss attacks 

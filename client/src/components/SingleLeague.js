@@ -17,54 +17,54 @@ const SingleLeague = () => {
 
     leagueId = parseInt(leagueId)
 
-    const {loading, error, data, refetch } = useQuery(
+    const { loading, error, data, refetch } = useQuery(
         queries.LOAD_LEAGUE_BY_ID, {
-                fetchPolicy: 'cache-and-network',
-                variables:{id: leagueId},
-                manual: true,
-                refetchOnWindowFocus: false,
-                enabled: false
-            }
+        fetchPolicy: 'cache-and-network',
+        variables: { id: leagueId },
+        manual: true,
+        refetchOnWindowFocus: false,
+        enabled: false
+    }
     )
 
- 
 
-    if(loading){
-        return(
+
+    if (loading) {
+        return (
             <div class="spinner-border m-5" role="status">
-      
+
             </div>
         )
     } else if (error) {
-        return(
+        return (
             <NotFoundPage />
         )
     }
 
-    if(data){
-        const {SingleLeagueInformation} = data
-        return(
+    if (data) {
+        const { SingleLeagueInformation } = data
+        return (
             <div class="row justify-content-center" id='home' >
                 <div className="row col-md-10 mt-3">
                     <div className="wsk-cp-leagues" >
                         <div className="row d-flex">
-                            
-                                <div className="col-md-3 d-flex">
-                                    <img alt="SingleLeaguelogo" class="img-fluid SingleLeaguelogo" src={SingleLeagueInformation.logo} />
-                                
+
+                            <div className="col-md-3 d-flex">
+                                <img alt="SingleLeaguelogo" class="img-fluid SingleLeaguelogo" src={SingleLeagueInformation.logo} />
+
                                 <div className="ml-2 d-block">
                                     <p className='teamname mr-4 mb-0'>{SingleLeagueInformation.countryName}</p>
                                     <p className='singleLeagueh1'>{SingleLeagueInformation.leagueName}</p>
                                 </div>
-                                </div>
-                            
+                            </div>
+
                         </div>
-                        <Tabs defaultActiveKey="second">
-                            <Tab eventKey="first" title="Stats">
-                                <LeagueStats></LeagueStats>
-                            </Tab>
-                            <Tab eventKey="second" title="Standings">
+                        <Tabs defaultActiveKey="first">
+                            <Tab eventKey="first" title="Standings">
                                 <Standings></Standings>
+                            </Tab>
+                            <Tab eventKey="second" title="Stats">
+                                <LeagueStats></LeagueStats>
                             </Tab>
 
                         </Tabs>
@@ -80,7 +80,7 @@ const SingleLeague = () => {
     // if(data){
     //     return(
     //         <div class="row justify-content-center" id='home' >
-               
+
     //             <div className="wsk-cp-matches" >
     //             </div>
     //             <Link to={`\standings`}>
@@ -116,11 +116,11 @@ const SingleLeague = () => {
 
 
 
-            
+
     //     )
     // }
 
- 
+
 }
 
 export default SingleLeague

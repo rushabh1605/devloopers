@@ -1,6 +1,6 @@
 import React from 'react';
 import '../App.css';
-import { NavLink, BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { NavLink, BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Account from './Account';
 import Home from './Home';
 import Landing from './Landing';
@@ -48,7 +48,11 @@ function App() {
               <Navbar collapseOnSelect expand="lg" className='bg' >
                 <Container>
 
-                  <Navbar.Brand ><span class="navbar-brand">SUPASTRIKERS</span></Navbar.Brand>
+                  <Navbar.Brand>
+                    <Link to="/">
+                      <span className="navbar-brand">SUPASTRIKERS</span>
+                    </Link>
+                  </Navbar.Brand>
                   <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                   <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="ml-auto" >
