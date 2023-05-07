@@ -13,6 +13,15 @@ About to be added
 
 [http://github.com/rushabh1605/devloopers](http://github.com/rushabh1605/devloopers)
 
+## Tech Stack 💻
+* [React](https://reactjs.org/)
+* [GraphQL](https://graphql.org)
+* [Material UI](https://mui.com/)
+* [Redis](https://redis.com)
+* [monoDB](https://www.mongodb.com)
+* [Docker](https://socket.io/)
+* [Azure](https://cloud.google.com/)
+
 # Set up
 
 1. Navigate to server
