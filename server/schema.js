@@ -131,6 +131,16 @@ const typeDefs = gql`
     nationality: String
   }
 
+  type Game {
+    id: Int!
+    fixtureID: Int
+    userID: String
+    awayTeam: Int
+    homeTeam: Int
+    betField: Int
+    result: []
+  }
+
    scalar Date
 
   type Query {
@@ -144,7 +154,13 @@ const typeDefs = gql`
     ManagerInformation(team: Int!) : TeamManager 
     GetPlayerByID(playerId: Int!, season: Int!) : PlayerByID 
     SearchPlayerByName(playerName: String!) : [searchedPlayers]
+    GameInformation : Game
 
+  }
+   
+  type Mutation{
+    createGame(fixtureID, userID, awayTeam, homeTeam, betField ): Game
+    updateGame(gameID, result ): Game
   }
 `;
 
