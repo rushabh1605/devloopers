@@ -1,4 +1,4 @@
-<h1 align="center">Devloopers - SupaStrikers</h1>
+# <align="center">Devloopers - SupaStrikers</h1>
 
 <p align="center">
 <img src="https://img.shields.io/badge/-React-eee?style=flat-square&logo=react" />
@@ -10,7 +10,7 @@ _NOTE: This project is part of CS-554 coursework at Stevens for Spring 2023_
 
 About to be added
 
-# Github Repo
+## Github Repo
 
 [http://github.com/rushabh1605/devloopers](http://github.com/rushabh1605/devloopers)
 
@@ -23,7 +23,7 @@ About to be added
 * [Docker](https://socket.io/)
 * [Azure](https://cloud.google.com/)
 
-# Set up
+## Set up
 
 1. Navigate to server
 
@@ -62,12 +62,12 @@ npm start
 
 
 
-# Video Presentation
+## Video Presentation
 
 - [YouTube](link to be added)
 - [GoogleDrive](link to be added)
 
-# members
+## Members
 
 - [deepali04](https://github.com/deepali04) Deepali Nagwade
 - [Kajol-Shah](https://github.com/Kajol-Shah) Kajol Shah
