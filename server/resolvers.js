@@ -271,31 +271,26 @@ module.exports = {
 
 Mutation:{
   createGame: async (_, args) => {
-      
-          const game = await user.createGame(args.fixtureID, args.userID, args.awayTeam, args.homeTeam, args.betField);
-          if(game.errors){
-                  return oneUser.errors[0].message
-          }
-          else{
-              return (game);
-          }       
+      const game = await user.createGame(args.fixtureID, args.userID, args.awayTeam, args.homeTeam, args.betField);
+      if(game.errors){
+        return oneUser.errors[0].message
+      }
+      else{
+        return game;
+      }       
   },
 
 
-  updateGame: async (_, args) => {
-      
+  updateGame: async (_, args) => {     
     const updatedGame = await user.updateGame(args.fixtureID);
     if(updatedGame.errors){
-            return updatedGame.errors[0].message
+      return updatedGame.errors[0].message
     }
     else{
-        return (updatedGame);
+      return (updatedGame);
     }       
-},
+  },
   
 },
-
-
-
 
 }

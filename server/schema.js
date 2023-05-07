@@ -133,12 +133,12 @@ const typeDefs = gql`
 
   type Game {
     id: Int!
-    fixtureID: Int
+    fixtureID: Int!
     userID: String
     awayTeam: Int
     homeTeam: Int
     betField: Int
-    result: []
+    result: Int
   }
 
    scalar Date
@@ -154,14 +154,15 @@ const typeDefs = gql`
     ManagerInformation(team: Int!) : TeamManager 
     GetPlayerByID(playerId: Int!, season: Int!) : PlayerByID 
     SearchPlayerByName(playerName: String!) : [searchedPlayers]
-    GameInformation : Game
+    getGameByfixtureId(fixtureID:Int!): Game
+    getGameById(GameID:Int!):Game
+  }
 
+  type Mutation {
+    createGame(fixtureID:Int!, userID:String!, awayTeam: Int!, homeTeam: Int!, betField: Int!): Game
+    updateGame(gameID:String! ): Game
   }
-   
-  type Mutation{
-    createGame(fixtureID, userID, awayTeam, homeTeam, betField ): Game
-    updateGame(gameID, result ): Game
-  }
+
 `;
 
 module.exports = typeDefs;
