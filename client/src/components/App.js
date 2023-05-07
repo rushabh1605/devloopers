@@ -78,7 +78,7 @@ function App() {
                 <Route path='/signin' element={<SignIn />} />
                 <Route path='/signup' element={<SignUp />} />
                 <Route path='/about' element={<About />} />
-                
+                <Route path='/leagues' element={<Leagues />} />
                 <Route path='/news' element={<News />} />
                 <Route path="/404" element={<NotFound />} />
               </Routes>

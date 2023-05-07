@@ -100,7 +100,7 @@ const LOAD_TOP_ASSISTS = gql`
 
 const LOAD_PLAYER_BY_ID_INFO = gql`
         query GetPlayerByID($playerId: Int!) {
-            GetPlayerByID(playerId: $playerId) {
+            GetPlayerByID(playerId: $playerId,season:2022) {
                 playerID
                 playerName
                 firstName

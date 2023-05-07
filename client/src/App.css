@@ -229,6 +229,29 @@ ul {
 	max-width: 50px !important;
 	max-height: 50px !important;
 }
+.SingleLeaguelogo{
+	max-width: 90px !important;
+	max-height: 90px !important;
+}
+.singleLeagueh1{
+	font-size: x-large;
+	font-weight: bold;
+	color: #ddd;
+}
+.nav-tabs .nav-link{
+	color:#ddd !important;
+	border: none;
+}
+.nav-tabs .nav-link:hover{
+	background-color: white;
+	color: #1c1a1a !important;
+	border: none;
+}
+.nav-tabs  .active{
+	color: #1c1a1a !important;
+	border: none;
+}
+
 .top-leagues{
 	display: grid;
 	border-radius: 5px;
@@ -356,8 +379,19 @@ body{
 .shell{
   padding:80px 0;
 }
+.tablehead{
+	color: #ddd;
+}
 .wsk-cp-matches{
 	background:#1c1a1a;
+	padding:15px;
+	border-radius:6px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	position:relative;
+	margin:20px auto;
+  }
+  .wsk-cp-leagues{
+	background:#2b2a2a;
 	padding:15px;
 	border-radius:6px;
 	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
