@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 // import { AuthContext } from '../firebase/Auth';
 import SignOutButton from './SignOut';
 import '../App.css';
@@ -15,21 +15,17 @@ const NavigationAuth = () => {
       <h1 className='App-title'>
         Welcome to the SupaStrika
       </h1>
-      <NavLink className='nav-links' to='/'>
+      <Link className='nav-links' to='/'>
         Home
-      </NavLink>
+      </Link>
 
-      <NavLink className='nav-links' to='/about'>
+      <Link className='nav-links' to='/about'>
         About
-      </NavLink>
+      </Link>
 
-      <NavLink className='nav-links' to='/leagues'>
-        Leagues
-      </NavLink>
-
-      <NavLink className='nav-links' to='/account'>
+      <Link className='nav-links' to='/account'>
         Account
-      </NavLink>
+      </Link>
 
       <SignOutButton />
 
@@ -40,25 +36,21 @@ const NavigationAuth = () => {
 const NavigationNonAuth = () => {
   return (
     <nav className='navigation'>
-      <NavLink className='nav-links' to='/'>
+      <Link className='nav-links' to='/'>
         Home
-      </NavLink>
+      </Link>
 
-      <NavLink className='nav-links' to='/about'>
+      <Link className='nav-links' to='/about'>
         About
-      </NavLink>
+      </Link>
 
-      <NavLink className='nav-links' to='/leagues'>
-        Leagues
-      </NavLink>
-
-      <NavLink className='nav-links' to='/signin'>
+      <Link className='nav-links' to='/signin'>
         LogIn
-      </NavLink>
+      </Link>
 
-      <NavLink className='nav-links' to='/signup'>
+      <Link className='nav-links' to='/signup'>
         SignUp
-      </NavLink>
+      </Link>
     </nav>
   );
 };

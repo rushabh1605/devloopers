@@ -9,7 +9,6 @@ import SignIn from './SignIn';
 import SignUp from './SignUp';
 // import PrivateRoute from './PrivateRoute';
 import About from './About';
-import Leagues from './Leagues'
 import News from './News';
 import NotFound from './NotFound';
 import SingleLeague from './SingleLeague';
@@ -70,7 +69,6 @@ function App() {
                   <Route path='/account' element={<Account />} />
                 </Route> */}
 
-                <Route path='/leagues' element={<Leagues />} />
                 <Route path='/league/:leagueId' element={<SingleLeague />} />
                 <Route path='/league/:leagueId/standings' element={<Standings />} />
                 <Route path='/league/:leagueId/stats' element={<LeagueStats />} />

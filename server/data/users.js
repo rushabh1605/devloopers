@@ -109,7 +109,7 @@ const createUser = async (
   if(users_data.length===0) throw {error:"Either the username or password is invalid",statusCode:400};
   compare_password = await bcrypt.compare(password, users_data.password);
   if(compare_password){
-    return true;
+    return getUserById(users_data._id);
   }
   else{
     throw {error:"Either the username or password is invalid",statusCode:400};

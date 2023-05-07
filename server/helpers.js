@@ -55,7 +55,8 @@ const dateformat = function error_handling_for_dateformat(input_as_string){
   let max_year = new Date().getFullYear();    
   let min_year = 2005;
   let user_year = parseInt(date_arr[2]);
-  if(!(user_year >= min_year && user_year <= max_year)) throw 'User must be 18 years old';
+  console.log(user_year)
+  if((user_year >= max_year || user_year >=min_year )) throw 'User must be 18 years old';
 }
 const email_check = async function email_check(email){
   try{

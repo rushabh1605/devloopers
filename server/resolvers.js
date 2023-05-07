@@ -350,6 +350,7 @@ module.exports = {
 
   Mutation:{
     CreateUser: async (_, args) => {
+      console.log(args)
             const oneUser = await user.createUser(
                 args.username,
                 args.password,

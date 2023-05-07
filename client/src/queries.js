@@ -181,7 +181,6 @@ const CREATE_USER = gql`
             isPremium: $isPremium   
         ) {
             username
-            password
             dob
             phone
             email
@@ -213,6 +212,15 @@ const GET_USER_BY_ID = gql `
     }
 `
 
+const LOGIN = gql `
+    query Login ($username: username, $password: password){
+        Login(username: $username, password: $password) {
+            username
+            passowrd
+        }
+    }
+`
+
 export default {
     LOAD_LEAGUES,
     LOAD_STANDINGS,
@@ -224,8 +232,6 @@ export default {
     LOAD_MANAGER_INFO,
     CREATE_USER,
     GET_ALL_USER,
-    GET_USER_BY_ID
-,
-    LOAD_PLAYER_BY_ID_INFO,
-    SEARCH_PLAYER_BY_NAME
+    GET_USER_BY_ID,
+    LOGIN
 };

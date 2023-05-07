@@ -6,7 +6,6 @@ const typeDefs = gql`
   {
     _id: ID!
     username: String!
-    password : String!
     dob: String
     phone: String
     email: String!
@@ -160,8 +159,7 @@ const typeDefs = gql`
     TopAssistsByLeague(league: Int!, season: Int!): [LeagueTopAssists]
     ManagerInformation(team: Int!) : TeamManager  
     GetUserById(id: ID!): User
-    GetAllUsers: [User]
-    ManagerInformation(team: Int!) : TeamManager 
+    GetAllUsers: [User] 
     GetPlayerByID(playerId: Int!, season: Int!) : PlayerByID 
     SearchPlayerByName(playerName: String!) : [searchedPlayers]
 
@@ -169,7 +167,7 @@ const typeDefs = gql`
 
   type Mutation
   {
-    CreateUser(username:String!,password:String!, dob:String, phone:String!, email:String!, country:String!, profilePic:String, bio:String, isPremium:Boolean): User
+    CreateUser(username:String!,password:String!, dob:String, phone:String, email:String!, country:String, profilePic:String, bio:String, isPremium:Boolean): User
     Login(username:String!,password:String!):Boolean
     DeleteUser(id: ID!): [User]
     AddTeamFollowing(userId:ID!,teamID: ID!) : User
@@ -177,9 +175,6 @@ const typeDefs = gql`
     DeleteTeamFollowing(userId:ID!,teamID: ID!) : User
     DeletePlayerFollowing(userId:ID!,PlayerID: ID!) : User
   }
-
-
-
 `;
 
 module.exports = typeDefs;
