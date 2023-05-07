@@ -157,6 +157,34 @@ const LOAD_TOP_LEAGUES = gql`
     }
 `;
 
+
+const LOAD_GAME_BY_ID = gql`
+    query getGameById {
+        getGameById {
+            id,
+            fixtureID,
+            userID,
+            awayTeam,
+            homeTeam,
+            betField,
+            result
+        }
+    }
+`;
+
+const LOAD_GAME_BY_FIXTURE_ID = gql`
+    query getGameByfixtureId {
+        getGameByfixtureId {
+            id,
+            fixtureID,
+            userID,
+            awayTeam,
+            homeTeam,
+            betField,
+            result
+        }
+    }
+`;
 export default {
     LOAD_LEAGUES,
     LOAD_STANDINGS,
@@ -167,5 +195,7 @@ export default {
     LOAD_LEAGUE_BY_ID,
     LOAD_MANAGER_INFO,
     LOAD_PLAYER_BY_ID_INFO,
-    SEARCH_PLAYER_BY_NAME
+    SEARCH_PLAYER_BY_NAME,
+    LOAD_GAME_BY_ID,
+    LOAD_GAME_BY_FIXTURE_ID
 };
