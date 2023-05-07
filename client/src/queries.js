@@ -175,7 +175,35 @@ const LOAD_GAME_BY_ID = gql`
 const LOAD_GAME_BY_FIXTURE_ID = gql`
     query getGameByfixtureId {
         getGameByfixtureId {
-            id,
+            _id,
+            fixtureID,
+            userID,
+            awayTeam,
+            homeTeam,
+            betField,
+            result
+        }
+    }
+`;
+
+const CREATE_GAME = gql`
+    mutation createGame($fixtureID:Int!, $userID:String!, $awayTeam: Int!, $homeTeam: Int!, $betField: Int!) {
+        createGame(fixtureID: $fixtureID, userID: $userID, awayTeam:$awayTeam, homeTeam:$homeTeam, betField:$betField) {
+            _id,
+            fixtureID,
+            userID,
+            awayTeam,
+            homeTeam,
+            betField,
+            result
+        }
+    }
+`;
+
+const LOAD_GAME_BY_USERID = gql`
+    query getGameByUserId($id:String!) {
+        getGameByUserId(id: $id) {
+            _id,
             fixtureID,
             userID,
             awayTeam,
@@ -194,8 +222,10 @@ export default {
     LOAD_TOP_LEAGUES,
     LOAD_LEAGUE_BY_ID,
     LOAD_MANAGER_INFO,
+    LOAD_GAME_BY_ID,
     LOAD_PLAYER_BY_ID_INFO,
     SEARCH_PLAYER_BY_NAME,
-    LOAD_GAME_BY_ID,
-    LOAD_GAME_BY_FIXTURE_ID
+    LOAD_GAME_BY_USERID,
+    LOAD_GAME_BY_FIXTURE_ID,
+    CREATE_GAME
 };
