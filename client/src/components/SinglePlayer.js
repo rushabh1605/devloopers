@@ -42,34 +42,29 @@ if(data){
     const {GetPlayerByID} = data
     console.log(GetPlayerByID)
     return(
-        
         <div class="row justify-content-center" id='home'  >
-                <div className='col-md-11'>
-                    <div className="wsk-cp-matches mt-3" >
-                                                            <div className="col-md-10 d-flex">
-                                                                <img alt="playerlogo" class=" img-fluid leagueimg" src={GetPlayerByID.playerImage} />
-                                                                <div className="d-block">
-                                                               
-                                                                    <p className="mr-4 tablehead">{GetPlayerByID.playerName}</p>
-                                                               
-
-                                                                <div className="d-flex"> 
-                                                                    <p className="ml-2 tablehead">{GetPlayerByID.teamName}</p>
-                                                                </div>
+            <div className='col-md-11'>
+                <div className="wsk-cp-matches mt-3" >
+                    <div className="col-md-10 d-flex">
+                        <img alt="playerlogo" class=" img-fluid leagueimg" src={GetPlayerByID.playerImage} />
+                            <div className="d-block">                                   
+                                <p className="mr-4 tablehead">{GetPlayerByID.playerName}</p>
+                                <div className="d-flex"> 
+                                    <p className="ml-2 tablehead">{GetPlayerByID.teamName}</p>
+                                </div>
                                                                 
-                                                            </div>
-                                                            </div>
-                                
+                            </div>
                     </div>
+                                
                 </div>
-
-                <div className='col-md-11'>
-                    <div className='row'>
+            </div>
+            <div className='col-md-11'>
+                <div className='row'>
                     <div className='col-md-3 mr-5 ml-2 p-0'>
                         <div className="wsk-cp-matches " >
                             <div className='row'>
                             <h5 className='tablehead'>General Information</h5>
-                        </div>
+                            </div>
                     
                             <div className='row mt-4'>
                                 <div className='col-md-4'>
@@ -94,12 +89,12 @@ if(data){
                                 </div>
                             </div>
                             <hr
-                                                                style={{
-                                                                background: "#D3D3D3",
-                                                                height: "2px",
-                                                                border: "none",
-                                                                opacity:0.1
-                                                                }}
+                            style={{
+                                background: "#D3D3D3",
+                                height: "2px",
+                                border: "none",
+                                opacity:0.1
+                            }}
                             />
                             <div className='row'>
                                 <div className='col-md-4'>
@@ -157,14 +152,14 @@ if(data){
                                 
                             </div>
                             <hr
-                                                                style={{
-                                                                background: "#D3D3D3",
-                                                                height: "2px",
-                                                                border: "none",
-                                                                opacity:0.1
-                                                                }}
+                                style={{
+                                background: "#D3D3D3",
+                                height: "2px",
+                                border: "none",
+                                opacity:0.1
+                            }}
                             />
-<div className='row'>
+                            <div className='row'>
                                 <div className='col-md-4'>
                                     <p className="tablehead">Penalty</p>
                                 </div>
@@ -189,21 +184,11 @@ if(data){
                                 </div>
                             </div>
                         </div>
-                        
-
                     </div>
 
-                    </div>
                 </div>
-                
-                
-
-
-
-
+            </div>
         </div>
-            
-      
     )
 }
 
