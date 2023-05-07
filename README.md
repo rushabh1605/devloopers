@@ -64,8 +64,8 @@ npm start
 
 ## Video Presentation
 
-- [YouTube](link to be added)
-- [GoogleDrive](link to be added)
+- [YouTube](www.youtube.com)
+- [GoogleDrive](drive.google.com)
 
 ## Members
 
