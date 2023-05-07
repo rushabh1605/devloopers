@@ -45,8 +45,9 @@ const SignIn = () => {
       Swal.fire({
         icon: 'error',
         title: 'Error!',
-        text: error,
+        text: error.message.split(':')[1].trim().replace(/"/g, ''),
       });
+      console.log(error.message.split(':')[1].trim().replace(/"/g, ''));
       console.log('User not created');
     },
   });
