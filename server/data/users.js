@@ -6,7 +6,7 @@ const games = mongoCollections.games;
 const {ObjectId} = require('mongodb');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-c
+
 
 const getAllUsers = async () => {
     
@@ -16,6 +16,7 @@ const getAllUsers = async () => {
     
     return users_data;
   };
+
 const getUserById = async (userId) => {
     if(validation.valid_id(userId,"ID"));
     userId = userId.trim();
@@ -54,7 +55,7 @@ const createUser = async (
 
   
   if(validation.createUser_validations(username,password));
-  // const hashed_password = await bcrypt.hash(password, saltRounds);
+  const hashed_password = await bcrypt.hash(password, saltRounds);
   if(validation.phone_check(phone));
   const check = await validation.email_check(email);
   if(check){
@@ -69,7 +70,7 @@ const createUser = async (
   if(validation.string(country,"Country"));
   let createuser = {
     username:username.trim().toLowerCase(),
-    // password: hashed_password,
+    password: hashed_password,
     dob:dob.trim() || "Not Provided", 
     phone:phone.trim(), 
     email:email.trim(), 
@@ -98,12 +99,13 @@ const createUser = async (
   const insert_user = await userscollection.insertOne(createuser);
   if(!insert_user.insertedId || !insert_user.acknowledged) throw {error:'Unable to create user', statusCode:500};
   const created = insert_user.insertedId.toString();
+  // return (created)
   const data = await getUserById(created);
   
   return data;
   };
 
-  const checkUser = async (username, password) => 
+const checkUser = async (username, password) => 
 { 
   if(validation.createUser_validations(username,password));
   let compare_password = false;
@@ -112,7 +114,7 @@ const createUser = async (
   if(users_data.length===0) throw {error:"Either the username or password is invalid",statusCode:400};
   compare_password = await bcrypt.compare(password, users_data.password);
   if(compare_password){
-    return getUserById(users_data._id);
+    return getUserById(users_data._id.toString());
   }
   else{
     throw {error:"Either the username or password is invalid",statusCode:400};

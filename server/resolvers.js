@@ -305,6 +305,7 @@ module.exports = {
                 args.profilePic, 
                 args.bio, 
                 args.isPremium );
+            
             if(oneUser.errors){
                     return oneUser.errors[0].message
             }
@@ -325,6 +326,7 @@ module.exports = {
     },
 
     Login: async(_,args)=>{
+      console.log(args)
         const loggedIn = await user.checkUser(args.username,args.password);
             if(loggedIn.errors){
             
@@ -378,32 +380,27 @@ module.exports = {
                 return (deletePlayer);
             }
     },
-  },
 
-,
+    createGame: async (_, args) => {
+        const game = await user.createGame(args.fixtureID, args.userID, args.awayTeam, args.homeTeam, args.betField);
+        if(game.errors){
+          return oneUser.errors[0].message
+        }
+        else{
+          return game;
+        }       
+    },
 
-Mutation:{
-  createGame: async (_, args) => {
-      const game = await user.createGame(args.fixtureID, args.userID, args.awayTeam, args.homeTeam, args.betField);
-      if(game.errors){
-        return oneUser.errors[0].message
+    updateGame: async (_, args) => {     
+      const updatedGame = await user.updateGame(args.fixtureID);
+      if(updatedGame.errors){
+        return updatedGame.errors[0].message
       }
       else{
-        return game;
+        return (updatedGame);
       }       
-  },
-
-
-  updateGame: async (_, args) => {     
-    const updatedGame = await user.updateGame(args.fixtureID);
-    if(updatedGame.errors){
-      return updatedGame.errors[0].message
-    }
-    else{
-      return (updatedGame);
-    }       
-  },
+    },
   
-},
+  },
 
 }

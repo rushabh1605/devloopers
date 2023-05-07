@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-// import { AuthContext } from '../firebase/Auth';
 import SignOutButton from './SignOut';
 import '../App.css';
+
+// add redis session
 const Navigation = () => {
   // const { currentUser } = useContext(AuthContext);
   // return <div>{currentUser ? <NavigationAuth /> : <NavigationNonAuth />}</div>;

@@ -1,9 +1,15 @@
 import React from 'react';
 import { useState } from 'react';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import queries from '../queries';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
+// const redis = require('redis');
+// const connectRedis = require('connect-redis');
 
 const SignIn = () => {
+
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -14,24 +20,35 @@ const SignIn = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const { loading, error, data } = useQuery(queries.LOGIN, {
-    variables: {
-      username: formData.username,
-      password: formData.password,
+  const [loginUser, { loading, error, data }] = useMutation(queries.LOGIN, {
+    onCompleted: ({ login }) => {
+      console.log('User exists');
+      navigate('/');
+    },
+    onError: (error) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'Either the username or password is incorrect',
+      });
+      console.log('User does not exist');
     },
   });
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const { username, password } = formData;
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
-    // Check if the user exists in the database
-    if (data && data.Login) {
-      console.log('User exists');
-    } else {
-      console.log('User does not exist');
+    if(!username || !password) {
+      console.log('Username or password is empty');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'Either the username or password is empty',
+      });
+    } else{
+      loginUser({ variables: { username, password } });
     }
+    
   };
 
   return (

@@ -213,10 +213,10 @@ const GET_USER_BY_ID = gql `
 `
 
 const LOGIN = gql `
-    query Login ($username: username, $password: password){
+    mutation Login ($username: String!, $password: String!){
         Login(username: $username, password: $password) {
             username
-            passowrd
+            password
         }
     }
 `
