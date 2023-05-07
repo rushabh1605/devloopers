@@ -45,6 +45,10 @@ const NavigationNonAuth = () => {
         About
       </NavLink>
 
+      <NavLink className='nav-links' to='/game'>
+        Game
+      </NavLink>
+
       <NavLink className='nav-links' to='/signin'>
         LogIn
       </NavLink>
