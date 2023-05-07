@@ -194,7 +194,9 @@ function Landing() {
                 <div class="row matches m-3">
                   <div class="col-md-3  d-flex align-items-center mt-4 mt-md-0">
                     <div>
+                      <Link to={`/team/${x.homeTeamID}`}>
                       <p className='teamname'>{x.homeTeamName}</p>
+                      </Link>
                     </div>
                   </div>
                   <div class="col-md-2">
@@ -214,7 +216,9 @@ function Landing() {
                   </div>
                   <div class="col-md-3  d-flex align-items-center mt-4 mt-md-0">
                     <div>
+                    <Link to={`/team/${x.awayTeamID}`}>
                       <p className='teamname align-text-left'>{x.awayTeamName}</p>
+                    </Link>
                     </div>
                   </div>
                 </div>

@@ -146,6 +146,24 @@ const LOAD_MANAGER_INFO = gql`
     }
 `;
 
+const LOAD_TEAM_INFO = gql`
+query TeamInformation($teamID: Int!) {
+    TeamInformation(teamID: $teamID) {
+        teamID
+        teamName
+        teamLogo
+        founded
+        teamCode
+        countryName
+        venueName
+        address
+        city
+        capacity
+        venueImage      
+    } 
+}
+`;
+
 const LOAD_TOP_LEAGUES = gql`
     query TopLeaguesInformation {
         TopLeaguesInformation {
@@ -227,5 +245,6 @@ export default {
     SEARCH_PLAYER_BY_NAME,
     LOAD_GAME_BY_USERID,
     LOAD_GAME_BY_FIXTURE_ID,
-    CREATE_GAME
+    CREATE_GAME,
+    LOAD_TEAM_INFO
 };

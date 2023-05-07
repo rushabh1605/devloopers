@@ -230,7 +230,7 @@ const updateGame = async (fixtureID) => {
   const { data } = await axios.get("https://api-football-v1.p.rapidapi.com/v3/fixtures"+ fixtureID, config);   
 
   if(data.response[0].fixture.status.short !== 'FT'){
-    throw {error:'Cannot Add the team to following list. The Match is not declared yet, the result will be declare once the match is over! ', statusCode:200}
+    throw {error:'The Match is not declared yet, the result will be declare once the match is over! ', statusCode:200}
 
   }
 
