@@ -65,7 +65,16 @@ const createUser = async (
     }
   }
 
-  if(validation.dateformat(dob));
+  const dateObj = new Date(dob);
+
+// format the date in the "MM/dd/yyyy" format
+  const formattedDate = dateObj.toLocaleDateString('en-US', {
+    month: '2-digit',
+    day: '2-digit',
+    year: 'numeric'
+  });
+
+  if(validation.dateformat(formattedDate));
   // if(validation.string(bio,"Bio"));
   if(validation.string(country,"Country"));
   let createuser = {

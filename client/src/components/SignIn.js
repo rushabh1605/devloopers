@@ -1,10 +1,14 @@
 import React from 'react';
 import { useState } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import queries from '../queries';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2'
-// const redis = require('redis');
+// const Redis = require('redis');
+// const redis = new Redis({
+//   host: 'localhost',
+//   port: 6379,
+// });
 // const connectRedis = require('connect-redis');
 
 const SignIn = () => {
@@ -21,9 +25,11 @@ const SignIn = () => {
   };
 
   const [loginUser, { loading, error, data }] = useMutation(queries.LOGIN, {
-    onCompleted: ({ login }) => {
+    onCompleted: async () => {
       console.log('User exists');
       navigate('/');
+      
+      // await redis.set(`session:${login}`, JSON.stringify(login));
     },
     onError: (error) => {
       Swal.fire({
@@ -64,6 +70,7 @@ const SignIn = () => {
               name="username"
               value={formData.username}
               onChange={handleInputChange}
+              
             />
           </div>
           <div className="form-group">
@@ -75,6 +82,7 @@ const SignIn = () => {
               name="password"
               value={formData.password}
               onChange={handleInputChange}
+              
             />
           </div>
           <button type="submit" className="btn btn-primary">

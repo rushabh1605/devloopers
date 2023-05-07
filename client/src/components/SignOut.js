@@ -1,35 +1,47 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useApolloClient } from '@apollo/client';
+import Swal from 'sweetalert2';
 
-const SignOut = () => {
-    return (
-        <div>
-            <h1>404 Page Not Found</h1>
-            <p>The page you are looking for does not exist.</p>
-        </div>
-    );
+const Signout = () => {
+  const navigate = useNavigate();
+  const client = useApolloClient();
+
+  useEffect(() => {
+    const clearSession = async () => {
+      try {
+        // Delete the session from the server
+        await fetch('/api/signout', { method: 'POST' });
+
+        // Clear the Apollo cache
+        await client.clearStore();
+
+        // Redirect to the homepage
+        navigate('/', { replace: true });
+
+        // Show a success message
+        Swal.fire({
+          icon: 'success',
+          title: 'Signed out successfully!',
+        });
+      } catch (error) {
+        // Show an error message
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: error.message,
+        });
+      }
+    };
+
+    clearSession();
+  }, [client, navigate]);
+
+  return (
+    <div className="container py-5">
+      <h1 className="text-center">Signing out...</h1>
+    </div>
+  );
 };
 
-export default SignOut;
-// import { useState } from 'react';
-
-// const SignOutButton = () => {
-
-//   const [authenticated, setAuthenticated] = useState(true);
-
-//   const handleLogout = () => {
-//     // Clear authentication token or session from local storage or cookies
-//     localStorage.removeItem('authToken');
-
-//     // Update authenticated state
-//     setAuthenticated(false);
-
-//     // Redirect to login page or public page
-//     window.location.href = '/';
-//   };
-
-//   return (
-//     <button onClick={handleLogout}>Logout</button>
-//   );
-// };
-
-// export default SignOutButton;
+export default Signout;

@@ -294,6 +294,7 @@ module.exports = {
 
   Mutation:{
     CreateUser: async (_, args) => {
+      console.log("Create User args")
       console.log(args)
             const oneUser = await user.createUser(
                 args.username,
@@ -326,6 +327,7 @@ module.exports = {
     },
 
     Login: async(_,args)=>{
+      console.log("Login Args")
       console.log(args)
         const loggedIn = await user.checkUser(args.username,args.password);
             if(loggedIn.errors){

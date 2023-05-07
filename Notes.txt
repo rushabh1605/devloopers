@@ -18,8 +18,6 @@ XSS Attack!
 
 Redis: user session
 list obj id = 
-nav bar-  when logged in 
+nav bar -  when logged in 
 
-signIn works perfectle.
-
-Signup Up - have to look
+SignIn, Signup works: error handling left
