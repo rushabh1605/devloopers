@@ -6,7 +6,7 @@ About to be added
 
 # Github Repo
 
-[http://github.com/rushabh1605/devloopers]http://github.com/rushabh1605/devloopers)
+[http://github.com/rushabh1605/devloopers](http://github.com/rushabh1605/devloopers)
 
 # Set up
 
@@ -39,7 +39,7 @@ cd client
 npm install
 ```
 
-6. Run the server
+6. Run the client
 
 ```
 npm start
