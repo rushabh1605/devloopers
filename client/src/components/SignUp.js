@@ -38,7 +38,8 @@ const SignIn = () => {
       Swal.fire({
         icon: 'error',
         title: 'Error!',
-
+        text: error.message.split(':')[1].trim().replace(/"/g, ''),
+        confirmButtonText: "Fix it",
       });
       console.log(error.message.split(':')[1].trim().replace(/"/g, ''));
       console.log('User not created');
@@ -54,11 +55,13 @@ const SignIn = () => {
         icon: 'error',
         title: 'Error!',
         text: 'Please fill up all the fields',
+        confirmButtonText: "Fix it",
       });
     } else{
       createUser({ variables: { username, password, dob, phone, email, country, bio } });
     }
   };
+
 
   const handleDateChange = (date) => {
     setFormData({
