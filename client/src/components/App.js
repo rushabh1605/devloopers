@@ -7,6 +7,7 @@ import Landing from './Landing';
 import Navigation from './Navigation';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
+import SignOut from './SignOut';
 // import PrivateRoute from './PrivateRoute';
 import About from './About';
 import News from './News';
@@ -30,6 +31,7 @@ import {
   InMemoryCache,
   ApolloProvider
 } from '@apollo/client';
+import Signout from './SignOut';
 
 
 const client = new ApolloClient({
@@ -49,7 +51,7 @@ function App() {
               <Navbar collapseOnSelect expand="lg" className='bg' >
                 <Container>
 
-                  <Navbar.Brand ><span class="navbar-brand">SUPASTRIKERS</span></Navbar.Brand>
+                  <Navbar.Brand ><span className="navbar-brand">SUPASTRIKERS</span></Navbar.Brand>
                   <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                   <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="ml-auto" >
@@ -77,6 +79,7 @@ function App() {
                 
                 <Route path='/signin' element={<SignIn />} />
                 <Route path='/signup' element={<SignUp />} />
+                <Route path='/signout' element={<SignOut />} />
                 <Route path='/about' element={<About />} />
                 
                 <Route path='/news' element={<News />} />

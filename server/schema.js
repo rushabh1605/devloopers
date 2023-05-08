@@ -19,11 +19,6 @@ const typeDefs = gql`
     followingPlayerID: [String]
   }
 
-  type userLogin {
-    username: String!
-    password: String!
-  }
-
   type League {
     id: Int!
     leagueName: String
@@ -186,7 +181,7 @@ const typeDefs = gql`
   type Mutation
   {
     CreateUser(username:String!,password:String!, dob:String, phone:String, email:String!, country:String, profilePic:String, bio:String, isPremium:Boolean): User
-    Login(username:String!,password:String!): userLogin
+    Login(username:String!,password:String!): User
     DeleteUser(id: ID!): [User]
     AddTeamFollowing(userId:ID!,teamID: ID!) : User
     AddPlayerFollowing(userId:ID!,PlayerID: ID!) : User

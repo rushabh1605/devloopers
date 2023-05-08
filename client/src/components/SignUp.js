@@ -7,12 +7,6 @@ import Swal from 'sweetalert2'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-// const Redis = require('redis');
-// const redis = new Redis({
-//   host: 'localhost',
-//   port: 6379,
-// });
-// const connectRedis = require('connect-redis');
 
 const SignIn = () => {
   
@@ -38,14 +32,13 @@ const SignIn = () => {
     onCompleted: async () => {
       console.log('User Created');
       navigate('/signin');
-      
-      // await redis.set(`session:${login}`, JSON.stringify(login));
+
     },
     onError: (error) => {
       Swal.fire({
         icon: 'error',
         title: 'Error!',
-        text: error.message.split(':')[1].trim().replace(/"/g, ''),
+
       });
       console.log(error.message.split(':')[1].trim().replace(/"/g, ''));
       console.log('User not created');
@@ -68,7 +61,6 @@ const SignIn = () => {
   };
 
   const handleDateChange = (date) => {
-    // let dateString = moment(date).format('MM-DD-YYYY');
     setFormData({
       ...formData,
       dob: date

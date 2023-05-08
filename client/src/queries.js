@@ -213,10 +213,22 @@ const GET_USER_BY_ID = gql `
 `
 
 const LOGIN = gql `
-    mutation Login ($username: String!, $password: String!){
+    mutation Login($username: String!, $password: String!){
         Login(username: $username, password: $password) {
+            _id
             username
             password
+            dob
+            phone
+            email
+            country
+            profilePic
+            bio
+            isPremium
+            coins
+            followingTeamID
+            followingPlayerID
+
         }
     }
 `

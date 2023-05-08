@@ -3,13 +3,7 @@ import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import queries from '../queries';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2'
-// const Redis = require('redis');
-// const redis = new Redis({
-//   host: 'localhost',
-//   port: 6379,
-// });
-// const connectRedis = require('connect-redis');
+import Swal from 'sweetalert2';
 
 const SignIn = () => {
 
@@ -25,11 +19,12 @@ const SignIn = () => {
   };
 
   const [loginUser, { loading, error, data }] = useMutation(queries.LOGIN, {
-    onCompleted: async () => {
+    onCompleted: async (response) => {
+      console.log(response);
       console.log('User exists');
-      navigate('/');
-      
-      // await redis.set(`session:${login}`, JSON.stringify(login));
+      sessionStorage.setItem('sessionToken',response);
+      window.location.href = 'http://localhost:3000/';
+
     },
     onError: (error) => {
       Swal.fire({
