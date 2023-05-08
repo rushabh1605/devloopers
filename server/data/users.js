@@ -10,100 +10,111 @@ const saltRounds = 10;
 
 const getAllUsers = async () => {
     
-    const userscollection = await users();
-    const users_data = await userscollection.find({}).toArray();
-    if(users_data.length===0) throw {error:'No users found', statusCode:404};
-    
-    return users_data;
-  };
-
- const getUserById = async (userId) => {
-    if(validation.valid_id(userId,"ID"));
-    userId = userId.trim();
-    const userscollection = await users();
-    const users_data = await userscollection.findOne({_id: new ObjectId(userId)});
-    if(users_data === null) throw {error:'No user found with '+userId, statusCode:404};
+  const userscollection = await users();
+  const users_data = await userscollection.find({}).toArray();
+  if(users_data.length===0) throw {error:'No users found', statusCode:404};
   
-    return users_data; 
-  };
+  return users_data;
+};
 
-  const deleteUser = async (userId) => {
-    if(validation.valid_id(userId,"ID"));
-    userId = userId.trim();
-    let getuser = await getUserById(userId);
-    if(getuser !== null){
-        const userscollection = await users();
-        const user_removed = await userscollection.deleteOne({_id: new ObjectId(userId)});
-        if(user_removed.deletedCount === 0 ) throw {error:'Internal Server Error ', statusCode:500};
-            return await getAllUsers(userId);
-        }
-        else{
-            throw {error:'User not found', statusCode:404};
-        }
-  };
+const getUserById = async (userId) => {
+  if(validation.valid_id(userId,"ID"));
+  userId = userId.trim();
+  const userscollection = await users();
+  const users_data = await userscollection.findOne({_id: new ObjectId(userId)});
+  if(users_data === null) throw {error:'No user found with '+userId, statusCode:404};
+
+  return users_data; 
+};
+
+const deleteUser = async (userId) => {
+  if(validation.valid_id(userId,"ID"));
+  userId = userId.trim();
+  let getuser = await getUserById(userId);
+  if(getuser !== null){
+      const userscollection = await users();
+      const user_removed = await userscollection.deleteOne({_id: new ObjectId(userId)});
+      if(user_removed.deletedCount === 0 ) throw {error:'Internal Server Error ', statusCode:500};
+          return await getAllUsers(userId);
+      }
+      else{
+          throw {error:'User not found', statusCode:404};
+      }
+};
 
 const createUser = async (
-    username,
-    dob, 
-    phone, 
-    email, 
-    country, 
-    profilePic, 
-    bio
-  ) => {
+  username,
+  password,
+  dob, 
+  phone, 
+  email, 
+  country, 
+  profilePic, 
+  bio
+) => {
 
-  
-  if(validation.createUser_validations(username,password));
-  // const hashed_password = await bcrypt.hash(password, saltRounds);
-  if(validation.phone_check(phone));
-  const check = await validation.email_check(email);
-  if(check){
-    if(!check.result){
-  
-      throw check.failReason
+
+if(validation.createUser_validations(username,password));
+const hashed_password = await bcrypt.hash(password, saltRounds);
+if(validation.phone_check(phone));
+const check = await validation.email_check(email);
+if(check){
+  if(!check.result){
+
+    throw check.failReason
+  }
+}
+
+const dateObj = new Date(dob);
+
+// format the date in the "MM/dd/yyyy" format
+const formattedDate = dateObj.toLocaleDateString('en-US', {
+  month: '2-digit',
+  day: '2-digit',
+  year: 'numeric'
+});
+
+if(validation.dateformat(formattedDate));
+// if(validation.string(bio,"Bio"));
+if(validation.string(country,"Country"));
+let createuser = {
+  username:username.trim().toLowerCase(),
+  password: hashed_password,
+  dob:dob.trim() || "Not Provided", 
+  phone:phone.trim(), 
+  email:email.trim(), 
+  country:country.trim(), 
+  profilePic:profilePic || "Not Provided", 
+  bio:bio.trim() || "Not Provided", 
+  isPremium:false,
+  coins:0,
+  followingTeamID:[],
+  followingPlayerID:[]
+};
+
+const userscollection = await users();
+const users_all = await userscollection.find({}, {projection: {_id: 1, username: 1}}).toArray();
+if(users_all.length===0){
+  //do nothing
+}
+else{
+  users_all.forEach(element => {
+    if(element.username.toLowerCase() === username.trim().toLowerCase()){
+      throw {error:'Username already exists !',statusCode:400}
     }
-  }
+  });
+}
 
-  if(validation.dateformat(dob));
-  // if(validation.string(bio,"Bio"));
-  if(validation.string(country,"Country"));
-  let createuser = {
-    username:username.trim().toLowerCase(),
-    // password: hashed_password,
-    dob:dob.trim() || "Not Provided", 
-    phone:phone.trim(), 
-    email:email.trim(), 
-    country:country.trim(), 
-    profilePic:profilePic || "Not Provided", 
-    bio:bio.trim() || "Not Provided", 
-    isPremium:false,
-    coins:0,
-    followingTeamID:[],
-    followingPlayerID:[]
-  };
- 
-  const userscollection = await users();
-  const users_all = await userscollection.find({}, {projection: {_id: 1, username: 1}}).toArray();
-  if(users_all.length===0){
-    //do nothing
-  }
-  else{
-    users_all.forEach(element => {
-      if(element.username.toLowerCase() === username.trim().toLowerCase()){
-        throw {error:'Username already exists !',statusCode:400}
-      }
-    });
-  }
-  
-  const insert_user = await userscollection.insertOne(createuser);
-  if(!insert_user.insertedId || !insert_user.acknowledged) throw {error:'Unable to create user', statusCode:500};
-  const created = insert_user.insertedId.toString();
-  const data = await getUserById(created);
-  
-  return data;
-  };
+const insert_user = await userscollection.insertOne(createuser);
+if(!insert_user.insertedId || !insert_user.acknowledged) throw {error:'Unable to create user', statusCode:500};
+const created = insert_user.insertedId.toString();
+// return (created)
+const data = await getUserById(created);
 
-  const checkUser = async (username, password) => 
+return data;
+};
+
+const checkUser = async (username, password) => 
 { 
   if(validation.createUser_validations(username,password));
   let compare_password = false;
@@ -112,7 +123,7 @@ const createUser = async (
   if(users_data.length===0) throw {error:"Either the username or password is invalid",statusCode:400};
   compare_password = await bcrypt.compare(password, users_data.password);
   if(compare_password){
-    return true;
+    return getUserById(users_data._id.toString());
   }
   else{
     throw {error:"Either the username or password is invalid",statusCode:400};
@@ -173,7 +184,6 @@ const deletePlayerFollowing = async (userId,playerID) => {
   return data;
 };
 
-
 const createGame = async (fixtureID, userID, awayTeam, homeTeam, betField) => {
  
   const gamesCollection = await games();
@@ -201,6 +211,16 @@ const getGameByUserId = async (userId) => {
   const game_data = await gamesCollection.find({userID: userId}).toArray();;
   if(game_data === null) throw {error:'No game found with '+userId, statusCode:404};
   
+  return game_data; 
+};
+
+const getGameById = async (gameId) => {
+  if(validation.valid_id(gameId,"ID"));
+  userId = userId.trim();
+  const gamesCollection = await games();
+  const game_data = await gamesCollection.findOne({_id: new ObjectId(gameId)});
+  if(game_data === null) throw {error:'No game found with '+userId, statusCode:404};
+
   return game_data; 
 };
 
@@ -287,5 +307,6 @@ const updateGame = async (fixtureID) => {
     getGameByUserId,
     getGameByfixtureId,
     updateGame,
-    getGameByUserId
+    getGameByUserId,
+    getGameById
   };
