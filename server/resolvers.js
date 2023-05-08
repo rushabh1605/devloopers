@@ -1,10 +1,20 @@
 const moment = require('moment');
 const axios = require("axios");
-const redis = require("redis");
+// const redis = require("redis");
 const uuid = require("uuid");
 const { result } = require('lodash');
 const data = require("./data");
 const user = data.users;
+const redis = require('redis');
+const client = redis.createClient({
+  port: 6379,
+  host: 'redis'
+});
+client.connect();
+client.on('connect', (err)=>{
+  if(err) throw err;
+  else console.log('Redis Connected..!');
+});
 
 const API_KEY = '3df39a1cbamsh63f95b9f20d493ep18c3d2jsnaa9a8f6d3181';
 const API_HOST = 'api-football-v1.p.rapidapi.com';
@@ -299,6 +309,29 @@ module.exports = {
       }
       return gameData
   },
+
+  GetAllUsers: async () => {     
+    const user_list = await user.getAllUsers();
+    if(user_list.errors){
+        return user_list.errors[0].message
+    }
+    else{
+        return (user_list);
+    }
+  },
+
+  GetUserById: async (_, args) => {
+    const oneUser = await user.getUserById(args.id);
+    if(oneUser.errors){
+    
+        return oneUser.errors[0].message
+    }
+    else{
+        return (oneUser);
+    }
+    
+  }
+
 },
 
 Mutation:{
@@ -323,6 +356,130 @@ Mutation:{
       return (updatedGame);
     }       
   },
+
+  CreateUser: async (_, args) => {
+    console.log("Create User args")
+    console.log(args)
+          const oneUser = await user.createUser(
+              args.username,
+              args.password,
+              args.dob,
+              args.phone, 
+              args.email, 
+              args.country, 
+              args.profilePic, 
+              args.bio, 
+              args.isPremium );
+          
+          if(oneUser.errors){
+                  return oneUser.errors[0].message
+          }
+          else{
+              return (oneUser);
+          }
+  },
+
+  CreateUser: async (_, args) => {
+    console.log("Create User args")
+    console.log(args)
+          const oneUser = await user.createUser(
+              args.username,
+              args.password,
+              args.dob,
+              args.phone, 
+              args.email, 
+              args.country, 
+              args.profilePic, 
+              args.bio, 
+              args.isPremium );
+          
+          if(oneUser.errors){
+                  return oneUser.errors[0].message
+          }
+          else{
+              return (oneUser);
+          }
+  },
+
+  DeleteUser: async(_,args)=>{
+      const deleteone = await user.deleteUser(args.id);
+          if(deleteone.errors){
+          
+              return deleteone.errors[0].message
+          }
+          else{
+              return (deleteone);
+          }
+  },
+
+  Login: async(_,args)=>{
+    console.log("heyyyyyyyyyy");
+    let session_exists = await client.exists("session");
+    // if(session_exists) {
+    //     let get_user = JSON.parse(await client.get("session"));
+    //     return "Already LoggedIn as " + get_user.username + "please logout to login again";
+    //   // res.status(403).json({"error":`Already LoggedIn as ${get_user.username}. please logout to login again`});
+    // }
+    console.log("Login Args")
+    console.log(args)
+    const loggedIn = await user.checkUser(args.username,args.password);
+    if(loggedIn.errors){     
+        return loggedIn.errors[0].message
+    }
+    else{
+      let session = await client.set(
+        "session",
+        JSON.stringify(loggedIn)
+      );
+      return (loggedIn);
+    }
+  },
+
+  AddTeamFollowing: async(_,args)=>{
+    const addTeam = await user.addTeamFollowing(args.userId,args.teamID);
+        if(addTeam.errors){
+        
+            return addTeam.errors[0].message
+        }
+        else{
+            return (addTeam);
+        }
+  },
+
+  AddPlayerFollowing: async(_,args)=>{
+      const addPlayer = await user.addPlayerFollowing(args.userId,args.PlayerID);
+          if(addPlayer.errors){
+          
+              return addPlayer.errors[0].message
+          }
+          else{
+              return (addPlayer);
+          }
+  },
+
+  DeleteTeamFollowing: async(_,args)=>{
+      const deleteTeam = await user.deleteTeamFollowing(args.userId,args.teamID);
+          if(deleteTeam.errors){
+          
+              return deleteTeam.errors[0].message
+          }
+          else{
+              return (deleteTeam);
+          }
+  },
+
+  DeletePlayerFollowing: async(_,args)=>{
+      const deletePlayer = await user.deletePlayerFollowing(args.userId,args.PlayerID);
+          if(deletePlayer.errors){
+          
+              return deletePlayer.errors[0].message
+          }
+          else{
+              return (deletePlayer);
+          }
+  },
+
+
   
 },
 

@@ -1,81 +1,93 @@
-import React, {useContext} from 'react';
-import SocialSignIn from './SocialSignIn';
-import {Navigate} from 'react-router-dom';
-import {AuthContext} from '../firebase/Auth';
-import {
-  doSignInWithEmailAndPassword,
-  doPasswordReset,
-} from '../firebase/FirebaseFunctions';
+import React from 'react';
+import { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import queries from '../queries';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
-function SignIn() {
-  const {currentUser} = useContext(AuthContext);
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    let {email, password} = event.target.elements;
+const SignIn = () => {
 
-    try {
-      await doSignInWithEmailAndPassword(email.value, password.value);
-    } catch (error) {
-      alert(error);
-    }
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const passwordReset = (event) => {
+  const [loginUser, { loading, error, data }] = useMutation(queries.LOGIN, {
+    onCompleted: async (response) => {
+      console.log(response);
+      console.log('User exists');
+      sessionStorage.setItem('sessionToken',response);
+      window.location.href = 'http://localhost:3000/';
+
+    },
+    onError: (error) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'Either the username or password is incorrect',
+      });
+      console.log('User does not exist');
+    },
+  });
+
+  const handleSubmit = (event) => {
     event.preventDefault();
-    let email = document.getElementById('email').value;
-    if (email) {
-      doPasswordReset(email);
-      alert('Password reset email was sent');
-    } else {
-      alert(
-        'Please enter an email address below before you click the forgot password link'
-      );
+    const { username, password } = formData;
+    if(!username || !password) {
+      console.log('Username or password is empty');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'Either the username or password is empty',
+      });
+    } else{
+      loginUser({ variables: { username, password } });
     }
+    
   };
-  if (currentUser) {
-    return <Navigate to='/home' />;
-  }
+
   return (
-    <div>
-      <h1>Log in</h1>
-      <form onSubmit={handleLogin}>
-        <div className='form-group'>
-          <label>
-            Email:
+    <div class="col-md-6 align-items-center ">
+      <div className="wsk-cp-matches" >
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="username" className='teamname'>Username</label>
             <input
-              className='form-control'
-              name='email'
-              id='email'
-              type='email'
-              placeholder='Email'
-              required
+              type="text"
+              className="form-control"
+              id="username"
+              name="username"
+              value={formData.username}
+              onChange={handleInputChange}
+              
             />
-          </label>
-        </div>
-        <div className='form-group'>
-          <label>
-            Password:
+          </div>
+          <div className="form-group">
+            <label htmlFor="password" className='teamname'>Password</label>
             <input
-              className='form-control'
-              name='password'
-              type='password'
-              placeholder='Password'
-              autoComplete='off'
-              required
+              type="password"
+              className="form-control"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              
             />
-          </label>
-        </div>
-        <button type='submit'>Log in</button>
-
-        <button className='forgotPassword' onClick={passwordReset}>
-          Forgot Password
-        </button>
-      </form>
-
-      <br />
-      <SocialSignIn />
+          </div>
+          <button type="submit" className="btn btn-primary">
+            Log In
+          </button>
+        </form>
+      </div>
     </div>
+    
   );
-}
+};
 
-export default SignIn;
+export default SignIn

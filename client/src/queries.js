@@ -231,6 +231,85 @@ const LOAD_GAME_BY_USERID = gql`
         }
     }
 `;
+
+const CREATE_USER = gql`
+    mutation CreateUser (
+        $username: String!,
+        $password: String!,
+        $dob: String,
+        $phone: String,
+        $email: String!, 
+        $country: String,
+        $profilePic: String,
+        $bio: String,
+        $isPremium: Boolean
+    ) {
+        CreateUser (
+            username: $username,
+            password: $password,
+            dob: $dob,
+            phone: $phone,
+            email: $email, 
+            country: $country,
+            profilePic: $profilePic,
+            bio: $bio,
+            isPremium: $isPremium   
+        ) {
+            username
+            dob
+            phone
+            email
+            country
+            profilePic
+            bio
+            isPremium
+        }
+    }
+`;
+
+const GET_ALL_USER = gql `
+    query GetAllUsers{
+        GetAllUsers{
+            _id
+            username
+            email
+        }
+    }
+`
+
+const GET_USER_BY_ID = gql `
+    query GetUserById ($id: ID!){
+        GetUserById(id: $id){
+            _id
+            username
+            email
+        }
+    }
+`
+
+const LOGIN = gql `
+    mutation Login($username: String!, $password: String!){
+        Login(username: $username, password: $password) {
+            _id
+            username
+            password
+            dob
+            phone
+            email
+            country
+            profilePic
+            bio
+            isPremium
+            coins
+            followingTeamID
+            followingPlayerID
+
+        }
+    }
+`
+
+
+
 export default {
     LOAD_LEAGUES,
     LOAD_STANDINGS,
@@ -246,5 +325,9 @@ export default {
     LOAD_GAME_BY_USERID,
     LOAD_GAME_BY_FIXTURE_ID,
     CREATE_GAME,
-    LOAD_TEAM_INFO
+    LOAD_TEAM_INFO,
+    CREATE_USER,
+    GET_ALL_USER,
+    GET_USER_BY_ID,
+    LOGIN
 };

@@ -7,8 +7,9 @@ import Landing from './Landing';
 import Navigation from './Navigation';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
-import { AuthProvider } from '../firebase/Auth';
-import PrivateRoute from './PrivateRoute';
+// import { AuthProvider } from '../firebase/Auth';
+// import PrivateRoute from './PrivateRoute';
+import SignOut from './SignOut';
 import About from './About';
 import News from './News';
 import NotFound from './NotFound';
@@ -41,7 +42,6 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <AuthProvider>
         <Router>
           <div className='App'>
             <header className='App-header'>
@@ -69,9 +69,9 @@ function App() {
                 <Route path='/' element={<Landing />} />
                 <Route path='/home' element={<Landing />} />
 
-                <Route path='/account' element={<PrivateRoute />}>
+                {/* <Route path='/account' element={<PrivateRoute />}>
                   <Route path='/account' element={<Account />} />
-                </Route>
+                </Route> */}
                 <Route path='/league/:leagueId' element={<SingleLeague />} />
                 <Route path='/league/:leagueId/standings' element={<Standings />} />
                 <Route path='/league/:leagueId/stats' element={<LeagueStats />} />
@@ -80,6 +80,7 @@ function App() {
                 <Route path='/game/' element={<Game />} />
                 <Route path='/signin' element={<SignIn />} />
                 <Route path='/signup' element={<SignUp />} />
+                <Route path='/signout' element={<SignOut />} />
                 <Route path='/about' element={<About />} />
                 <Route path='/news' element={<News />} />
                 <Route path="/404" element={<NotFound />} />
@@ -88,7 +89,6 @@ function App() {
 
           </div>
         </Router>
-      </AuthProvider>
     </ApolloProvider>
   );
 }
