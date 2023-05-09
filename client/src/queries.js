@@ -37,6 +37,7 @@ const LOAD_STANDINGS = gql`
     query StandingInformation($league: Int!, $season: Int!){
         StandingInformation(league: $league, season: $season) {
             rank,
+            teamId,
             teamName,
             logo,
             points,
@@ -320,6 +321,16 @@ const LOAD_FOLLOWED_PLAYERS = gql `
     query GetFollowedPlayersInfo($userId: String!) {
         GetFollowedPlayersInfo(userId: $userId){
             playerId
+            playerName
+            playerImage
+        }
+    }
+`
+
+const LOAD_FOLLOWED_TEAMS = gql `
+    query GetFollowedTeamsInfo($userId: String!) {
+        GetFollowedTeamsInfo(userId: $userId){
+            teamId
         }
     }
 `
@@ -365,9 +376,53 @@ mutation AddPlayerFollowing($userId:ID!,$PlayerID: ID!){
 
     }
 `
+
+const LOAD_TEAM_FOLLOWING = gql`
+mutation AddTeamFollowing($userId:ID!,$teamID: ID!){
+    AddTeamFollowing(userId:$userId,teamID:$teamID){
+
+            _id
+            username
+            password
+            dob
+            phone
+            email
+            country
+            profilePic
+            bio
+            isPremium
+            coins
+            followingTeamID
+            followingPlayerID
+        }
+
+    }
+`
 const LOAD_PLAYER_UNFOLLOWING = gql`
 mutation DeletePlayerFollowing($userId:ID!,$PlayerID: ID!){
         DeletePlayerFollowing(userId:$userId,PlayerID:$PlayerID){
+
+            _id
+            username
+            password
+            dob
+            phone
+            email
+            country
+            profilePic
+            bio
+            isPremium
+            coins
+            followingTeamID
+            followingPlayerID
+        }
+
+    }
+`
+
+const LOAD_TEAM_UNFOLLOWING = gql`
+mutation DeleteTeamFollowing($userId:ID!,$teamID: ID!){
+    DeleteTeamFollowing(userId:$userId,teamID:$teamID){
 
             _id
             username
@@ -412,5 +467,8 @@ export default {
     LOGIN,
     LOAD_PLAYER_FOLLOWING,
     LOAD_PLAYER_UNFOLLOWING,
-    LOAD_FOLLOWED_PLAYERS
+    LOAD_FOLLOWED_PLAYERS,
+    LOAD_FOLLOWED_TEAMS,
+    LOAD_TEAM_FOLLOWING,
+    LOAD_TEAM_UNFOLLOWING,
 };

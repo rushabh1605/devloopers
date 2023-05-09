@@ -103,7 +103,8 @@ module.exports = {
           homeMatches: standing.home.played,
           awayMatches: standing.away.played,
           goalsScored: standing.all.goals.for,
-          goalsConceded: standing.all.goals.against
+          goalsConceded: standing.all.goals.against,
+          teamId: standing.team.id
         }         
         standingsList.push(singleTeam);        
       });               
@@ -305,10 +306,108 @@ module.exports = {
       return gameData
     },
 
-    GetAllUsers: async () => {     
-      const user_list = await user.getAllUsers();
-      if(user_list.errors){
-          return user_list.errors[0].message
+  GetAllUsers: async () => {     
+    const user_list = await user.getAllUsers();
+    if(user_list.errors){
+        return user_list.errors[0].message
+    }
+    else{
+        return (user_list);
+    }
+  },
+
+  GetUserById: async (_, args) => {
+    const oneUser = await user.getUserById(args.id);
+    if(oneUser.errors){
+    
+        return oneUser.errors[0].message
+    }
+    else{
+        return (oneUser);
+    }
+    
+  },
+
+
+  GetFollowedPlayersInfo: async (_, args) => {
+
+    let key_exists = await client.exists(args.userId +"_PlayerFollowing");
+    let index;
+    let newArray=[];
+    if(key_exists){
+      console.log("helllo");
+      //index = await client.get(args.userId +"_PlayerFollowing")  ;
+      // return JSON.stringify(index); 
+      // console.log(index)
+      const length = await client.lLen(args.userId +"_PlayerFollowing");
+      //console.log(length);
+      for(let i=0; i<length; i++){
+          const result = await client.lIndex(args.userId +"_PlayerFollowing", i);
+          // console.log(result)
+          // console.log(JSON.parse(result))
+          
+
+          let tempPlayerId= parseInt(JSON.parse(result))
+
+          const {data} = await axios.get("https://api-football-v1.p.rapidapi.com/v3/players?id="+ tempPlayerId+"&season=2022" , config);  
+
+          console.log(data.response[0]);
+
+
+
+          let newObject= {playerId: tempPlayerId, playerName: data.response[0].player.name, playerImage: data.response[0].player.photo}
+          newArray.push(newObject);        
+      }
+      console.log(newArray)
+      if(newArray.length!== 0) {
+          return newArray;
+      } else{
+          return [0];
+      }
+    }
+    
+    else return [0];   
+  },
+
+  GetFollowedTeamsInfo: async (_, args) => {
+
+    let key_exists = await client.exists(args.userId +"_TeamFollowing");
+    let index;
+    let newArray=[];
+    if(key_exists){
+      console.log("helllo");
+      const length = await client.lLen(args.userId +"_TeamFollowing");
+      for(let i=0; i<length; i++){
+          const result = await client.lIndex(args.userId +"_TeamFollowing", i);
+          //console.log(typeof(result))
+          console.log(typeof(parseInt(JSON.parse(result))));
+          let newObject= {teamID: parseInt(JSON.parse(result))}
+          newArray.push({teamID: parseInt(JSON.parse(result))});        
+      }
+
+      newArray.forEach(element => {
+        console.log(element.teamID)
+        console.log(typeof(element.teamID))
+      });
+      
+      if(newArray.length!== 0) {
+          return newArray;
+      } else{
+          return [0];
+      }
+    }
+    
+    else return [0];   
+  }
+
+},
+
+Mutation:{
+  createGame: async (_, args) => {
+
+      const game = await user.createGame(args.fixtureID, args.userID, args.awayTeam, args.homeTeam, args.betField);
+      if(game.errors){
+        return game.errors[0].message
       }
       else{
           return (user_list);

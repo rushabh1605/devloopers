@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import {Link, useParams } from "react-router-dom";
 import queries from '../queries';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -45,63 +45,71 @@ const Standings = () => {
                                         {/* <img alt="Leaguelogo" class=" ml-auto img-fluid leagueimg" src={x.logo} /> 
                                         <p>{x.leagueName}</p> */}
                         </div>
-                        <div className="col-md-1">
-                            <p className="tablehead">PL</p>
-                        </div>
-                        <div className="col-md-1">
-                            <p className="tablehead">W</p>
-                        </div>
-                        <div className="col-md-1">
-                            <p className="tablehead">D</p>
-                        </div>
-                        <div className="col-md-1">
-                            <p className="tablehead">L</p>
-                        </div>
-                        <div className="col-md-1">
-                            <p className="tablehead">+/-</p>
-                        </div>
-                        <div className="col-md-1">
-                            <p className="tablehead">GD</p>
-                        </div>
-                        <div className="col-md-1">
-                            <p className="tablehead">PTS</p>
-                        </div>
-                    </div>
-                    {data.StandingInformation.map((x) => {
-                        return (
-                        <div className="row matches">
-                            <div className="col-md-1">
-                                <p className="tablehead">{x.rank}</p>
-                            </div>
-                            <div className="col-md-4 d-flex">
-                                <img alt="Leaguelogo" class="img-fluid leagueimg" src={x.logo} /> 
-                                <p className=" tablehead ml-3">{x.teamName}</p>
-                            </div>
-                            <div className="col-md-1">
-                                <p className="tablehead">{x.matchesPlayed}</p>
-                            </div>
-                            <div className="col-md-1">
-                                <p className="tablehead">{x.matchesWon}</p>
-                            </div>
-                            <div className="col-md-1">
-                                <p className="tablehead">{x.matchesDraw}</p>
-                            </div>
-                            <div className="col-md-1">
-                                <p className="tablehead">{x.matchesLost}</p>
-                            </div>
-                            <div className="col-md-1">
-                                <p className="tablehead">{x.goalsScored}- {x.goalsConceded}</p>
-                            </div>
-                            <div className="col-md-1">
-                                <p className="tablehead">{x.goalsScored - x.goalsConceded}</p>
-                            </div>
-                            <div className="col-md-1">
-                                <p className="tablehead">{x.points}</p>
+                                    <div className="col-md-1">
+                                        <p className="tablehead">PL</p>
+                                    </div>
+                                    <div className="col-md-1">
+                                        <p className="tablehead">W</p>
+                                    </div>
+                                    <div className="col-md-1">
+                                        <p className="tablehead">D</p>
+                                    </div>
+                                    <div className="col-md-1">
+                                        <p className="tablehead">L</p>
+                                    </div>
+                                    <div className="col-md-1">
+                                        <p className="tablehead">+/-</p>
+                                    </div>
+                                    <div className="col-md-1">
+                                        <p className="tablehead">GD</p>
+                                    </div>
+                                    <div className="col-md-1">
+                                        <p className="tablehead">PTS</p>
+                                    </div>
+                                </div>
+                            {data.StandingInformation.map((x) => {
+                                console.log(x)
+                                
+                                  return (
+                                <div className="row matches">
+                                    <div className="col-md-1">
+                                        <p className="tablehead">{x.rank}</p>
+                                    </div>
+                                <div className="col-md-4 d-flex">
+                                   
+                                    <img alt="Leaguelogo" class="img-fluid leagueimg" src={x.logo} /> 
+                                    <Link to={`/team/${x.teamId}`}>
+                                    <p className=" tablehead ml-3">{x.teamName}</p>
+                                    </Link>
+                                </div>
+                                <div className="col-md-1">
+                                    <p className="tablehead">{x.matchesPlayed}</p>
+                                </div>
+                                <div className="col-md-1">
+                                    <p className="tablehead">{x.matchesWon}</p>
+                                </div>
+                                <div className="col-md-1">
+                                    <p className="tablehead">{x.matchesDraw}</p>
+                                </div>
+                                <div className="col-md-1">
+                                    <p className="tablehead">{x.matchesLost}</p>
+                                </div>
+                                <div className="col-md-1">
+                                    <p className="tablehead">{x.goalsScored}- {x.goalsConceded}</p>
+                                </div>
+                                <div className="col-md-1">
+                                    <p className="tablehead">{x.goalsScored - x.goalsConceded}</p>
+                                </div>
+                                <div className="col-md-1">
+                                    <p className="tablehead">{x.points}</p>
 
+                                </div>
                             </div>
-                        </div>
-                        )
-                    })}
+                               
+                                            
+                            )
+
+                            })}
                 </div>
             </div>
         )

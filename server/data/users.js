@@ -137,6 +137,28 @@ const checkUser = async (username, password) =>
 };
 
 const addTeamFollowing = async (userId,teamID) => {
+
+  console.log(teamID);
+
+  let key_exists = await client.exists(userId +"_TeamFollowing");
+  let index;
+  if(key_exists){
+    index = await client.rPush(userId +"_TeamFollowing", JSON.stringify(teamID))    
+  }
+
+  else{
+    index = await client.lPush(userId +"_TeamFollowing",JSON.stringify(teamID))   
+  }
+    
+  if(index){
+    const data_pushed = await client.lIndex(userId +"_TeamFollowing", index-1)
+    console.log(JSON.parse(data_pushed));
+  }
+  else{
+      console.log("cannot add to redis");
+  }
+
+
   if(validation.valid_id(userId,"User ID"));
   userId = userId.trim();
   const userscollection = await users();
@@ -185,6 +207,22 @@ const addPlayerFollowing = async (userId,playerID) => {
 };
 
 const deleteTeamFollowing = async (userId,teamID) => {
+
+  let key = await client.exists(userId +"_TeamFollowing");
+  let removed
+  const length = await client.lLen(userId +"_TeamFollowing")
+      for(let i=0; i<length; i++){
+          const result = await client.lIndex(userId +"_TeamFollowing", i)
+          let data = JSON.parse(result)
+          // console.log(data)
+          if(data ===teamID){
+              removed = await client.lRem(userId +"_TeamFollowing",0,result)
+          }
+          else{
+              removed=null
+          }
+     }
+
   if(validation.valid_id(userId,"User ID"));
   userId = userId.trim();
   const userscollection = await users();
@@ -241,7 +279,7 @@ const createGame = async (fixtureID, userID, awayTeam, homeTeam, betField) => {
   const insert_game = await gamesCollection.insertOne(creategame);
   if(!insert_game.insertedId || !insert_game.acknowledged) throw {error:'Unable to bet on the game', statusCode:500};
   const created = insert_game.insertedId.toString();
-  const data = await getGameById(created);
+  const data = await getGameById(created.toString());
   
   return data;
 
@@ -258,7 +296,7 @@ const getGameByUserId = async (userId) => {
 
 const getGameById = async (gameId) => {
   if(validation.valid_id(gameId,"ID"));
-  userId = userId.trim();
+  // userId = userId.trim();
   const gamesCollection = await games();
   const game_data = await gamesCollection.findOne({_id: new ObjectId(gameId)});
   if(game_data === null) throw {error:'No game found with '+userId, statusCode:404};

@@ -59,6 +59,7 @@ const typeDefs = gql`
     awayMatches: Int
     goalsScored: Int
     goalsConceded: Int
+    teamId: Int
   }
 
   type FixtureByDate {
@@ -176,6 +177,12 @@ const typeDefs = gql`
 
   type FollowedPlayers {
     playerId: Int
+    playerName: String
+    playerImage: String
+  }
+
+  type FollowedTeams {
+    teamId: Int
   }
 
    scalar Date
@@ -198,6 +205,7 @@ const typeDefs = gql`
     getGameByUserId(id:String!):[Game]
     TeamInformation(teamID: Int!): TeamInfo 
     GetFollowedPlayersInfo(userId: String) : [FollowedPlayers]
+    GetFollowedTeamsInfo(userId: String) : [FollowedTeams]
   }
 
   type Mutation
