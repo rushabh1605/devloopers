@@ -25,3 +25,5 @@ validations to be done in server/client
 xss attacks 
 
 Username validation for duplicate username
+
+when we change the date, readme mai likhna hai , atleast wait for 5-6 seconds for the data to load

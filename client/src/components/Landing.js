@@ -172,8 +172,6 @@ function Landing() {
           </Accordion>
         </div>
 
-
-
         <div class="col-md-6">
           <div className="wsk-cp-matches" >
 
@@ -189,7 +187,6 @@ function Landing() {
             <br></br>
 
             {FixtureByDateInformation.length ? (FixtureByDateInformation.map((x) => {
-              console.log(x)
               return (
                 <div class="row matches m-3">
                   <div class="col-md-3  d-flex align-items-center mt-4 mt-md-0">
@@ -232,7 +229,6 @@ function Landing() {
           </div>
         </div>
 
-
         <div class="col-md-3">
 
           <div className="wsk-cp-matches">
@@ -272,10 +268,6 @@ function Landing() {
           </div>
 
         </div>
-
-
-
-
 
       </div>
 

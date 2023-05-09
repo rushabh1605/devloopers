@@ -292,7 +292,11 @@ ul {
   display: grid;
   border-radius: 5px;
 
+}
 
+.form {
+  width: 50%;
+  background-color: #2d2d2d;
 }
 
 .date {

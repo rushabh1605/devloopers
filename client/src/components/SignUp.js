@@ -6,7 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import '../App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const SignIn = () => {
   
@@ -71,8 +72,9 @@ const SignIn = () => {
   };
 
   return (
-    <div class="col-md-6 align-items-center ">
-      <div className="wsk-cp-matches" >
+    <div class="row justify-content-center" id='home'>
+      <div class="col-md-6">
+        <div className="wsk-cp-matches" >
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="username" className='teamname'>Username</label>
@@ -164,6 +166,9 @@ const SignIn = () => {
           </button>
         </form>
       </div>
+      </div>
+
+      
     </div>
     
   );

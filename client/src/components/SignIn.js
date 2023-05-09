@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import queries from '../queries';
 import Swal from 'sweetalert2';
+import '../App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
@@ -50,8 +52,9 @@ const SignIn = () => {
   };
 
   return (
-    <div class="col-md-6 align-items-center ">
-      <div className="wsk-cp-matches" >
+    <div class="row justify-content-center" id='home'>
+      <div class="col-md-6">
+        <div className="wsk-cp-matches" >
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="username" className='teamname'>Username</label>
@@ -82,6 +85,8 @@ const SignIn = () => {
           </button>
         </form>
       </div>
+      </div>
+      
     </div>
     
   );
