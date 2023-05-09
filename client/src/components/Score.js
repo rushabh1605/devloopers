@@ -5,27 +5,16 @@ import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useQuery,useMutation} from "@apollo/client";
 import NotFoundPage from "./NotFound"
+import Swal from 'sweetalert2';
 
 const moment = require('moment');
 const Score = () => {
-
-    let userID ="644801104403065762287e6c";
-
-//   const {loading, error, data} = useQuery(
-//     queries.LOAD_GAME_BY_USERID,
-//     {
-//       fetchPolicy: 'cache-and-network',
-//       variables:{id:userID},
-//       manual: true,
-//       refetchOnWindowFocus: false,
-//       enabled: false
-      
-//     }
-//   );
-
+    const sessionToken = JSON.parse(sessionStorage.getItem('sessionToken'));
+    let userID =sessionToken.Login._id;
+console.log(userID)
   
-  const {loading, error, data} = useQuery(
-    queries.LOAD_GAME_BY_USERID,
+  const {loading, error, data,refetch} = useQuery(
+    queries.GET_USER_BY_ID,
     {
       fetchPolicy: 'cache-and-network',
       variables:{id:userID},
@@ -35,30 +24,42 @@ const Score = () => {
       
     }
   );
-//   const [mutate,{loading: loadingmutation, error: errormutation, data: datamutation }] = useMutation(queries.);
-//   const handle_createGame = (event,home,away,bet,fixture) => {
-//     console.log(home,away,fixture,bet)
-//     mutate({
+  const [mutate,{loading: loadingmutation, error: errormutation, data: datamutation }] = useMutation(queries.UPDATE_GAME);
+  const handle_score = (event) => {
+
+    mutate({
         
-//         variables:{
-//             fixtureID: fixture,
-//             userID: userID,
-//             awayTeam: parseInt(away),
-//             homeTeam:parseInt(home),
-//             betField: parseInt(bet),
+        variables:{
+            gameID: userID,
             
-//         },
-//         refetchQueries:[{
-//             query : queries.LOAD_GAME_BY_USERID,
-//             variables:{
-//                 id:userID
-//             }
-//         }]
+        } 
+        
       
        
-//   })
-  
-//   }
+  }).then((value) => {
+    
+     
+        console.log(value)
+        Swal.fire({
+            icon: 'Success',
+            title: 'Your score !',
+            text: "Your score is "+ value.data.updateGame.coins,
+          });
+      
+
+  }).catch(error => {
+    refetch(
+        {id:userID}
+    )
+    console.log(data.GetUserById.coins)
+    Swal.fire({
+        icon: 'Success',
+        title: 'Score !',
+        text: "Your score is "+ data.GetUserById.coins,
+      });
+
+  });
+  }
 
 if(loading){
     return(
@@ -76,19 +77,12 @@ if(loading){
 
 if(data ){
     
-    const {getGameByUserId} = data
+    const {GetUserById} = data
     
   
     return(
         <div className="row justify-content-center" id='home'>
-            {getGameByUserId.map((x) => {
-                
-                return(
-                        <div>
-                            <p>{x.result}</p>
-                        </div>
-                    );
-            })}
+            <button className='btn btn-success' onClick={(event) => handle_score(event)}>GET SCORE</button>
         </div>
 
     )

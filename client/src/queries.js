@@ -217,6 +217,25 @@ const CREATE_GAME = gql`
         }
     }
 `;
+const UPDATE_GAME = gql`
+    mutation updateGame($gameID:String! ) {
+        updateGame(gameID:$gameID ){
+            _id
+            username
+            password
+            dob
+            phone
+            email
+            country
+            profilePic
+            bio
+            isPremium
+            coins
+            followingTeamID
+            followingPlayerID
+        }
+    }
+`;
 
 const LOAD_GAME_BY_USERID = gql`
     query getGameByUserId($id:String!) {
@@ -377,6 +396,7 @@ export default {
     LOAD_GAME_BY_USERID,
     LOAD_GAME_BY_FIXTURE_ID,
     CREATE_GAME,
+    UPDATE_GAME,
     LOAD_TEAM_INFO,
     CREATE_USER,
     GET_ALL_USER,

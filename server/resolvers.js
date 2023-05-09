@@ -347,8 +347,9 @@ Mutation:{
   },
 
 
-  updateGame: async (_, args) => {     
-    const updatedGame = await user.updateGame(args.fixtureID);
+  updateGame: async (_, args) => {   
+
+    const updatedGame = await user.updateGame(args.gameID);
     if(updatedGame.errors){
       return updatedGame.errors[0].message
     }

@@ -193,7 +193,7 @@ const createGame = async (fixtureID, userID, awayTeam, homeTeam, betField) => {
     awayTeam:awayTeam,
     homeTeam:homeTeam,
     betField:betField,
-    result:null
+    result:0
   };
 
   const insert_game = await gamesCollection.insertOne(creategame);
@@ -234,63 +234,98 @@ const getGameByfixtureId = async (fixtureID) => {
   return game_data; 
 };
 
-const updateGame = async (fixtureID) => {
-  if(validation.valid_id(fixtureID,"ID"));
-  fixtureID = fixtureID.trim();
+const updateGame = async (userID) => {
+  // console.log(userID)
+  if(validation.valid_id(userID,"ID"));
+  userID = userID.trim();
+  const gamesCollection = await games();
+  const userscollection = await users();
+  let userData = await getUserById(userID.toString());
+  const games_obj = await getGameByUserId(userID);
+ console.log(userData.coins)
+if(userData.coins >=200){
+    console.log("hi")
+  await userscollection.updateOne({_id: new ObjectId(userID)},{$set : { isPremium : true}} );
+}
 
-  const API_KEY = '3df39a1cbamsh63f95b9f20d493ep18c3d2jsnaa9a8f6d3181';
-  const API_HOST = 'api-football-v1.p.rapidapi.com';
-  const config = {
-    headers:{
-      'X-RapidAPI-Host' : API_HOST,
-      'X-RapidAPI-Key' : API_KEY
-    }
-  };
-
-  const { data } = await axios.get("https://api-football-v1.p.rapidapi.com/v3/fixtures"+ fixtureID, config);   
-
-  if(data.response[0].fixture.status.short !== 'FT'){
-    throw {error:'The Match is not declared yet, the result will be declare once the match is over! ', statusCode:200}
-
+  if(games_obj.length===0){
+    throw {error:'No games to score ', statusCode:200}
   }
-
-  let gameResult;
-
-  if(data.response[0].score.fulltime.home > data.response[0].score.fulltime.away){
-    gameResult = 1;
-  }  
-  else if(data.response[0].score.fulltime.home < data.response[0].score.fulltime.away){
-    gameResult = 2;
-  } 
-  else{
-    gameResult= 0;
+  for (const x of games_obj) {
+     
+  if(userData.coins >=200){
+      
+    await userscollection.updateOne({_id: new ObjectId(userID)},{$set : { isPremium : true}} );
   }
+    if (x.result===0){
+
+    const API_KEY = '3df39a1cbamsh63f95b9f20d493ep18c3d2jsnaa9a8f6d3181';
+    const API_HOST = 'api-football-v1.p.rapidapi.com';
+    const config = {
+      headers:{
+        'X-RapidAPI-Host' : API_HOST,
+        'X-RapidAPI-Key' : API_KEY
+      }
+    };
   
-  const gamesCollection = await games(); 
-  const game_data = await gamesCollection.updateOne({fixtureID: fixtureID}, { $push: { result: gameResult}});
+    const { data } = await axios.get("https://api-football-v1.p.rapidapi.com/v3/fixtures?id="+ x.fixtureID, config);   
   
-  if (game_data.modifiedCount === 0) throw {error:'Cannot Update Result ', statusCode:500};
-
-  const userData = await getUserById(userId);
-  if(gameResult===0){
-    userData.coins = userData.coins + 50;
-  }
-  else if(gameResult===1){
-   if(data.response[0].score.fulltime.home===game_data.betField){
-      userData.coins = userData.coins + 100;
+    if(data.response[0].fixture.status.short !== 'FT'){
+      console.log("gameResult")
+      throw {error:'The Match is not declared yet, the result will be declare once the match is over! ', statusCode:200}
+  
     }
-  }
-  else if(gameResult===2){
-    if(data.response[0].score.fulltime.away===game_data.betField){
-       userData.coins = userData.coins + 100;
+  
+    let gameResult;
+  
+    if(data.response[0].score.fulltime.home > data.response[0].score.fulltime.away){
+      gameResult = 1;
+    }  
+    else if(data.response[0].score.fulltime.home < data.response[0].score.fulltime.away){
+      gameResult = 2;
+    } 
+    else{
+      gameResult= 3;
+    }
+    // console.log(gameResult)
+   
+    const game_data = await gamesCollection.updateOne({fixtureID: x.fixtureID},{$set : { result : gameResult}} );
+    
+    
+    if (game_data.modifiedCount === 0) throw {error:'Cannot Update Result ', statusCode:500};
+  
+     userData = await getUserById(userID.toString());
+    
+    if(gameResult===3){
+       await userscollection.updateOne({_id: new ObjectId(userID)},{$set : { coins : userData.coins + 50}} );
+      
+    }
+    else if(gameResult===1){
+   
+     if(data.response[0].teams.home.id===x.betField){
+      console.log("Innnn")
+       console.log(await userscollection.updateOne({_id: new ObjectId(userID)},{$set : { coins : userData.coins + 100}} ));
+      }
+    }
+    else if(gameResult===2){
+      if(data.response[0].teams.away.id===x.betField){
+        console.log("OUTT")
+         await userscollection.updateOne({_id: new ObjectId(userID)},{$set : { coins : userData.coins + 100}} );
+       }
      }
-   }
-
-  if(userData.coins>200){
-    userData.isPremium=true;
-  }
   
-  return game_data; 
+   
+    
+    
+  }
+  if(userData.coins >=200){
+    
+     await userscollection.updateOne({_id: new ObjectId(userID)},{$set : { isPremium : true}} );
+   }
+        
+}
+ 
+return await getUserById(userID.toString());
 };
 
   module.exports = {

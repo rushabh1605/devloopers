@@ -10,6 +10,7 @@ import {Card} from 'react-bootstrap'
 const moment = require('moment');
 const Game = () => {
 
+  const sessionToken = JSON.parse(sessionStorage.getItem('sessionToken'));
     let now = new Date();
     let dateString = moment(now).format('YYYY-MM-DD');
     const hours = now.getHours()
@@ -18,7 +19,7 @@ const Game = () => {
     let away;
     let bet;
     let fixture;
-    let userID ="644801104403065762287e6c";
+    let userID =sessionToken.Login._id;
 
    const {loading, error, data,refetch} = useQuery(
     queries.LOAD_FIXTURES,

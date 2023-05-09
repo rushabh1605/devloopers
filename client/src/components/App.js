@@ -24,6 +24,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import Score from './Score';
 import {
   ApolloClient,
   HttpLink,
@@ -78,6 +79,7 @@ function App() {
                 <Route path='/player/:playerId' element={<SinglePlayer />} />
                 <Route path='/team/:teamId' element={<SingleTeam />} />
                 <Route path='/game/' element={<Game />} />
+                <Route path='/score/' element={<Score />} />
                 <Route path='/signin' element={<SignIn />} />
                 <Route path='/signup' element={<SignUp />} />
                 <Route path='/signout' element={<SignOut />} />

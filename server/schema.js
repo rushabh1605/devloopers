@@ -196,7 +196,7 @@ const typeDefs = gql`
 
   type Mutation {
     createGame(fixtureID:Int!, userID:String!, awayTeam: Int!, homeTeam: Int!, betField: Int!): Game
-    updateGame(gameID:String! ): Game 
+    updateGame(gameID:String! ): User 
     CreateUser(username:String!,password:String!, dob:String, phone:String, email:String!, country:String, profilePic:String, bio:String, isPremium:Boolean): User
     Login(username:String!,password:String!): User
     DeleteUser(id: ID!): [User]
