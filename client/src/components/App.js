@@ -46,10 +46,8 @@ function App() {
         <Router>
           <div className='App'>
             <header className='App-header'>
-
               <Navbar collapseOnSelect expand="lg" className='bg' >
                 <Container>
-
                   <Navbar.Brand>
                     <Link to="/">
                       <span className="navbar-brand">SUPASTRIKERS</span>
@@ -64,21 +62,18 @@ function App() {
                 </Container>
               </Navbar>
             </header>
-
             <div className='App-body'>
               <Routes>
                 <Route path='/' element={<Landing />} />
                 <Route path='/home' element={<Landing />} />
 
-                {/* <Route path='/account' element={<PrivateRoute />}>
-                  <Route path='/account' element={<Account />} />
-                </Route> */}
                 <Route path='/league/:leagueId' element={<SingleLeague />} />
                 <Route path='/league/:leagueId/standings' element={<Standings />} />
                 <Route path='/league/:leagueId/stats' element={<LeagueStats />} />
 
                 <Route path='/player/:playerId' element={<SinglePlayer />} />
                 <Route path='/team/:teamId' element={<SingleTeam />} />
+                
                 <Route path='/game/' element={<Game />} />
                 <Route path='/score/' element={<Score />} />
                 <Route path='/signin' element={<SignIn />} />

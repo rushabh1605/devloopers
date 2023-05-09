@@ -18,31 +18,31 @@ const LeagueStats = () => {
 
     const { loading: LeagueLoading, error: LeagueError, data: LeagueData } = useQuery(
         queries.LOAD_LEAGUE_BY_ID, {
-        fetchPolicy: 'cache-and-network',
-        variables: { id: leagueId },
-        manual: true,
-        refetchOnWindowFocus: false,
-        enabled: false
-    }
+            fetchPolicy: 'cache-and-network',
+            variables: { id: leagueId },
+            manual: true,
+            refetchOnWindowFocus: false,
+            enabled: false
+        }
     )
 
     const { loading, error, data, refetch } = useQuery(
-        queries.LOAD_TOP_SCORER, {
-        fetchPolicy: 'cache-and-network',
-        variables: { league: leagueId, season: 2022 },
-        manual: true,
-        refetchOnWindowFocus: false,
-        enabled: false
-    }
+            queries.LOAD_TOP_SCORER, {
+            fetchPolicy: 'cache-and-network',
+            variables: { league: leagueId, season: 2022 },
+            manual: true,
+            refetchOnWindowFocus: false,
+            enabled: false
+        }
     )
     const { loading: AssitLoading, error: AssitError, data: AssitData } = useQuery(
         queries.LOAD_TOP_ASSISTS, {
-        fetchPolicy: 'cache-and-network',
-        variables: { league: leagueId, season: 2022 },
-        manual: true,
-        refetchOnWindowFocus: false,
-        enabled: false
-    }
+            fetchPolicy: 'cache-and-network',
+            variables: { league: leagueId, season: 2022 },
+            manual: true,
+            refetchOnWindowFocus: false,
+            enabled: false
+        }
     )
 
 
@@ -59,23 +59,13 @@ const LeagueStats = () => {
     }
 
     if (LeagueData && data && AssitData) {
-
         return (
             <div class="col-md-12">
-
-
                 <div className="row">
-
                     <div className="col-md-5">
-
-
-
                         <div className="row mt-3  wsk-cp-matches">
-                            <h1 className="mt-2 mb-2"
-                                style={{
-                                    color: "white",
-                                }}>
-                                Top Scorer</h1> <br></br> <br></br>
+                            <h1 className="mt-2 mb-2" style={{ color: "white", }}> Top Scorer</h1> 
+                            <br></br> <br></br>
                             {data.TopScorerByLeague.map((x) => {
                                 return (
                                     <div className="row">
@@ -87,11 +77,9 @@ const LeagueStats = () => {
                                                 </Link>
 
                                                 <div className="d-flex">
-
                                                     <img alt="Leaguelogo" class=" ml-2" width="20" height="20" src={x.teamLogo} />
                                                     <p className="ml-2 tablehead">{x.teamName}</p>
                                                 </div>
-
                                             </div>
                                             <div className="col-md-2 ml-auto">
                                                 <button className="btn-danger" style={{ color: "#ffff" }}>{x.goals}</button>
@@ -109,23 +97,14 @@ const LeagueStats = () => {
                                 )
                             })}
                         </div>
-
-
-
                     </div>
                     <div className="col-md-2">
 
                     </div>
                     <div className="col-md-5">
-
-
-
                         <div className="row mt-3  wsk-cp-matches">
-                            <h1 className="mt-2 mb-2"
-                                style={{
-                                    color: "white",
-                                }}>
-                                Assists</h1> <br></br> <br></br>
+                            <h1 className="mt-2 mb-2" style={{ color: "white", }}> Assists</h1> 
+                            <br></br> <br></br>
                             {AssitData.TopAssistsByLeague.map((y) => {
                                 return (
                                     <div className="row">
@@ -137,7 +116,6 @@ const LeagueStats = () => {
                                                 </Link>
 
                                                 <div className="d-flex">
-
                                                     <img alt="Leaguelogo" class=" ml-2" width="20" height="20" src={y.teamLogo} />
                                                     <p className="ml-2 tablehead">{y.teamName}</p>
                                                 </div>
@@ -159,26 +137,9 @@ const LeagueStats = () => {
                                 )
                             })}
                         </div>
-
-
-
                     </div>
-
                 </div>
-
-
             </div>
-
-
-
-
-
-
-
-
-
-
-
 
         )
     }

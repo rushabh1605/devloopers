@@ -106,7 +106,7 @@ if(users_all.length===0){
 else{
   users_all.forEach(element => {
     if(element.username.toLowerCase() === username.trim().toLowerCase()){
-      throw {error:'Username already exists !',statusCode:400}
+      throw 'Username already exists !'
     }
   });
 }

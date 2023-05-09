@@ -20,7 +20,6 @@ const Standings = () => {
         }
     )
 
-
     if(loading){
         return(
             <div class="spinner-border m-5" role="status">
@@ -35,84 +34,76 @@ const Standings = () => {
 
     if(data){
         return(
-            
-                <div class="col-md-12">
-                    <div className="wsk-cp-matches" >
-                       
-                                <div class="row matches">
-                                    <div className="col-md-1">
-                                        <p className="tablehead">#</p>
-                                    </div>
-                                    <div className="col-md-4 d-flex">
-                                        <p  className="tablehead ml-5" >Team</p>
+            <div class="col-md-12">
+                <div className="wsk-cp-matches" >
+                    <div class="row matches">
+                        <div className="col-md-1">
+                            <p className="tablehead">#</p>
+                        </div>
+                        <div className="col-md-4 d-flex">
+                            <p  className="tablehead ml-5" >Team</p>
                                         {/* <img alt="Leaguelogo" class=" ml-auto img-fluid leagueimg" src={x.logo} /> 
                                         <p>{x.leagueName}</p> */}
-                                    </div>
-                                    <div className="col-md-1">
-                                        <p className="tablehead">PL</p>
-                                    </div>
-                                    <div className="col-md-1">
-                                        <p className="tablehead">W</p>
-                                    </div>
-                                    <div className="col-md-1">
-                                        <p className="tablehead">D</p>
-                                    </div>
-                                    <div className="col-md-1">
-                                        <p className="tablehead">L</p>
-                                    </div>
-                                    <div className="col-md-1">
-                                        <p className="tablehead">+/-</p>
-                                    </div>
-                                    <div className="col-md-1">
-                                        <p className="tablehead">GD</p>
-                                    </div>
-                                    <div className="col-md-1">
-                                        <p className="tablehead">PTS</p>
-                                    </div>
-                                </div>
-                            {data.StandingInformation.map((x) => {
-                                  return (
-                                <div className="row matches">
-                                    <div className="col-md-1">
-                                        <p className="tablehead">{x.rank}</p>
-                                    </div>
-                                <div className="col-md-4 d-flex">
-                                   
-                                    <img alt="Leaguelogo" class="img-fluid leagueimg" src={x.logo} /> 
-                                    <p className=" tablehead ml-3">{x.teamName}</p>
-                                </div>
-                                <div className="col-md-1">
-                                    <p className="tablehead">{x.matchesPlayed}</p>
-                                </div>
-                                <div className="col-md-1">
-                                    <p className="tablehead">{x.matchesWon}</p>
-                                </div>
-                                <div className="col-md-1">
-                                    <p className="tablehead">{x.matchesDraw}</p>
-                                </div>
-                                <div className="col-md-1">
-                                    <p className="tablehead">{x.matchesLost}</p>
-                                </div>
-                                <div className="col-md-1">
-                                    <p className="tablehead">{x.goalsScored}- {x.goalsConceded}</p>
-                                </div>
-                                <div className="col-md-1">
-                                    <p className="tablehead">{x.goalsScored - x.goalsConceded}</p>
-                                </div>
-                                <div className="col-md-1">
-                                    <p className="tablehead">{x.points}</p>
-
-                                </div>
-                            </div>
-                               
-                                            
-                            )
-
-                        })}
-                         </div>
+                        </div>
+                        <div className="col-md-1">
+                            <p className="tablehead">PL</p>
+                        </div>
+                        <div className="col-md-1">
+                            <p className="tablehead">W</p>
+                        </div>
+                        <div className="col-md-1">
+                            <p className="tablehead">D</p>
+                        </div>
+                        <div className="col-md-1">
+                            <p className="tablehead">L</p>
+                        </div>
+                        <div className="col-md-1">
+                            <p className="tablehead">+/-</p>
+                        </div>
+                        <div className="col-md-1">
+                            <p className="tablehead">GD</p>
+                        </div>
+                        <div className="col-md-1">
+                            <p className="tablehead">PTS</p>
+                        </div>
                     </div>
-                
-          
+                    {data.StandingInformation.map((x) => {
+                        return (
+                        <div className="row matches">
+                            <div className="col-md-1">
+                                <p className="tablehead">{x.rank}</p>
+                            </div>
+                            <div className="col-md-4 d-flex">
+                                <img alt="Leaguelogo" class="img-fluid leagueimg" src={x.logo} /> 
+                                <p className=" tablehead ml-3">{x.teamName}</p>
+                            </div>
+                            <div className="col-md-1">
+                                <p className="tablehead">{x.matchesPlayed}</p>
+                            </div>
+                            <div className="col-md-1">
+                                <p className="tablehead">{x.matchesWon}</p>
+                            </div>
+                            <div className="col-md-1">
+                                <p className="tablehead">{x.matchesDraw}</p>
+                            </div>
+                            <div className="col-md-1">
+                                <p className="tablehead">{x.matchesLost}</p>
+                            </div>
+                            <div className="col-md-1">
+                                <p className="tablehead">{x.goalsScored}- {x.goalsConceded}</p>
+                            </div>
+                            <div className="col-md-1">
+                                <p className="tablehead">{x.goalsScored - x.goalsConceded}</p>
+                            </div>
+                            <div className="col-md-1">
+                                <p className="tablehead">{x.points}</p>
+
+                            </div>
+                        </div>
+                        )
+                    })}
+                </div>
+            </div>
         )
     }
 

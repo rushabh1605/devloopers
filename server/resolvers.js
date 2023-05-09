@@ -176,7 +176,8 @@ module.exports = {
     },
 
     GetPlayerByID : async (_, args) => {
-      console.log(args.playerId); 
+      
+      console.log("Player ID: ", args.playerId); 
       const {data} = await axios.get("https://api-football-v1.p.rapidapi.com/v3/players?id="+ args.playerId+"&season="+ args.season, config);
       
       if(data.response.length===0){
@@ -273,9 +274,7 @@ module.exports = {
 
 
     TeamInformation : async (_, args) => {
-      console.log("heyyyyy")
-      console.log(args)
-      console.log(args.teamID)
+      console.log("Team ID: ", args.teamID)
  
       const { data } = await axios.get("https://api-football-v1.p.rapidapi.com/v3/teams?id="+ args.teamID, config);
 
@@ -409,7 +408,7 @@ Mutation:{
 
   CreateUser: async (_, args) => {
     console.log("Create User args")
-    console.log(args)
+    //console.log(args)
           const oneUser = await user.createUser(
               args.username,
               args.password,
@@ -441,15 +440,15 @@ Mutation:{
   },
 
   Login: async(_,args)=>{
-    console.log("heyyyyyyyyyy");
+    // console.log("heyyyyyyyyyy");
     // let session_exists = await client.exists("session");
     // if(session_exists) {
     //     let get_user = JSON.parse(await client.get("session"));
     //     return "Already LoggedIn as " + get_user.username + "please logout to login again";
     //   // res.status(403).json({"error":`Already LoggedIn as ${get_user.username}. please logout to login again`});
     // }
-    console.log("Login Args")
-    console.log(args)
+    //console.log("Login Args")
+    // console.log(args)
     const loggedIn = await user.checkUser(args.username,args.password);
     if(loggedIn.errors){     
         return loggedIn.errors[0].message

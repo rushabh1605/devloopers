@@ -71,9 +71,6 @@ function Landing() {
         playerName: searchTerm
       }
       );
-
-
-
     }
     if (searchTerm) {
       fetchData();
@@ -235,7 +232,6 @@ function Landing() {
             <Search searchValue={searchValue} />
             <br></br>
             <br></br>
-
 
             {searchFlag ? (
               SearchPlayerByName.map((x) => {
