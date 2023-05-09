@@ -71,6 +71,9 @@ function Landing() {
         playerName: searchTerm
       }
       );
+
+
+
     }
     if (searchTerm) {
       fetchData();
@@ -94,6 +97,13 @@ function Landing() {
 
 
   if (data && LeagueData && AllLeagueData && termData) {
+    let dataFlag
+    if(data === undefined){
+      dataFlag = false
+    }
+    else{
+      dataFlag = true
+    }
     const { FixtureByDateInformation } = data;
     const { TopLeaguesInformation } = LeagueData;
     const { LeagueInformation } = AllLeagueData;
@@ -101,12 +111,13 @@ function Landing() {
     let searchFlag = false
     if (SearchPlayerByName === null) {
       searchFlag = false
+
+
     }
     else {
       searchFlag = true
-    }
 
-    console.log(data)
+    }
     return (
       <div class="row justify-content-center" id='home' >
 
@@ -169,6 +180,8 @@ function Landing() {
           </Accordion>
         </div>
 
+
+
         <div class="col-md-6">
           <div className="wsk-cp-matches" >
 
@@ -182,8 +195,8 @@ function Landing() {
               placeholderText={getDate || dateString}
             />            <br></br>
             <br></br>
-
-            {FixtureByDateInformation.length ? (FixtureByDateInformation.map((x) => {
+            {FixtureByDateInformation.length ? 
+            (FixtureByDateInformation.map((x) => {
               return (
                 <div class="row matches m-3">
                   <div class="col-md-3  d-flex align-items-center mt-4 mt-md-0">
@@ -223,8 +236,10 @@ function Landing() {
                 No Match scheduled on this date!!!
             </div>
           )}
+            
           </div>
         </div>
+
 
         <div class="col-md-3">
 
@@ -233,7 +248,8 @@ function Landing() {
             <br></br>
             <br></br>
 
-            {searchFlag ? (
+
+            {searchFlag && SearchPlayerByName.length ? (
               SearchPlayerByName.map((x) => {
 
                 return (
@@ -252,11 +268,13 @@ function Landing() {
                   </div>
                 )
               })
-            ) : (
-
-              <div class="alert alert-danger" role="alert">
+            ) : 
+            (
+              
+               <div class="alert alert-danger" role="alert">
                 No search data !! please enter 4 character to search player!
               </div>
+
 
             )}
 
@@ -264,6 +282,10 @@ function Landing() {
           </div>
 
         </div>
+
+
+
+
 
       </div>
 

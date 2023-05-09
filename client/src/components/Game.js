@@ -111,7 +111,7 @@ if(data && ALLgameData){
             <div className='col-md-4'>
             <div className="wsk-cp-matches " >
                             <div className='row'>
-                                <h5 className='tablehead'>DO you wanna BET ?</h5>
+                                <p className='tablehead'>DO you wanna BET ?</p>
                             </div>
                             
                             <div class="row matches m-3">
@@ -147,16 +147,13 @@ if(data && ALLgameData){
                   {include_id.includes(x.id) ?
                   <div>
                     <p className='teamname '
-                    style={{
-                      color:'#800000'
-                    }}
                     >Predict time is finished come back tommorow</p>
                   </div>:
 
                   (
                     <div>
                   <div className='row mt-2'>
-                    <h5 className='tablehead'>Predict Winner ?</h5>
+                    <p className='tablehead'>Predict Winner ?</p>
                   </div>
                   <div className='row mt-4'>
                     <div className="d-flex">
