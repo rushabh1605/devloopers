@@ -7,12 +7,91 @@ import '../App.css';
 const Navigation = () => {
   const { user } = useContext(AuthContext);
 
-  if (user) {
-    return <NavigationAuth />;
+
+
+  const sessionToken = sessionStorage.getItem('sessionToken');
+  console.log(sessionToken);
+
+  if (sessionToken) {
+    return (
+      <nav className='navigation'>
+        <NavLink className='nav-links' to='/'>
+          Home
+        </NavLink>
+  
+        <NavLink className='nav-links' to='/about'>
+          About us
+        </NavLink>
+  
+        <NavLink className='nav-links' to='/game'>
+          Game
+        </NavLink>
+  
+        <NavLink className='nav-links' to='/score'>
+          Score
+        </NavLink>
+  
+        <NavLink className='nav-links' to='/signout'>
+          SignOut
+        </NavLink>
+  
+         {/* <NavLink className='nav-links' to='/signup'>
+          SignUp
+        </NavLink>  */}
+      </nav>
+    );
+    
   } else {
-    return <NavigationNonAuth />;
+    // the user is not logged in
+    return (
+      <nav className='navigation'>
+        <NavLink className='nav-links' to='/'>
+          Home
+        </NavLink>
+  
+        <NavLink className='nav-links' to='/about'>
+          About us
+        </NavLink>
+  
+        {/* <NavLink className='nav-links' to='/game'>
+          Game
+        </NavLink>
+  
+        <NavLink className='nav-links' to='/score'>
+          Score
+        </NavLink> */}
+  
+        <NavLink className='nav-links' to='/signin'>
+          LogIn
+        </NavLink>
+  
+        <NavLink className='nav-links' to='/signup'>
+          SignUp
+        </NavLink>
+      </nav>
+    );
   }
-};
+
+  
+    // const getLoggedInStatus = async () => {
+    //   const userSession = await checkLoggedIn();
+      
+    //   if (userSession) {
+    //     return (
+    //       <NavigationAuth />
+    //     )
+    //   } else {
+    //     // User is not logged in
+    //     return (
+    //       <NavigationNonAuth />
+    //     )
+    //   }
+    // };
+  // const { currentUser } = useContext(AuthContext);
+  // return <div>{currentUser ? <NavigationAuth /> : <NavigationNonAuth />}</div>;
+  return <div>{<NavigationNonAuth/>}</div>
+
+}
   
 
 

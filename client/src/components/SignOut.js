@@ -7,23 +7,26 @@ const SignOutButton = () => {
   const { currentUser, setCurrentUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleSignOut = async () => {
-    // Clear the user's session from Redis
-    // await redisClient.del(`session:${currentUser.username}`);
+  sessionStorage.removeItem('sessionToken');
 
-    // Update the current user context
-    setCurrentUser(null);
 
-    // Redirect to the home page
-    navigate('/');
-  };
+  // if (sessionCheck) {
+    // Swal.fire({
+    //   icon: 'success',
+    //   title: 'Signed out successfully!',
+    // });
+    window.location.href = 'http://localhost:3000/';
+    //window.location.reload();
+    // navigate('/', { replace: true });
+  // }
+  // else {
+  //   Swal.fire({
+  //     icon: 'error',
+  //     title: 'Unable to Logout!',
+  // });
+  // navigate('/', { replace: true });  
+  // }
 
-  return (
-    <div>
-    <h2>Are you sure you want to sign out?</h2>
-    <button onClick={handleSignOut}>Sign Out</button>
-  </div>
-  );
 };
 
 export default SignOutButton;

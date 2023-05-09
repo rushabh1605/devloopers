@@ -2,9 +2,6 @@ import React, { useContext, useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import AuthContext from './AuthContext';
-import queries from '../queries';
-
 
 const SignIn = () => {
   const authContext = useContext(AuthContext);
@@ -20,11 +17,12 @@ const SignIn = () => {
   };
 
   const [loginUser, { loading, error, data }] = useMutation(queries.LOGIN, {
-    onCompleted: async ({ login }) => {
-      authContext.setUser(login.username);
-      // await redis.set(`session:${login.username}`, JSON.stringify(login));
+    onCompleted: async (response) => {
+      console.log(response);
       console.log('User exists');
-      navigate('/');
+      sessionStorage.setItem('sessionToken',response);
+      window.location.href = 'http://localhost:3000/';
+
     },
     onError: (error) => {
       Swal.fire({
