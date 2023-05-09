@@ -294,7 +294,7 @@ module.exports = {
       }  
       console.log(singleTeam);          
     return singleTeam;
-  },
+    },
 
 
     getGameByUserId : async (_, args) => {
@@ -303,211 +303,189 @@ module.exports = {
           return gameData.errors[0].message
       }
       return gameData
-  },
+    },
 
-  GetAllUsers: async () => {     
-    const user_list = await user.getAllUsers();
-    if(user_list.errors){
-        return user_list.errors[0].message
-    }
-    else{
-        return (user_list);
-    }
-  },
-
-  GetUserById: async (_, args) => {
-    const oneUser = await user.getUserById(args.id);
-    if(oneUser.errors){
-    
-        return oneUser.errors[0].message
-    }
-    else{
-        return (oneUser);
-    }
-    
-  },
-
-
-  GetFollowedPlayersInfo: async (_, args) => {
-
-    let key_exists = await client.exists(args.userId +"_PlayerFollowing");
-    let index;
-    let newArray=[];
-    if(key_exists){
-      console.log("helllo");
-      //index = await client.get(args.userId +"_PlayerFollowing")  ;
-      // return JSON.stringify(index); 
-      // console.log(index)
-      const length = await client.lLen(args.userId +"_PlayerFollowing");
-      //console.log(length);
-      for(let i=0; i<length; i++){
-          const result = await client.lIndex(args.userId +"_PlayerFollowing", i);
-          // console.log(result)
-          // console.log(JSON.parse(result))
-          let newObject= {playerId: parseInt(JSON.parse(result))}
-          newArray.push(newObject);        
-      }
-      console.log(newArray)
-      if(newArray.length!== 0) {
-          return newArray;
-      } else{
-          return [0];
-      }
-    }
-    
-    else return [0];   
-  }
-
-},
-
-Mutation:{
-  createGame: async (_, args) => {
-
-      const game = await user.createGame(args.fixtureID, args.userID, args.awayTeam, args.homeTeam, args.betField);
-      if(game.errors){
-        return game.errors[0].message
+    GetAllUsers: async () => {     
+      const user_list = await user.getAllUsers();
+      if(user_list.errors){
+          return user_list.errors[0].message
       }
       else{
-        return game;
-      }       
-  },
+          return (user_list);
+      }
+    },
+
+    GetUserById: async (_, args) => {
+      const oneUser = await user.getUserById(args.id);
+      if(oneUser.errors){
+      
+          return oneUser.errors[0].message
+      }
+      else{
+          return (oneUser);
+      }
+      
+    },
 
 
-  updateGame: async (_, args) => {   
+    GetFollowedPlayersInfo: async (_, args) => {
 
-    const updatedGame = await user.updateGame(args.gameID);
-    if(updatedGame.errors){
-      return updatedGame.errors[0].message
+      let key_exists = await client.exists(args.userId +"_PlayerFollowing");
+      let index;
+      let newArray=[];
+      if(key_exists){
+        console.log("helllo");
+        //index = await client.get(args.userId +"_PlayerFollowing")  ;
+        // return JSON.stringify(index); 
+        // console.log(index)
+        const length = await client.lLen(args.userId +"_PlayerFollowing");
+        //console.log(length);
+        for(let i=0; i<length; i++){
+            const result = await client.lIndex(args.userId +"_PlayerFollowing", i);
+            // console.log(result)
+            // console.log(JSON.parse(result))
+            let newObject= {playerId: parseInt(JSON.parse(result))}
+            newArray.push(newObject);        
+        }
+        console.log(newArray)
+        if(newArray.length!== 0) {
+            return newArray;
+        } else{
+            return [0];
+        }
+      }
+      
+      else return [0];   
     }
-    else{
-      return (updatedGame);
-    }       
-  },
 
-  // CreateUser: async (_, args) => {
-  //   console.log("Create User args")
-  //   console.log(args)
-  //         const oneUser = await user.createUser(
-  //             args.username,
-  //             args.password,
-  //             args.dob,
-  //             args.phone, 
-  //             args.email, 
-  //             args.country, 
-  //             args.profilePic, 
-  //             args.bio, 
-  //             args.isPremium );
-          
-  //         if(oneUser.errors){
-  //                 return oneUser.errors[0].message
-  //         }
-  //         else{
-  //             return (oneUser);
-  //         }
-  // },
+},
 
-  CreateUser: async (_, args) => {
-    console.log("Create User args")
-    //console.log(args)
-          const oneUser = await user.createUser(
-              args.username,
-              args.password,
-              args.dob,
-              args.phone, 
-              args.email, 
-              args.country, 
-              args.profilePic, 
-              args.bio, 
-              args.isPremium );
-          
-          if(oneUser.errors){
-                  return oneUser.errors[0].message
-          }
-          else{
-              return (oneUser);
-          }
-  },
+  Mutation:{
+    createGame: async (_, args) => {
 
-  DeleteUser: async(_,args)=>{
-      const deleteone = await user.deleteUser(args.id);
-          if(deleteone.errors){
-          
-              return deleteone.errors[0].message
-          }
-          else{
-              return (deleteone);
-          }
-  },
-
-  Login: async(_,args)=>{
-    // console.log("heyyyyyyyyyy");
-    // let session_exists = await client.exists("session");
-    // if(session_exists) {
-    //     let get_user = JSON.parse(await client.get("session"));
-    //     return "Already LoggedIn as " + get_user.username + "please logout to login again";
-    //   // res.status(403).json({"error":`Already LoggedIn as ${get_user.username}. please logout to login again`});
-    // }
-    //console.log("Login Args")
-    // console.log(args)
-    const loggedIn = await user.checkUser(args.username,args.password);
-    if(loggedIn.errors){     
-        return loggedIn.errors[0].message
-    }
-    else{
-      // let session = await client.set(
-      //   "session",
-      //   JSON.stringify(loggedIn)
-      // );
-      return (loggedIn);
-    }
-  },
-
-  AddTeamFollowing: async(_,args)=>{
-    const addTeam = await user.addTeamFollowing(args.userId,args.teamID);
-        if(addTeam.errors){
-        
-            return addTeam.errors[0].message
+        const game = await user.createGame(args.fixtureID, args.userID, args.awayTeam, args.homeTeam, args.betField);
+        if(game.errors){
+          return game.errors[0].message
         }
         else{
-            return (addTeam);
-        }
-  },
+          return game;
+        }       
+    },
 
-  AddPlayerFollowing: async(_,args)=>{
-      const addPlayer = await user.addPlayerFollowing(args.userId,args.PlayerID);
-          if(addPlayer.errors){
+
+    updateGame: async (_, args) => {   
+
+      const updatedGame = await user.updateGame(args.gameID);
+      if(updatedGame.errors){
+        return updatedGame.errors[0].message
+      }
+      else{
+        return (updatedGame);
+      }       
+    },
+
+    CreateUser: async (_, args) => {
+      console.log("Create User args")
+      //console.log(args)
+            const oneUser = await user.createUser(
+                args.username,
+                args.password,
+                args.dob,
+                args.phone, 
+                args.email, 
+                args.country, 
+                args.profilePic, 
+                args.bio, 
+                args.isPremium );
+            
+            if(oneUser.errors){
+                    return oneUser.errors[0].message
+            }
+            else{
+                return (oneUser);
+            }
+    },
+
+    DeleteUser: async(_,args)=>{
+        const deleteone = await user.deleteUser(args.id);
+            if(deleteone.errors){
+            
+                return deleteone.errors[0].message
+            }
+            else{
+                return (deleteone);
+            }
+    },
+
+    Login: async(_,args)=>{
+      // console.log("heyyyyyyyyyy");
+      // let session_exists = await client.exists("session");
+      // if(session_exists) {
+      //     let get_user = JSON.parse(await client.get("session"));
+      //     return "Already LoggedIn as " + get_user.username + "please logout to login again";
+      //   // res.status(403).json({"error":`Already LoggedIn as ${get_user.username}. please logout to login again`});
+      // }
+      //console.log("Login Args")
+      // console.log(args)
+      const loggedIn = await user.checkUser(args.username,args.password);
+      if(loggedIn.errors){     
+          return loggedIn.errors[0].message
+      }
+      else{
+        // let session = await client.set(
+        //   "session",
+        //   JSON.stringify(loggedIn)
+        // );
+        return (loggedIn);
+      }
+    },
+
+    AddTeamFollowing: async(_,args)=>{
+      const addTeam = await user.addTeamFollowing(args.userId,args.teamID);
+          if(addTeam.errors){
           
-              return addPlayer.errors[0].message
+              return addTeam.errors[0].message
           }
           else{
-              return (addPlayer);
+              return (addTeam);
           }
+    },
+
+    AddPlayerFollowing: async(_,args)=>{
+        const addPlayer = await user.addPlayerFollowing(args.userId,args.PlayerID);
+            if(addPlayer.errors){
+            
+                return addPlayer.errors[0].message
+            }
+            else{
+                return (addPlayer);
+            }
+    },
+
+    DeleteTeamFollowing: async(_,args)=>{
+        const deleteTeam = await user.deleteTeamFollowing(args.userId,args.teamID);
+            if(deleteTeam.errors){
+            
+                return deleteTeam.errors[0].message
+            }
+            else{
+                return (deleteTeam);
+            }
+    },
+
+    DeletePlayerFollowing: async(_,args)=>{
+        const deletePlayer = await user.deletePlayerFollowing(args.userId,args.PlayerID);
+            if(deletePlayer.errors){
+            
+                return deletePlayer.errors[0].message
+            }
+            else{
+                return (deletePlayer);
+            }
+    },
+
+
+    
   },
-
-  DeleteTeamFollowing: async(_,args)=>{
-      const deleteTeam = await user.deleteTeamFollowing(args.userId,args.teamID);
-          if(deleteTeam.errors){
-          
-              return deleteTeam.errors[0].message
-          }
-          else{
-              return (deleteTeam);
-          }
-  },
-
-  DeletePlayerFollowing: async(_,args)=>{
-      const deletePlayer = await user.deletePlayerFollowing(args.userId,args.PlayerID);
-          if(deletePlayer.errors){
-          
-              return deletePlayer.errors[0].message
-          }
-          else{
-              return (deletePlayer);
-          }
-  },
-
-
-  
-},
 
 }
