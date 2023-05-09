@@ -97,6 +97,13 @@ function Landing() {
 
 
   if (data && LeagueData && AllLeagueData && termData) {
+    let dataFlag
+    if(data === undefined){
+      dataFlag = false
+    }
+    else{
+      dataFlag = true
+    }
     const { FixtureByDateInformation } = data;
     const { TopLeaguesInformation } = LeagueData;
     const { LeagueInformation } = AllLeagueData;
@@ -188,8 +195,8 @@ function Landing() {
               placeholderText={getDate || dateString}
             />            <br></br>
             <br></br>
-            {FixtureByDateInformation.map((x) => {
-
+            {FixtureByDateInformation.length ? 
+            (FixtureByDateInformation.map((x) => {
               return (
                 <div class="row matches m-3">
                   <div class="col-md-3  d-flex align-items-center mt-4 mt-md-0">
@@ -223,7 +230,13 @@ function Landing() {
                   </div>
                 </div>
               )
-            })}
+            })
+          ): (
+            <div class="alert alert-danger" role="alert">
+                No Match scheduled on this date!!!
+            </div>
+          )}
+            
           </div>
         </div>
 
@@ -236,7 +249,7 @@ function Landing() {
             <br></br>
 
 
-            {searchFlag ? (
+            {searchFlag && SearchPlayerByName.length ? (
               SearchPlayerByName.map((x) => {
 
                 return (
@@ -255,11 +268,13 @@ function Landing() {
                   </div>
                 )
               })
-            ) : (
-
-              <div class="alert alert-danger" role="alert">
+            ) : 
+            (
+              
+               <div class="alert alert-danger" role="alert">
                 No search data !! please enter 4 character to search player!
               </div>
+
 
             )}
 

@@ -192,7 +192,7 @@ if(data){
                         <div className='col-md-3 mr-5 ml-2 p-0'>
                             <div className="wsk-cp-matches " >
                                 <div className='row'>
-                                <h5 className='tablehead'>Team Information</h5>
+                                <p className='tablehead'>Team Information</p>
                             </div>
                         
                                 <div className='row mt-5'>
@@ -221,7 +221,7 @@ if(data){
                         <div className='col-md-3  p-0 mr-2'>
                             <div className="wsk-cp-matches " >
                                 <div className='row'>
-                                    <h5 className='tablehead'>Team Stadium</h5>
+                                    <p className='tablehead'>Team Stadium</p>
                                 </div>
                                 
                                 <div className='row mt-4'>
@@ -255,7 +255,7 @@ if(data){
                           <div className='col-md-3  p-0 ml-5'>
                             <div className="wsk-cp-matches " >
                                 <div className='row'>
-                                    <h5 className='tablehead'>Stadium Picture</h5>
+                                    <p className='tablehead'>Stadium Picture</p>
                                 </div>
                                 
                                 <div className='row mt-4'>

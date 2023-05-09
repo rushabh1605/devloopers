@@ -180,7 +180,7 @@ if(data){
                         <div className='col-md-3 mr-5 ml-2 p-0'>
                             <div className="wsk-cp-matches " >
                                 <div className='row'>
-                                <h5 className='tablehead'>General Information</h5>
+                                <p className='tablehead'>General Information</p>
                             </div>
                         
                                 <div className='row mt-4'>
@@ -240,7 +240,7 @@ if(data){
                         <div className='col-md-3  p-0'>
                             <div className="wsk-cp-matches " >
                                 <div className='row'>
-                                    <h5 className='tablehead'>{GetPlayerByID.leagueName} 2022</h5>
+                                    <p className='tablehead'>{GetPlayerByID.leagueName} 2022</p>
                                 </div>
                                 
                                 <div className='row mt-4'>
