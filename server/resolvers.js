@@ -103,7 +103,8 @@ module.exports = {
           homeMatches: standing.home.played,
           awayMatches: standing.away.played,
           goalsScored: standing.all.goals.for,
-          goalsConceded: standing.all.goals.against
+          goalsConceded: standing.all.goals.against,
+          teamId: standing.team.id
         }         
         standingsList.push(singleTeam);        
       });               
@@ -345,7 +346,17 @@ module.exports = {
           const result = await client.lIndex(args.userId +"_PlayerFollowing", i);
           // console.log(result)
           // console.log(JSON.parse(result))
-          let newObject= {playerId: parseInt(JSON.parse(result))}
+          
+
+          let tempPlayerId= parseInt(JSON.parse(result))
+
+          const {data} = await axios.get("https://api-football-v1.p.rapidapi.com/v3/players?id="+ tempPlayerId+"&season=2022" , config);  
+
+          console.log(data.response[0]);
+
+
+
+          let newObject= {playerId: tempPlayerId, playerName: data.response[0].player.name, playerImage: data.response[0].player.photo}
           newArray.push(newObject);        
       }
       console.log(newArray)
@@ -371,12 +382,16 @@ module.exports = {
           const result = await client.lIndex(args.userId +"_TeamFollowing", i);
           //console.log(typeof(result))
           console.log(typeof(parseInt(JSON.parse(result))));
-          // let newObject= {teamID: parseInt(JSON.parse(result))}
-          newArray.push(parseInt(JSON.parse(result)));        
+          let newObject= {teamID: parseInt(JSON.parse(result))}
+          newArray.push({teamID: parseInt(JSON.parse(result))});        
       }
+
+      newArray.forEach(element => {
+        console.log(element.teamID)
+        console.log(typeof(element.teamID))
+      });
       
       if(newArray.length!== 0) {
-        console.log(newArray)
           return newArray;
       } else{
           return [0];

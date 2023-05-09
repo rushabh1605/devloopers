@@ -279,7 +279,7 @@ const createGame = async (fixtureID, userID, awayTeam, homeTeam, betField) => {
   const insert_game = await gamesCollection.insertOne(creategame);
   if(!insert_game.insertedId || !insert_game.acknowledged) throw {error:'Unable to bet on the game', statusCode:500};
   const created = insert_game.insertedId.toString();
-  const data = await getGameById(created);
+  const data = await getGameById(created.toString());
   
   return data;
 
@@ -296,7 +296,7 @@ const getGameByUserId = async (userId) => {
 
 const getGameById = async (gameId) => {
   if(validation.valid_id(gameId,"ID"));
-  userId = userId.trim();
+  // userId = userId.trim();
   const gamesCollection = await games();
   const game_data = await gamesCollection.findOne({_id: new ObjectId(gameId)});
   if(game_data === null) throw {error:'No game found with '+userId, statusCode:404};

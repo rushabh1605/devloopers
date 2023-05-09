@@ -37,6 +37,7 @@ const LOAD_STANDINGS = gql`
     query StandingInformation($league: Int!, $season: Int!){
         StandingInformation(league: $league, season: $season) {
             rank,
+            teamId,
             teamName,
             logo,
             points,
@@ -321,6 +322,8 @@ const LOAD_FOLLOWED_PLAYERS = gql `
     query GetFollowedPlayersInfo($userId: String!) {
         GetFollowedPlayersInfo(userId: $userId){
             playerId
+            playerName
+            playerImage
         }
     }
 `

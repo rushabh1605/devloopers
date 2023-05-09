@@ -8,8 +8,6 @@ import '../App.css';
 // add redis session
 const Navigation = () => {
 
-
-
   const sessionToken = sessionStorage.getItem('sessionToken');
   console.log(sessionToken);
 
@@ -26,6 +24,10 @@ const Navigation = () => {
   
         <NavLink className='nav-links' to='/score'>
           Score
+        </NavLink>
+
+        <NavLink className='nav-links' to='/following'>
+          My Followings
         </NavLink>
   
         <NavLink className='nav-links' to='/signout'>

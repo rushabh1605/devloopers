@@ -11,7 +11,7 @@ const moment = require('moment');
 const Game = () => {
 
   const sessionToken = JSON.parse(sessionStorage.getItem('sessionToken'));
-    let now = new Date();
+    let now = new Date("2023-05-13");
     let dateString = moment(now).format('YYYY-MM-DD');
     const hours = now.getHours()
    
@@ -143,7 +143,8 @@ if(data && ALLgameData){
                   </div>
 
                   
-                  {include_id.includes(x.id) || exact < hours?
+                  {/* {include_id.includes(x.id) || exact < hours? */}
+                  {include_id.includes(x.id) ?
                   <div>
                     <p className='teamname '
                     style={{

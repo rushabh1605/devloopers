@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link, useParams } from "react-router-dom";
-import Accordion from 'react-bootstrap/Accordion';
 import queries from '../queries';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -10,7 +9,13 @@ import {Card} from 'react-bootstrap'
 
 const SinglePlayer = () => {
     const sessionToken = JSON.parse(sessionStorage.getItem('sessionToken'));
-    console.log(sessionToken.Login._id)
+    let userId;
+    if(sessionToken){
+        userId = sessionToken.Login._id 
+    }
+    else{
+        userId="";
+    }
     let { playerId } = useParams();
 
    playerId = parseInt(playerId)
@@ -27,7 +32,7 @@ const SinglePlayer = () => {
    const { loading:userLoading, error:userError, data:userData } = useQuery(
     queries.GET_USER_BY_ID, {
         fetchPolicy: 'cache-and-network',
-        variables:{id: sessionToken.Login._id},
+        variables:{id: userId},
         manual: true,
         refetchOnWindowFocus: false,
         enabled: false
@@ -64,14 +69,14 @@ const handle_follow = (event) => {
         
         variables:{
            
-            userId: sessionToken.Login._id,
+            userId: userId,
             PlayerID: playerId,
             
         },
         refetchQueries:[{
             query : queries.GET_USER_BY_ID,
             variables:{
-                id:sessionToken.Login._id
+                id:userId
             }
         }]
       
@@ -95,14 +100,22 @@ if(loading){
 }
 
 // console.log(error)
-if(data || userData){
-    console.log(sessionToken.Login.isPremium )
+if(data){
+    // console.log(sessionToken.Login.isPremium )
+    let followers_list;
     
     const {GetPlayerByID} = data
+    if(userData === undefined){
+        followers_list =[]
+
+    }
+    else{   
+        const {GetUserById} = userData
+        followers_list = GetUserById.followingPlayerID
+        console.log(followers_list)
+
+    }
     
-    const {GetUserById} = userData
-    const followers_list = GetUserById.followingPlayerID
-    console.log(followers_list)
     let Flag = false
       if(GetPlayerByID === null){
         

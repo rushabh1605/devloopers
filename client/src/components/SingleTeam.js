@@ -1,16 +1,20 @@
 import React from 'react';
-import { Link, useParams } from "react-router-dom";
-import Accordion from 'react-bootstrap/Accordion';
+import {  useParams } from "react-router-dom";
 import queries from '../queries';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useQuery,useMutation } from "@apollo/client";
 import NotFoundPage from "./NotFound"
-import {Card} from 'react-bootstrap'
 
 const SingleTeam = () => {
     const sessionToken = JSON.parse(sessionStorage.getItem('sessionToken'));
-    console.log(sessionToken.Login._id)
+    let userId;
+    if(sessionToken){
+        userId = sessionToken.Login._id 
+    }
+    else{
+        userId="";
+    }
 
     let { teamId } = useParams();
     // console.log(teamID);
@@ -30,7 +34,7 @@ const SingleTeam = () => {
 const { loading:userLoading, error:userError, data:userData } = useQuery(
     queries.GET_USER_BY_ID, {
         fetchPolicy: 'cache-and-network',
-        variables:{id: sessionToken.Login._id},
+        variables:{id: userId},
         manual: true,
         refetchOnWindowFocus: false,
         enabled: false
@@ -47,14 +51,14 @@ const handle_follow = (event) => {
         
         variables:{
            
-            userId: sessionToken.Login._id,
+            userId: userId,
             teamID: teamID,
             
         },
         refetchQueries:[{
             query : queries.GET_USER_BY_ID,
             variables:{
-                id:sessionToken.Login._id
+                id:userId
             }
         }]
       
@@ -69,7 +73,7 @@ const handle_follow = (event) => {
         
         variables:{
            
-            userId: sessionToken.Login._id,
+            userId: userId,
             teamID: teamID,
             
         },
@@ -102,15 +106,22 @@ if(loading){
         <NotFoundPage />
     )
 }
-if(data || userData){   
+if(data){   
 
-    console.log(sessionToken.Login.isPremium )
+    // console.log(sessionToken.Login.isPremium )
+    let followers_list;
 
         const {TeamInformation} = data
+         if(userData === undefined){
+        followers_list =[]
 
+    }
+    else{   
         const {GetUserById} = userData
-        const followers_list = GetUserById.followingTeamID
+        followers_list = GetUserById.followingTeamID
+        console.log(followers_list)
 
+    }
         console.log(TeamInformation)
         let Flag = false
           if(TeamInformation === null){
@@ -191,9 +202,6 @@ if(data || userData){
                                     <div className='col-md-6'>
                                         <p className="tablehead">Team Country</p>
                                     </div>
-                                    {/* <div className='col-md-4'>
-                                        <p className="tablehead">Age</p>
-                                    </div> */}
                                 </div>
                                 <div className='row'>
                                     <div className='col-md-6'>
@@ -202,43 +210,15 @@ if(data || userData){
                                     <div className='col-md-6'>
                                         <p className="tablehead">{TeamInformation.countryName}</p>
                                     </div>
-                                    {/* <div className='col-md-4'>
-                                        <p className="tablehead">{TeamInformation.age}</p>
-                                    </div> */}
+
                                 </div>
-                                {/* <hr
-                                  style={{
-                                  background: "#D3D3D3",
-                                  height: "2px",
-                                  border: "none",
-                                  opacity:0.1
-                                  }}
-                                />
-                                <div className='row'>
-                                    <div className='col-md-4'>
-                                        <p className="tablehead">Nationality</p>
-                                    </div>
-                                    <div className='col-md-4'>
-                                        <p className="tablehead">Position</p>
-                                    </div>
-                                    
-                                </div>
-                                <div className='row'>
-                                    <div className='col-md-4'>
-                                        <p className="tablehead">{TeamInformation.Nationality}</p>
-                                    </div>
-                                    <div className='col-md-4'>
-                                        <p className="tablehead">{TeamInformation.playerPosition}</p>
-                                    </div>
-    
-                                </div> */}
                             </div>
     
                         </div>
     
                         {/* card 2 */}
     
-                        <div className='col-md-3  p-0'>
+                        <div className='col-md-3  p-0 mr-2'>
                             <div className="wsk-cp-matches " >
                                 <div className='row'>
                                     <h5 className='tablehead'>Team Stadium</h5>
@@ -251,10 +231,7 @@ if(data || userData){
                                     <div className='col-md-4'>
                                         <p className="tablehead">Capacity</p>
                                     </div>
-                                    {/* <div className='col-md-4'>
-                                        <p className="tablehead">Assists</p>
-                                    </div> */}
-                                    
+                                  
                                     
                                 </div>
                                 <div className='row '>
@@ -264,10 +241,7 @@ if(data || userData){
                                     <div className='col-md-4'>
                                         <p className="tablehead">{TeamInformation.capacity}</p>
                                     </div>
-                                    {/* <div className='col-md-4'>
-                                        <p className="tablehead">{TeamInformation.assists}</p>
-                                    </div> */}
-                                    
+                                   
                                 </div>
                                
                             </div>                        
@@ -278,7 +252,7 @@ if(data || userData){
     
 
 
-                          <div className='col-md-3  p-0'>
+                          <div className='col-md-3  p-0 ml-5'>
                             <div className="wsk-cp-matches " >
                                 <div className='row'>
                                     <h5 className='tablehead'>Stadium Picture</h5>
@@ -286,11 +260,9 @@ if(data || userData){
                                 
                                 <div className='row mt-4'>
                                 <div className='col-md-6'>
-                                      <img alt="venueImg" className="img-fluid" src={TeamInformation.venueImage} />
+                                      <img alt="venueImg" className="img-fluid" width="400" height="400" src={TeamInformation.venueImage} />
                                     </div>
-                                    <div className='col-md-4'>
-                                        <p className="tablehead">Capacity</p>
-                                    </div>
+                                    
 
                                     
                                     
@@ -298,9 +270,6 @@ if(data || userData){
                                 <div className='row '>
                                     <div className='col-md-6'>
                                         <p className="tablehead">{TeamInformation.venueName}</p>
-                                    </div>
-                                    <div className='col-md-4'>
-                                        <p className="tablehead">{TeamInformation.capacity}</p>
                                     </div>
 
                                     

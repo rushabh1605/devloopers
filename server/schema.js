@@ -59,6 +59,7 @@ const typeDefs = gql`
     awayMatches: Int
     goalsScored: Int
     goalsConceded: Int
+    teamId: Int
   }
 
   type FixtureByDate {
@@ -176,6 +177,8 @@ const typeDefs = gql`
 
   type FollowedPlayers {
     playerId: Int
+    playerName: String
+    playerImage: String
   }
 
   type FollowedTeams {

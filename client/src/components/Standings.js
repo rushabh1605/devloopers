@@ -1,6 +1,5 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
-import Accordion from 'react-bootstrap/Accordion';
+import {Link, useParams } from "react-router-dom";
 import queries from '../queries';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -72,6 +71,8 @@ const Standings = () => {
                                     </div>
                                 </div>
                             {data.StandingInformation.map((x) => {
+                                console.log(x)
+                                
                                   return (
                                 <div className="row matches">
                                     <div className="col-md-1">
@@ -80,7 +81,9 @@ const Standings = () => {
                                 <div className="col-md-4 d-flex">
                                    
                                     <img alt="Leaguelogo" class="img-fluid leagueimg" src={x.logo} /> 
+                                    <Link to={`/team/${x.teamId}`}>
                                     <p className=" tablehead ml-3">{x.teamName}</p>
+                                    </Link>
                                 </div>
                                 <div className="col-md-1">
                                     <p className="tablehead">{x.matchesPlayed}</p>
