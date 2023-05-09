@@ -3,22 +3,14 @@ const axios = require("axios");
 // const redis = require("redis");
 const uuid = require("uuid");
 const { result } = require('lodash');
-
 const data = require("./data");
-const { deleteUser } = require("./data/users");
 const user = data.users;
-const redis = require('redis');
-const client = redis.createClient({
-  port: 6379,
-  host: 'redis'
-});
-client.connect();
-client.on('connect', (err)=>{
-  if(err) throw err;
-  else console.log('Redis Connected..!');
-});
+const redis = require("redis");
+const client = redis.createClient();
 
-
+(async () => {
+  await client.connect();
+})();
 
 const API_KEY = '3df39a1cbamsh63f95b9f20d493ep18c3d2jsnaa9a8f6d3181';
 const API_HOST = 'api-football-v1.p.rapidapi.com';
@@ -145,7 +137,7 @@ module.exports = {
           homeTeamID : element.teams.home.id,
           homeTeamLogo: element.teams.home.logo,
           awayTeamName : element.teams.away.name,
-          awayTeamID: element.teams.away.name,
+          awayTeamID: element.teams.away.id,
           awayTeamLogo: element.teams.away.logo,
         } 
         fixtureList.push(singleFixture);     
@@ -243,19 +235,15 @@ module.exports = {
             ("https://api-football-v1.p.rapidapi.com/v2/players/search/"+ args.playerName, config);
 
       let playersData= data.api.players;
-
-      //console.log(data.api.players)
-
       playersData.forEach(player => {
         let singlePlayer = {
           playerID: player.player_id,   
           playerName: player.player_name,
           nationality: player.nationality
         }          
-        searchedPlayers.push(singlePlayer);       
+        searchedPlayers.push(singlePlayer); 
       });
-
-      //console.log(topScorersList.slice(0,2));            
+      searchedPlayers.sort((a, b) => a.playerID - b.playerID);          
       return searchedPlayers;
     },
 
@@ -279,151 +267,241 @@ module.exports = {
       return singleManager;
     },
 
-    GetAllUsers: async () => {     
-      const user_list = await user.getAllUsers();
-      if(user_list.errors){
-          return user_list.errors[0].message
+
+    TeamInformation : async (_, args) => {
+      console.log("heyyyyy")
+      console.log(args)
+      console.log(args.teamID)
+ 
+      const { data } = await axios.get("https://api-football-v1.p.rapidapi.com/v3/teams?id="+ args.teamID, config);
+
+      let responseData= data.response[0];
+      let singleTeam={
+        teamID : responseData.team.id,
+        teamName: responseData.team.name,
+        teamLogo: responseData.team.logo,
+        founded: responseData.team.founded,
+        teamCode: responseData.team.code,
+        countryName: responseData.team.country,
+        venueName: responseData.venue.name,
+        address: responseData.venue.address,
+        city: responseData.venue.city,
+        capacity: responseData.venue.capacity,
+        venueImage: responseData.venue.image
+      }  
+      console.log(singleTeam);          
+    return singleTeam;
+  },
+
+
+    getGameByUserId : async (_, args) => {
+      const gameData = await user.getGameByUserId(args.id);
+      if(gameData.errors){    
+          return gameData.errors[0].message
+      }
+      return gameData
+  },
+
+  GetAllUsers: async () => {     
+    const user_list = await user.getAllUsers();
+    if(user_list.errors){
+        return user_list.errors[0].message
+    }
+    else{
+        return (user_list);
+    }
+  },
+
+  GetUserById: async (_, args) => {
+    const oneUser = await user.getUserById(args.id);
+    if(oneUser.errors){
+    
+        return oneUser.errors[0].message
+    }
+    else{
+        return (oneUser);
+    }
+    
+  },
+
+
+  GetFollowedPlayersInfo: async (_, args) => {
+
+    let key_exists = await client.exists(args.userId +"_PlayerFollowing");
+    let index;
+    let newArray=[];
+    if(key_exists){
+      console.log("helllo");
+      //index = await client.get(args.userId +"_PlayerFollowing")  ;
+      // return JSON.stringify(index); 
+      // console.log(index)
+      const length = await client.lLen(args.userId +"_PlayerFollowing");
+      //console.log(length);
+      for(let i=0; i<length; i++){
+          const result = await client.lIndex(args.userId +"_PlayerFollowing", i);
+          // console.log(result)
+          // console.log(JSON.parse(result))
+          let newObject= {playerId: parseInt(JSON.parse(result))}
+          newArray.push(newObject);        
+      }
+      console.log(newArray)
+      if(newArray.length!== 0) {
+          return newArray;
+      } else{
+          return [0];
+      }
+    }
+    
+    else return [0];   
+  }
+
+},
+
+Mutation:{
+  createGame: async (_, args) => {
+
+      const game = await user.createGame(args.fixtureID, args.userID, args.awayTeam, args.homeTeam, args.betField);
+      if(game.errors){
+        return game.errors[0].message
       }
       else{
           return (user_list);
       }
     },
 
-    GetUserById: async (_, args) => {
-      const oneUser = await user.getUserById(args.id);
-      if(oneUser.errors){
-      
-          return oneUser.errors[0].message
-      }
-      else{
-          return (oneUser);
-      }
-      
+
+  updateGame: async (_, args) => {   
+
+    const updatedGame = await user.updateGame(args.gameID);
+    if(updatedGame.errors){
+      return updatedGame.errors[0].message
     }
 
   },
 
-  Mutation:{
-    CreateUser: async (_, args) => {
-      console.log("Create User args")
-      console.log(args)
-        const oneUser = await user.createUser(
-          args.username,
-          args.password,
-          args.dob,
-          args.phone, 
-          args.email, 
-          args.country, 
-          args.profilePic, 
-          args.bio, 
-          args.isPremium 
-        );
+  // CreateUser: async (_, args) => {
+  //   console.log("Create User args")
+  //   console.log(args)
+  //         const oneUser = await user.createUser(
+  //             args.username,
+  //             args.password,
+  //             args.dob,
+  //             args.phone, 
+  //             args.email, 
+  //             args.country, 
+  //             args.profilePic, 
+  //             args.bio, 
+  //             args.isPremium );
+          
+  //         if(oneUser.errors){
+  //                 return oneUser.errors[0].message
+  //         }
+  //         else{
+  //             return (oneUser);
+  //         }
+  // },
 
-        if(oneUser.errors){
-          return oneUser.errors[0].message
+  CreateUser: async (_, args) => {
+    console.log("Create User args")
+    console.log(args)
+          const oneUser = await user.createUser(
+              args.username,
+              args.password,
+              args.dob,
+              args.phone, 
+              args.email, 
+              args.country, 
+              args.profilePic, 
+              args.bio, 
+              args.isPremium );
+          
+          if(oneUser.errors){
+                  return oneUser.errors[0].message
+          }
+          else{
+              return (oneUser);
+          }
+  },
+
+  DeleteUser: async(_,args)=>{
+      const deleteone = await user.deleteUser(args.id);
+          if(deleteone.errors){
+          
+              return deleteone.errors[0].message
+          }
+          else{
+              return (deleteone);
+          }
+  },
+
+  Login: async(_,args)=>{
+    console.log("heyyyyyyyyyy");
+    // let session_exists = await client.exists("session");
+    // if(session_exists) {
+    //     let get_user = JSON.parse(await client.get("session"));
+    //     return "Already LoggedIn as " + get_user.username + "please logout to login again";
+    //   // res.status(403).json({"error":`Already LoggedIn as ${get_user.username}. please logout to login again`});
+    // }
+    console.log("Login Args")
+    console.log(args)
+    const loggedIn = await user.checkUser(args.username,args.password);
+    if(loggedIn.errors){     
+        return loggedIn.errors[0].message
+    }
+    else{
+      // let session = await client.set(
+      //   "session",
+      //   JSON.stringify(loggedIn)
+      // );
+      return (loggedIn);
+    }
+  },
+
+  AddTeamFollowing: async(_,args)=>{
+    const addTeam = await user.addTeamFollowing(args.userId,args.teamID);
+        if(addTeam.errors){
+        
+            return addTeam.errors[0].message
         }
         else{
-          return (oneUser);
+            return (addTeam);
         }
-    },
+  },
 
-    DeleteUser: async(_,args)=>{
-        const deleteone = await user.deleteUser(args.id);
-            if(deleteone.errors){
-            
-                return deleteone.errors[0].message
-            }
-            else{
+  AddPlayerFollowing: async(_,args)=>{
+      const addPlayer = await user.addPlayerFollowing(args.userId,args.PlayerID);
+          if(addPlayer.errors){
+          
+              return addPlayer.errors[0].message
+          }
+          else{
+              return (addPlayer);
+          }
+  },
 
-               return (deleteone);
-            }
-    },
+  DeleteTeamFollowing: async(_,args)=>{
+      const deleteTeam = await user.deleteTeamFollowing(args.userId,args.teamID);
+          if(deleteTeam.errors){
+          
+              return deleteTeam.errors[0].message
+          }
+          else{
+              return (deleteTeam);
+          }
+  },
 
-    Login: async(_,args)=>{
-      console.log("heyyyyyyyyyy");
-      let session_exists = await client.exists("session");
-      // if(session_exists) {
-      //     let get_user = JSON.parse(await client.get("session"));
-      //     return "Already LoggedIn as " + get_user.username + "please logout to login again";
-      //   // res.status(403).json({"error":`Already LoggedIn as ${get_user.username}. please logout to login again`});
-      // }
-      console.log("Login Args")
-      console.log(args)
-      const loggedIn = await user.checkUser(args.username,args.password);
-      if(loggedIn.errors){     
-          return loggedIn.errors[0].message
-      }
-      else{
-        let session = await client.set(
-          "session",
-          JSON.stringify(loggedIn)
-        );
-        return (loggedIn);
-      }
-    },
-    AddTeamFollowing: async(_,args)=>{
-        const addTeam = await user.addTeamFollowing(args.userId,args.teamID);
-            if(addTeam.errors){
-            
-                return addTeam.errors[0].message
-            }
-            else{
-                return (addTeam);
-            }
-    },
+  DeletePlayerFollowing: async(_,args)=>{
+      const deletePlayer = await user.deletePlayerFollowing(args.userId,args.PlayerID);
+          if(deletePlayer.errors){
+          
+              return deletePlayer.errors[0].message
+          }
+          else{
+              return (deletePlayer);
+          }
+  },
 
-    AddPlayerFollowing: async(_,args)=>{
-        const addPlayer = await user.addPlayerFollowing(args.userId,args.PlayerID);
-            if(addPlayer.errors){
-            
-                return addPlayer.errors[0].message
-            }
-            else{
-                return (addPlayer);
-            }
-    },
-    
-    DeleteTeamFollowing: async(_,args)=>{
-        const deleteTeam = await user.deleteTeamFollowing(args.userId,args.teamID);
-            if(deleteTeam.errors){
-            
-                return deleteTeam.errors[0].message
-            }
-            else{
-                return (deleteTeam);
-            }
-    },
-    
-    DeletePlayerFollowing: async(_,args)=>{
-        const deletePlayer = await user.deletePlayerFollowing(args.userId,args.PlayerID);
-            if(deletePlayer.errors){
-            
-                return deletePlayer.errors[0].message
-            }
-            else{
-                return (deletePlayer);
-            }
-    },
 
-    createGame: async (_, args) => {
-        const game = await user.createGame(args.fixtureID, args.userID, args.awayTeam, args.homeTeam, args.betField);
-        if(game.errors){
-          return oneUser.errors[0].message
-        }
-        else{
-          return game;
-        }       
-    },
-
-    updateGame: async (_, args) => {     
-      const updatedGame = await user.updateGame(args.fixtureID);
-      if(updatedGame.errors){
-        return updatedGame.errors[0].message
-      }
-      else{
-        return (updatedGame);
-      }       
-    },
   
   },
 

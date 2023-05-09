@@ -1,10 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React from 'react';
+import { useState } from 'react';
 import { useMutation } from '@apollo/client';
+import queries from '../queries';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 const SignIn = () => {
-  const authContext = useContext(AuthContext);
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: '',
@@ -20,7 +22,7 @@ const SignIn = () => {
     onCompleted: async (response) => {
       console.log(response);
       console.log('User exists');
-      sessionStorage.setItem('sessionToken',response);
+      sessionStorage.setItem('sessionToken',JSON.stringify(response));
       window.location.href = 'http://localhost:3000/';
 
     },
@@ -37,26 +39,25 @@ const SignIn = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const { username, password } = formData;
-    if (!username || !password) {
+    if(!username || !password) {
       console.log('Username or password is empty');
       Swal.fire({
         icon: 'error',
         title: 'Error!',
         text: 'Either the username or password is empty',
       });
-    } else {
+    } else{
       loginUser({ variables: { username, password } });
     }
+    
   };
 
   return (
     <div class="col-md-6 align-items-center ">
-      <div className="wsk-cp-matches">
+      <div className="wsk-cp-matches" >
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="username" className="teamname">
-              Username
-            </label>
+            <label htmlFor="username" className='teamname'>Username</label>
             <input
               type="text"
               className="form-control"
@@ -64,12 +65,11 @@ const SignIn = () => {
               name="username"
               value={formData.username}
               onChange={handleInputChange}
+              
             />
           </div>
           <div className="form-group">
-            <label htmlFor="password" className="teamname">
-              Password
-            </label>
+            <label htmlFor="password" className='teamname'>Password</label>
             <input
               type="password"
               className="form-control"
@@ -77,116 +77,17 @@ const SignIn = () => {
               name="password"
               value={formData.password}
               onChange={handleInputChange}
+              
             />
           </div>
-            <button type="submit" className="btn btn-primary">
-              Log In
-            </button>
-          </form>
-        </div>
+          <button type="submit" className="btn btn-primary">
+            Log In
+          </button>
+        </form>
       </div>
-    );
-  };
+    </div>
+    
+  );
+};
 
 export default SignIn
-
-
-
-
-// import React from 'react';
-// import { useState } from 'react';
-// import { useMutation } from '@apollo/client';
-// import queries from '../queries';
-// import { useNavigate } from 'react-router-dom';
-// import Swal from 'sweetalert2'
-// import AuthContext from './AuthContext'
-
-
-// const SignIn = () => {
-//   const [user, setUser] = useState(null)
-//   const navigate = useNavigate();
-//   const [formData, setFormData] = useState({
-//     username: '',
-//     password: '',
-//   });
-
-//   const handleInputChange = (event) => {
-//     const { name, value } = event.target;
-//     setFormData({ ...formData, [name]: value });
-//   };
-
-//   const [loginUser, { loading, error, data }] = useMutation(queries.LOGIN, {
-//     onCompleted: async () => {
-//       setUser(username)
-//       await redis.set(`session:${user}`, JSON.stringify(user));
-//       console.log('User exists');
-//       navigate('/');
-      
-//       // await redis.set(`session:${login}`, JSON.stringify(login));
-//     },
-//     onError: (error) => {
-//       Swal.fire({
-//         icon: 'error',
-//         title: 'Error!',
-//         text: 'Either the username or password is incorrect',
-//       });
-//       console.log('User does not exist');
-//     },
-//   });
-
-//   const handleSubmit = (event) => {
-//     event.preventDefault();
-//     const { username, password } = formData;
-//     if(!username || !password) {
-//       console.log('Username or password is empty');
-//       Swal.fire({
-//         icon: 'error',
-//         title: 'Error!',
-//         text: 'Either the username or password is empty',
-//       });
-//     } else{
-//       loginUser({ variables: { username, password } });
-
-//     }
-    
-//   };
-
-//   return (
-//     <div class="col-md-6 align-items-center ">
-//       <div className="wsk-cp-matches" >
-//         <form onSubmit={handleSubmit}>
-//           <div className="form-group">
-//             <label htmlFor="username" className='teamname'>Username</label>
-//             <input
-//               type="text"
-//               className="form-control"
-//               id="username"
-//               name="username"
-//               value={formData.username}
-//               onChange={handleInputChange}
-              
-//             />
-//           </div>
-//           <div className="form-group">
-//             <label htmlFor="password" className='teamname'>Password</label>
-//             <input
-//               type="password"
-//               className="form-control"
-//               id="password"
-//               name="password"
-//               value={formData.password}
-//               onChange={handleInputChange}
-              
-//             />
-//           </div>
-//           <button type="submit" className="btn btn-primary">
-//             Log In
-//           </button>
-//         </form>
-//       </div>
-//     </div>
-    
-//   );
-// };
-
-// export default SignIn

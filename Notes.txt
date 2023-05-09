@@ -21,3 +21,5 @@ list obj id =
 nav bar -  when logged in 
 
 SignIn, Signup works: error handling left
+validations to be done in server/client
+xss attacks 

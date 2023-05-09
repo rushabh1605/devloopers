@@ -4,16 +4,17 @@ import Accordion from 'react-bootstrap/Accordion';
 import queries from '../queries';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useQuery } from "@apollo/client";
+import { useQuery,useMutation } from "@apollo/client";
 import NotFoundPage from "./NotFound"
 import {Card} from 'react-bootstrap'
 
 const SinglePlayer = () => {
-
+    const sessionToken = JSON.parse(sessionStorage.getItem('sessionToken'));
+    console.log(sessionToken.Login._id)
     let { playerId } = useParams();
 
    playerId = parseInt(playerId)
-
+   
    const { loading, error, data, refetch } = useQuery(
     queries.LOAD_PLAYER_BY_ID_INFO, {
         fetchPolicy: 'cache-and-network',
@@ -22,8 +23,63 @@ const SinglePlayer = () => {
         refetchOnWindowFocus: false,
         enabled: false
     }
+   );
+   const { loading:userLoading, error:userError, data:userData } = useQuery(
+    queries.GET_USER_BY_ID, {
+        fetchPolicy: 'cache-and-network',
+        variables:{id: sessionToken.Login._id},
+        manual: true,
+        refetchOnWindowFocus: false,
+        enabled: false
+    }
 )
 
+const [mutate,{loading:followLoading, error:followError, data:followData }] = useMutation(queries.LOAD_PLAYER_FOLLOWING);
+const [unmutate,{loading:unfollowLoading, error:unfollowError, data:unfollowData }] = useMutation(queries.LOAD_PLAYER_UNFOLLOWING);
+const handle_follow = (event) => {
+    
+    mutate({
+        
+        variables:{
+           
+            userId: sessionToken.Login._id,
+            PlayerID: playerId,
+            
+        },
+        refetchQueries:[{
+            query : queries.GET_USER_BY_ID,
+            variables:{
+                id:sessionToken.Login._id
+            }
+        }]
+      
+       
+  })
+      
+       
+  }
+  const handle_unfollow = (event) => {
+    
+    unmutate({
+        
+        variables:{
+           
+            userId: sessionToken.Login._id,
+            PlayerID: playerId,
+            
+        },
+        refetchQueries:[{
+            query : queries.GET_USER_BY_ID,
+            variables:{
+                id:sessionToken.Login._id
+            }
+        }]
+      
+       
+  })
+      
+       
+  }
 
 
 if(loading){
@@ -38,11 +94,15 @@ if(loading){
     )
 }
 
-console.log(error)
-if(data){
+// console.log(error)
+if(data || userData){
+    console.log(sessionToken.Login.isPremium )
     
     const {GetPlayerByID} = data
-    console.log(GetPlayerByID)
+    
+    const {GetUserById} = userData
+    const followers_list = GetUserById.followingPlayerID
+    console.log(followers_list)
     let Flag = false
       if(GetPlayerByID === null){
         
@@ -68,8 +128,36 @@ if(data){
                                                                         <p className="ml-2 tablehead">{GetPlayerByID.teamName}</p>
                                                                     </div>
                                                                     
+                                                                    <div className='d-flex'>
+                                                                    { sessionToken  && sessionToken.Login.isPremium ===true ?(
+                        <>
+                    
+                        { followers_list.includes(playerId.toString())?(
+                            <div className='col-md-4'>
+                            <button className='btn btn-success' onClick={(event) => handle_unfollow()}>UNFOLLOW</button>
+                            </div>
+                            
+                        )
+                        : (
+                        <div className='col-md-4'>
+                            <button className='btn btn-success' onClick={(event) => handle_follow(event)}>FOLLOW</button>
+                            </div>)
+                        }
+                        </>
+                    )
+                        
+                        
+                    :(
+                        <div>
+                        
+                    </div>
+                    )
+                    
+                    }
+                                                                    </div>
                                                                 </div>
                                                                 </div>
+                                        
                                     
                         </div>
                     </div>

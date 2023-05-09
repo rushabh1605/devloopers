@@ -143,6 +143,20 @@ const typeDefs = gql`
     substitutesTeam2: [PlayersForFixture]
   }
 
+  type TeamInfo {
+    teamID : Int
+    teamName: String
+    teamLogo: String
+    founded: Int
+    teamCode: String
+    countryName: String
+    venueName: String
+    address: String
+    city: String
+    capacity: Int
+    venueImage: String
+  }
+
   type searchedPlayers {
     playerID: Int!
     playerName: String
@@ -150,13 +164,18 @@ const typeDefs = gql`
   }
 
   type Game {
-    id: Int!
+    _id: String!
     fixtureID: Int!
     userID: String
     awayTeam: Int
     homeTeam: Int
     betField: Int
     result: Int
+  }
+
+
+  type FollowedPlayers {
+    playerId: Int
   }
 
    scalar Date
@@ -176,6 +195,11 @@ const typeDefs = gql`
     SearchPlayerByName(playerName: String!) : [searchedPlayers]
     getGameByfixtureId(fixtureID:Int!): Game
     getGameById(GameID:Int!):Game
+    getGameByUserId(id:String!):[Game]
+    TeamInformation(teamID: Int!): TeamInfo
+    GetUserById(id: ID!): User
+    GetAllUsers: [User] 
+    GetFollowedPlayersInfo(userId: String) : [FollowedPlayers]
   }
 
   type Mutation
@@ -188,7 +212,14 @@ const typeDefs = gql`
     DeleteTeamFollowing(userId:ID!,teamID: ID!) : User
     DeletePlayerFollowing(userId:ID!,PlayerID: ID!) : User
     createGame(fixtureID:Int!, userID:String!, awayTeam: Int!, homeTeam: Int!, betField: Int!): Game
-    updateGame(gameID:String! ): Game
+    updateGame(gameID:String! ): User 
+    CreateUser(username:String!,password:String!, dob:String, phone:String, email:String!, country:String, profilePic:String, bio:String, isPremium:Boolean): User
+    Login(username:String!,password:String!): User
+    DeleteUser(id: ID!): [User]
+    AddTeamFollowing(userId:ID!,teamID: ID!) : User
+    AddPlayerFollowing(userId:ID!,PlayerID: ID!) : User
+    DeleteTeamFollowing(userId:ID!,teamID: ID!) : User
+    DeletePlayerFollowing(userId:ID!,PlayerID: ID!) : User
   }
 
 `;

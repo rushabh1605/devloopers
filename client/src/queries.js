@@ -146,6 +146,24 @@ const LOAD_MANAGER_INFO = gql`
     }
 `;
 
+const LOAD_TEAM_INFO = gql`
+query TeamInformation($teamID: Int!) {
+    TeamInformation(teamID: $teamID) {
+        teamID
+        teamName
+        teamLogo
+        founded
+        teamCode
+        countryName
+        venueName
+        address
+        city
+        capacity
+        venueImage      
+    } 
+}
+`;
+
 const LOAD_TOP_LEAGUES = gql`
     query TopLeaguesInformation {
         TopLeaguesInformation {
@@ -153,6 +171,81 @@ const LOAD_TOP_LEAGUES = gql`
             leagueName,
             logo,
             countryName
+        }
+    }
+`;
+
+const LOAD_GAME_BY_ID = gql`
+    query getGameById {
+        getGameById {
+            id,
+            fixtureID,
+            userID,
+            awayTeam,
+            homeTeam,
+            betField,
+            result
+        }
+    }
+`;
+
+const LOAD_GAME_BY_FIXTURE_ID = gql`
+    query getGameByfixtureId {
+        getGameByfixtureId {
+            _id,
+            fixtureID,
+            userID,
+            awayTeam,
+            homeTeam,
+            betField,
+            result
+        }
+    }
+`;
+
+const CREATE_GAME = gql`
+    mutation createGame($fixtureID:Int!, $userID:String!, $awayTeam: Int!, $homeTeam: Int!, $betField: Int!) {
+        createGame(fixtureID: $fixtureID, userID: $userID, awayTeam:$awayTeam, homeTeam:$homeTeam, betField:$betField) {
+            _id,
+            fixtureID,
+            userID,
+            awayTeam,
+            homeTeam,
+            betField,
+            result
+        }
+    }
+`;
+const UPDATE_GAME = gql`
+    mutation updateGame($gameID:String! ) {
+        updateGame(gameID:$gameID ){
+            _id
+            username
+            password
+            dob
+            phone
+            email
+            country
+            profilePic
+            bio
+            isPremium
+            coins
+            followingTeamID
+            followingPlayerID
+        }
+    }
+`;
+
+const LOAD_GAME_BY_USERID = gql`
+    query getGameByUserId($id:String!) {
+        getGameByUserId(id: $id) {
+            _id,
+            fixtureID,
+            userID,
+            awayTeam,
+            homeTeam,
+            betField,
+            result
         }
     }
 `;
@@ -207,7 +300,26 @@ const GET_USER_BY_ID = gql `
         GetUserById(id: $id){
             _id
             username
+            password
+            dob
+            phone
             email
+            country
+            profilePic
+            bio
+            isPremium
+            coins
+            followingTeamID
+            followingPlayerID
+        }
+    }
+`
+
+
+const LOAD_FOLLOWED_PLAYERS = gql `
+    query GetFollowedPlayersInfo($userId: String!) {
+        GetFollowedPlayersInfo(userId: $userId){
+            playerId
         }
     }
 `
@@ -232,35 +344,51 @@ const LOGIN = gql `
         }
     }
 `
+const LOAD_PLAYER_FOLLOWING = gql`
+mutation AddPlayerFollowing($userId:ID!,$PlayerID: ID!){
+        AddPlayerFollowing(userId:$userId,PlayerID:$PlayerID){
 
-
-const LOAD_GAME_BY_ID = gql`
-    query getGameById {
-        getGameById {
-            id,
-            fixtureID,
-            userID,
-            awayTeam,
-            homeTeam,
-            betField,
-            result
+            _id
+            username
+            password
+            dob
+            phone
+            email
+            country
+            profilePic
+            bio
+            isPremium
+            coins
+            followingTeamID
+            followingPlayerID
         }
-    }
-`;
 
-const LOAD_GAME_BY_FIXTURE_ID = gql`
-    query getGameByfixtureId {
-        getGameByfixtureId {
-            id,
-            fixtureID,
-            userID,
-            awayTeam,
-            homeTeam,
-            betField,
-            result
-        }
     }
-`;
+`
+const LOAD_PLAYER_UNFOLLOWING = gql`
+mutation DeletePlayerFollowing($userId:ID!,$PlayerID: ID!){
+        DeletePlayerFollowing(userId:$userId,PlayerID:$PlayerID){
+
+            _id
+            username
+            password
+            dob
+            phone
+            email
+            country
+            profilePic
+            bio
+            isPremium
+            coins
+            followingTeamID
+            followingPlayerID
+        }
+
+    }
+`
+
+
+
 export default {
     LOAD_LEAGUES,
     LOAD_STANDINGS,
@@ -270,13 +398,19 @@ export default {
     LOAD_TOP_LEAGUES,
     LOAD_LEAGUE_BY_ID,
     LOAD_MANAGER_INFO,
+    LOAD_GAME_BY_ID,
+    LOAD_PLAYER_BY_ID_INFO,
+    SEARCH_PLAYER_BY_NAME,
+    LOAD_GAME_BY_USERID,
+    LOAD_GAME_BY_FIXTURE_ID,
+    CREATE_GAME,
+    UPDATE_GAME,
+    LOAD_TEAM_INFO,
     CREATE_USER,
     GET_ALL_USER,
     GET_USER_BY_ID,
     LOGIN,
-    SEARCH_PLAYER_BY_NAME,
-    LOAD_GAME_BY_ID,
-    LOAD_GAME_BY_FIXTURE_ID,
-    LOAD_PLAYER_BY_ID_INFO
-
+    LOAD_PLAYER_FOLLOWING,
+    LOAD_PLAYER_UNFOLLOWING,
+    LOAD_FOLLOWED_PLAYERS
 };
