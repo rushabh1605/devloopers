@@ -196,9 +196,7 @@ const typeDefs = gql`
     getGameByfixtureId(fixtureID:Int!): Game
     getGameById(GameID:Int!):Game
     getGameByUserId(id:String!):[Game]
-    TeamInformation(teamID: Int!): TeamInfo
-    GetUserById(id: ID!): User
-    GetAllUsers: [User] 
+    TeamInformation(teamID: Int!): TeamInfo 
     GetFollowedPlayersInfo(userId: String) : [FollowedPlayers]
   }
 
@@ -213,13 +211,6 @@ const typeDefs = gql`
     DeletePlayerFollowing(userId:ID!,PlayerID: ID!) : User
     createGame(fixtureID:Int!, userID:String!, awayTeam: Int!, homeTeam: Int!, betField: Int!): Game
     updateGame(gameID:String! ): User 
-    CreateUser(username:String!,password:String!, dob:String, phone:String, email:String!, country:String, profilePic:String, bio:String, isPremium:Boolean): User
-    Login(username:String!,password:String!): User
-    DeleteUser(id: ID!): [User]
-    AddTeamFollowing(userId:ID!,teamID: ID!) : User
-    AddPlayerFollowing(userId:ID!,PlayerID: ID!) : User
-    DeleteTeamFollowing(userId:ID!,teamID: ID!) : User
-    DeletePlayerFollowing(userId:ID!,PlayerID: ID!) : User
   }
 
 `;

@@ -104,13 +104,12 @@ function Landing() {
     let searchFlag = false
     if (SearchPlayerByName === null) {
       searchFlag = false
-
-
     }
     else {
       searchFlag = true
-
     }
+
+    console.log(data)
     return (
       <div class="row justify-content-center" id='home' >
 
@@ -188,8 +187,9 @@ function Landing() {
               placeholderText={getDate || dateString}
             />            <br></br>
             <br></br>
-            {FixtureByDateInformation.map((x) => {
 
+            {FixtureByDateInformation.length ? (FixtureByDateInformation.map((x) => {
+              console.log(x)
               return (
                 <div class="row matches m-3">
                   <div class="col-md-3  d-flex align-items-center mt-4 mt-md-0">
@@ -223,7 +223,12 @@ function Landing() {
                   </div>
                 </div>
               )
-            })}
+            })
+          ): (
+            <div class="alert alert-danger" role="alert">
+                No Match scheduled on this date!!!
+            </div>
+          )}
           </div>
         </div>
 

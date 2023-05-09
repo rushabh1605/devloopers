@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApolloClient } from '@apollo/client';
-import Swal from 'sweetalert2';
 
 const Signout = () => {
   const navigate = useNavigate();

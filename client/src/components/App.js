@@ -7,10 +7,7 @@ import Landing from './Landing';
 import Navigation from './Navigation';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
-// import { AuthProvider } from '../firebase/Auth';
-// import PrivateRoute from './PrivateRoute';
 import SignOut from './SignOut';
-import About from './About';
 import News from './News';
 import NotFound from './NotFound';
 import SingleLeague from './SingleLeague';
@@ -87,7 +84,6 @@ function App() {
                 <Route path='/signin' element={<SignIn />} />
                 <Route path='/signup' element={<SignUp />} />
                 <Route path='/signout' element={<SignOut />} />
-                <Route path='/about' element={<About />} />
                 
                 <Route path='/news' element={<News />} />
                 <Route path="/404" element={<NotFound />} />

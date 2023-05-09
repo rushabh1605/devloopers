@@ -1,6 +1,5 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
-import Accordion from 'react-bootstrap/Accordion';
+import { useParams } from "react-router-dom";
 import queries from '../queries';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -17,7 +16,7 @@ const SingleLeague = () => {
 
     leagueId = parseInt(leagueId)
 
-    const { loading, error, data, refetch } = useQuery(
+    const { loading, error, data } = useQuery(
         queries.LOAD_LEAGUE_BY_ID, {
         fetchPolicy: 'cache-and-network',
         variables: { id: leagueId },

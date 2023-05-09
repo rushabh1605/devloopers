@@ -81,6 +81,7 @@ module.exports = {
         return leagueList;   
     },
 
+
     StandingInformation : async (_, args) => {
       let standingsList=[]; 
       const { data } = await axios.get
@@ -108,6 +109,7 @@ module.exports = {
       });               
       return standingsList;
     },
+
 
     FixtureByDateInformation : async (_, args) => {
 
@@ -152,6 +154,7 @@ module.exports = {
       await runApiForAllLeagues();           
       return fixtureList;
     },
+
 
     TopScorerByLeague : async (_, args) => {
       let topScorersList=[]; 
@@ -246,6 +249,7 @@ module.exports = {
       searchedPlayers.sort((a, b) => a.playerID - b.playerID);          
       return searchedPlayers;
     },
+
 
     ManagerInformation : async (_, args) => {
         const { data } = await axios.get
@@ -365,9 +369,9 @@ Mutation:{
         return game.errors[0].message
       }
       else{
-          return (user_list);
-      }
-    },
+        return game;
+      }       
+  },
 
 
   updateGame: async (_, args) => {   
@@ -376,7 +380,9 @@ Mutation:{
     if(updatedGame.errors){
       return updatedGame.errors[0].message
     }
-
+    else{
+      return (updatedGame);
+    }       
   },
 
   // CreateUser: async (_, args) => {
@@ -503,6 +509,6 @@ Mutation:{
 
 
   
-  },
+},
 
 }

@@ -1,6 +1,5 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
-import Accordion from 'react-bootstrap/Accordion';
+import { useParams } from "react-router-dom";
 import queries from '../queries';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -11,7 +10,7 @@ const Standings = () => {
     let { leagueId } = useParams();
     leagueId = parseInt(leagueId)
 
-    const { loading, error, data, refetch } = useQuery(
+    const { loading, error, data } = useQuery(
         queries.LOAD_STANDINGS, {
             fetchPolicy: 'cache-and-network',
             variables:{league: leagueId, season: 2022},

@@ -71,8 +71,6 @@ import '../App.css';
 
 const Navigation = () => {
 
-
-
   const sessionToken = sessionStorage.getItem('sessionToken');
   console.log(sessionToken);
 
@@ -82,11 +80,7 @@ const Navigation = () => {
         <NavLink className='nav-links' to='/'>
           Home
         </NavLink>
-  
-        <NavLink className='nav-links' to='/about'>
-          About us
-        </NavLink>
-  
+        
         <NavLink className='nav-links' to='/game'>
           Game
         </NavLink>
@@ -96,7 +90,7 @@ const Navigation = () => {
         </NavLink>
   
         <NavLink className='nav-links' to='/signout'>
-          SignOut
+          Sign Out
         </NavLink>
   
          {/* <NavLink className='nav-links' to='/signup'>
@@ -113,10 +107,6 @@ const Navigation = () => {
           Home
         </NavLink>
   
-        <NavLink className='nav-links' to='/about'>
-          About us
-        </NavLink>
-  
         {/* <NavLink className='nav-links' to='/game'>
           Game
         </NavLink>
@@ -126,11 +116,11 @@ const Navigation = () => {
         </NavLink> */}
   
         <NavLink className='nav-links' to='/signin'>
-          LogIn
+          Log In
         </NavLink>
   
         <NavLink className='nav-links' to='/signup'>
-          SignUp
+          Sign Up
         </NavLink>
       </nav>
     );
@@ -204,10 +194,6 @@ const NavigationNonAuth = () => {
     <nav className='navigation'>
       <Link className='nav-links' to='/'>
         Home
-      </Link>
-
-      <Link className='nav-links' to='/about'>
-        About
       </Link>
 
       <Link className='nav-links' to='/signin'>

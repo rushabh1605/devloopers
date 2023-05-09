@@ -16,14 +16,15 @@ function Search(props) {
         >
           <label>
             <span className='searchbar'> Search Players: &nbsp;
-            <input
+            </span>
+          </label>
+          <input
               autoComplete='off'
+              className="form-control"
               type='text'
               name='searchTerm'
               onChange={handleChange}
-            />
-            </span>
-          </label>
+          />
         </form>
       );
     

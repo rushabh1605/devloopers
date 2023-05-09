@@ -41,6 +41,7 @@ const SignIn = () => {
         text: error.message.split(':')[1].trim().replace(/"/g, ''),
         confirmButtonText: "Fix it",
       });
+      console.log(error)
       console.log(error.message.split(':')[1].trim().replace(/"/g, ''));
       console.log('User not created');
     },

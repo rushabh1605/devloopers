@@ -86,7 +86,7 @@ if(validation.string(country,"Country"));
 let createuser = {
   username:username.trim().toLowerCase(),
   password: hashed_password,
-  dob:dob.trim() || "Not Provided", 
+  dob:formattedDate || "Not Provided", 
   phone:phone.trim(), 
   email:email.trim(), 
   country:country.trim(), 
