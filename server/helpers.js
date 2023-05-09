@@ -31,12 +31,13 @@ const createUser_validations = function createUser_validations(input_username,in
     if (input_username.length < 4) throw 'Username should be at least 4 characters long.';
     // if(spaces.test(input_username)) throw 'Username cannot contain spaces';
     if(format.test(input_username)) throw 'Please enter valid username .i.e without special characters or spaces';
-    if (input_password.length < 6) throw 'Password should be at least 6 characters long.';
+    if (input_password.length < 6 || input_password > 10) throw 'Password should be at least 6 and maximum 10 characters long.';
     if(spaces.test(input_password)) throw 'Password cannot contain spaces';
     if(!password_format.test(input_password)) throw 'Password should contain at least one uppercase character, at least one number and at least one special character';
 
 }
 const dateformat = function error_handling_for_dateformat(input_as_string){
+  console.log(input_as_string)
   let date_regex = /^\d{2}\/\d{2}\/\d{4}$/;
   if(input_as_string.trim().match(date_regex)===null){
       throw 'Please enter valid date format .i.e mm/dd/yyyy';
@@ -55,7 +56,7 @@ const dateformat = function error_handling_for_dateformat(input_as_string){
   let max_year = new Date().getFullYear();    
   let min_year = 2005;
   let user_year = parseInt(date_arr[2]);
-  if(!(user_year >= min_year && user_year <= max_year)) throw 'User must be 18 years old';
+  if((user_year >= min_year || user_year >= max_year)) throw 'User must be 18 years old';
 }
 const email_check = async function email_check(email){
   try{

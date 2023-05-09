@@ -282,7 +282,17 @@ const GET_USER_BY_ID = gql `
         GetUserById(id: $id){
             _id
             username
+            password
+            dob
+            phone
             email
+            country
+            profilePic
+            bio
+            isPremium
+            coins
+            followingTeamID
+            followingPlayerID
         }
     }
 `
@@ -307,6 +317,48 @@ const LOGIN = gql `
         }
     }
 `
+const LOAD_PLAYER_FOLLOWING = gql`
+mutation AddPlayerFollowing($userId:ID!,$PlayerID: ID!){
+        AddPlayerFollowing(userId:$userId,PlayerID:$PlayerID){
+
+            _id
+            username
+            password
+            dob
+            phone
+            email
+            country
+            profilePic
+            bio
+            isPremium
+            coins
+            followingTeamID
+            followingPlayerID
+        }
+
+    }
+`
+const LOAD_PLAYER_UNFOLLOWING = gql`
+mutation DeletePlayerFollowing($userId:ID!,$PlayerID: ID!){
+        DeletePlayerFollowing(userId:$userId,PlayerID:$PlayerID){
+
+            _id
+            username
+            password
+            dob
+            phone
+            email
+            country
+            profilePic
+            bio
+            isPremium
+            coins
+            followingTeamID
+            followingPlayerID
+        }
+
+    }
+`
 
 
 
@@ -329,5 +381,7 @@ export default {
     CREATE_USER,
     GET_ALL_USER,
     GET_USER_BY_ID,
-    LOGIN
+    LOGIN,
+    LOAD_PLAYER_FOLLOWING,
+    LOAD_PLAYER_UNFOLLOWING
 };

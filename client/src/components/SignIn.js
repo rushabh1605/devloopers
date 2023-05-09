@@ -22,7 +22,7 @@ const SignIn = () => {
     onCompleted: async (response) => {
       console.log(response);
       console.log('User exists');
-      sessionStorage.setItem('sessionToken',response);
+      sessionStorage.setItem('sessionToken',JSON.stringify(response));
       window.location.href = 'http://localhost:3000/';
 
     },

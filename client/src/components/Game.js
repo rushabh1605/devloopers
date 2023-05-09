@@ -12,6 +12,8 @@ const Game = () => {
 
     let now = new Date();
     let dateString = moment(now).format('YYYY-MM-DD');
+    const hours = now.getHours()
+   
     let home;
     let away;
     let bet;
@@ -101,6 +103,9 @@ if(data && ALLgameData){
     return(
         <div className="row justify-content-center" id='home'>
             {FixtureByDateInformation.map((x) => {
+                let hrs = x.matchTime.split(':');
+                let exact = parseInt(hrs[0])+parseInt(2)
+                
                 return(
             <div className='col-md-4'>
             <div className="wsk-cp-matches " >
@@ -136,12 +141,21 @@ if(data && ALLgameData){
                     </div>
                   </div>
 
-                  <div className='row mt-2'>
-                        <h5 className='tablehead'>Predict Winner ?</h5>
-                  </div>
-                  {include_id.includes(x.id)?
-                  <div></div>:
                   
+                  {include_id.includes(x.id) || exact < hours?
+                  <div>
+                    <p className='teamname '
+                    style={{
+                      color:'#800000'
+                    }}
+                    >Predict time is finished come back tommorow</p>
+                  </div>:
+
+                  (
+                    <div>
+                  <div className='row mt-2'>
+                    <h5 className='tablehead'>Predict Winner ?</h5>
+                  </div>
                   <div className='row mt-4'>
                     <div className="d-flex">
                         <button className='btn btn-success' onClick={(event) => handle_createGame(event,home=x.homeTeamID,away=x.awayTeamID,bet=x.homeTeamID,fixture=x.id)}>{x.homeTeamName}</button>
@@ -150,7 +164,8 @@ if(data && ALLgameData){
                     </div>
                     
 
-                  </div>
+                  </div></div>
+                  )
                 }
                                 
             </div>
