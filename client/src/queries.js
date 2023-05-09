@@ -316,6 +316,15 @@ const GET_USER_BY_ID = gql `
     }
 `
 
+
+const LOAD_FOLLOWED_PLAYERS = gql `
+    query GetFollowedPlayersInfo($userId: String!) {
+        GetFollowedPlayersInfo(userId: $userId){
+            playerId
+        }
+    }
+`
+
 const LOGIN = gql `
     mutation Login($username: String!, $password: String!){
         Login(username: $username, password: $password) {
@@ -403,5 +412,6 @@ export default {
     GET_USER_BY_ID,
     LOGIN,
     LOAD_PLAYER_FOLLOWING,
-    LOAD_PLAYER_UNFOLLOWING
+    LOAD_PLAYER_UNFOLLOWING,
+    LOAD_FOLLOWED_PLAYERS
 };

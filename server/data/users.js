@@ -7,6 +7,12 @@ const {ObjectId} = require('mongodb');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+const redis = require("redis");
+const client = redis.createClient();
+
+(async () => {
+  await client.connect();
+})();
 
 const getAllUsers = async () => {
     
@@ -146,6 +152,26 @@ const addTeamFollowing = async (userId,teamID) => {
 
 };
 const addPlayerFollowing = async (userId,playerID) => {
+
+
+  let key_exists = await client.exists(userId +"_PlayerFollowing");
+  let index;
+  if(key_exists){
+    index = await client.rPush(userId +"_PlayerFollowing", JSON.stringify(playerID))    
+  }
+
+  else{
+    index = await client.lPush(userId +"_PlayerFollowing",JSON.stringify(playerID))   
+  }
+    
+  if(index){
+    const data_pushed = await client.lIndex(userId +"_PlayerFollowing", index-1)
+    console.log(JSON.parse(data_pushed));
+  }
+  else{
+      console.log("cannot add to redis");
+  }
+
   if(validation.valid_id(userId,"User ID"));
   userId = userId.trim();
   const userscollection = await users();
@@ -173,6 +199,22 @@ const deleteTeamFollowing = async (userId,teamID) => {
 
 };
 const deletePlayerFollowing = async (userId,playerID) => {
+
+  let key = await client.exists(userId +"_PlayerFollowing");
+  let removed
+  const length = await client.lLen(userId +"_PlayerFollowing")
+      for(let i=0; i<length; i++){
+          const result = await client.lIndex(userId +"_PlayerFollowing", i)
+          let data = JSON.parse(result)
+          // console.log(data)
+          if(data ===playerID){
+              removed = await client.lRem(userId +"_PlayerFollowing",0,result)
+          }
+          else{
+              removed=null
+          }
+     }
+
   if(validation.valid_id(userId,"User ID"));
   userId = userId.trim();
   const userscollection = await users();
@@ -313,7 +355,6 @@ if(userData.coins >=200){
          await userscollection.updateOne({_id: new ObjectId(userID)},{$set : { coins : userData.coins + 100}} );
        }
      }
-  
    
     
     

@@ -5,16 +5,12 @@ const uuid = require("uuid");
 const { result } = require('lodash');
 const data = require("./data");
 const user = data.users;
-// const redis = require('redis');
-// const client = redis.createClient({
-//   port: 6379,
-//   host: 'redis'
-// });
-// client.connect();
-// client.on('connect', (err)=>{
-//   if(err) throw err;
-//   else console.log('Redis Connected..!');
-// });
+const redis = require("redis");
+const client = redis.createClient();
+
+(async () => {
+  await client.connect();
+})();
 
 const API_KEY = '3df39a1cbamsh63f95b9f20d493ep18c3d2jsnaa9a8f6d3181';
 const API_HOST = 'api-football-v1.p.rapidapi.com';
@@ -330,6 +326,37 @@ module.exports = {
         return (oneUser);
     }
     
+  },
+
+
+  GetFollowedPlayersInfo: async (_, args) => {
+
+    let key_exists = await client.exists(args.userId +"_PlayerFollowing");
+    let index;
+    let newArray=[];
+    if(key_exists){
+      console.log("helllo");
+      //index = await client.get(args.userId +"_PlayerFollowing")  ;
+      // return JSON.stringify(index); 
+      // console.log(index)
+      const length = await client.lLen(args.userId +"_PlayerFollowing");
+      //console.log(length);
+      for(let i=0; i<length; i++){
+          const result = await client.lIndex(args.userId +"_PlayerFollowing", i);
+          // console.log(result)
+          // console.log(JSON.parse(result))
+          let newObject= {playerId: parseInt(JSON.parse(result))}
+          newArray.push(newObject);        
+      }
+      console.log(newArray)
+      if(newArray.length!== 0) {
+          return newArray;
+      } else{
+          return [0];
+      }
+    }
+    
+    else return [0];   
   }
 
 },
