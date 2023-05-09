@@ -178,6 +178,10 @@ const typeDefs = gql`
     playerId: Int
   }
 
+  type FollowedTeams {
+    teamId: Int
+  }
+
    scalar Date
 
   type Query {
@@ -198,6 +202,7 @@ const typeDefs = gql`
     GetUserById(id: ID!): User
     GetAllUsers: [User] 
     GetFollowedPlayersInfo(userId: String) : [FollowedPlayers]
+    GetFollowedTeamsInfo(userId: String) : [FollowedTeams]
   }
 
   type Mutation {

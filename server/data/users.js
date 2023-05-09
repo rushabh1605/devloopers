@@ -137,6 +137,28 @@ const checkUser = async (username, password) =>
 };
 
 const addTeamFollowing = async (userId,teamID) => {
+
+  console.log(teamID);
+
+  let key_exists = await client.exists(userId +"_TeamFollowing");
+  let index;
+  if(key_exists){
+    index = await client.rPush(userId +"_TeamFollowing", JSON.stringify(teamID))    
+  }
+
+  else{
+    index = await client.lPush(userId +"_TeamFollowing",JSON.stringify(teamID))   
+  }
+    
+  if(index){
+    const data_pushed = await client.lIndex(userId +"_TeamFollowing", index-1)
+    console.log(JSON.parse(data_pushed));
+  }
+  else{
+      console.log("cannot add to redis");
+  }
+
+
   if(validation.valid_id(userId,"User ID"));
   userId = userId.trim();
   const userscollection = await users();
@@ -185,6 +207,22 @@ const addPlayerFollowing = async (userId,playerID) => {
 };
 
 const deleteTeamFollowing = async (userId,teamID) => {
+
+  let key = await client.exists(userId +"_TeamFollowing");
+  let removed
+  const length = await client.lLen(userId +"_TeamFollowing")
+      for(let i=0; i<length; i++){
+          const result = await client.lIndex(userId +"_TeamFollowing", i)
+          let data = JSON.parse(result)
+          // console.log(data)
+          if(data ===teamID){
+              removed = await client.lRem(userId +"_TeamFollowing",0,result)
+          }
+          else{
+              removed=null
+          }
+     }
+
   if(validation.valid_id(userId,"User ID"));
   userId = userId.trim();
   const userscollection = await users();

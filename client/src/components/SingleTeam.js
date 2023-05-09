@@ -4,16 +4,19 @@ import Accordion from 'react-bootstrap/Accordion';
 import queries from '../queries';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useQuery } from "@apollo/client";
+import { useQuery,useMutation } from "@apollo/client";
 import NotFoundPage from "./NotFound"
 import {Card} from 'react-bootstrap'
 
 const SingleTeam = () => {
+    const sessionToken = JSON.parse(sessionStorage.getItem('sessionToken'));
+    console.log(sessionToken.Login._id)
 
     let { teamId } = useParams();
     // console.log(teamID);
     let teamID = parseInt(teamId)
     console.log(teamID);
+    console.log(typeof(teamID));
 
    const { loading, error, data, refetch } = useQuery(
     queries.LOAD_TEAM_INFO, {
@@ -23,9 +26,68 @@ const SingleTeam = () => {
         refetchOnWindowFocus: false,
         enabled: false
     }
+);
+const { loading:userLoading, error:userError, data:userData } = useQuery(
+    queries.GET_USER_BY_ID, {
+        fetchPolicy: 'cache-and-network',
+        variables:{id: sessionToken.Login._id},
+        manual: true,
+        refetchOnWindowFocus: false,
+        enabled: false
+    }
 )
 
-// console.log(data)
+
+
+const [mutate,{loading:followLoading, error:followError, data:followData }] = useMutation(queries.LOAD_TEAM_FOLLOWING);
+const [unmutate,{loading:unfollowLoading, error:unfollowError, data:unfollowData }] = useMutation(queries.LOAD_TEAM_UNFOLLOWING);
+const handle_follow = (event) => {
+    
+    mutate({
+        
+        variables:{
+           
+            userId: sessionToken.Login._id,
+            teamID: teamID,
+            
+        },
+        refetchQueries:[{
+            query : queries.GET_USER_BY_ID,
+            variables:{
+                id:sessionToken.Login._id
+            }
+        }]
+      
+       
+  })
+      
+       
+  }
+  const handle_unfollow = (event) => {
+    
+    unmutate({
+        
+        variables:{
+           
+            userId: sessionToken.Login._id,
+            teamID: teamID,
+            
+        },
+        refetchQueries:[{
+            query : queries.GET_USER_BY_ID,
+            variables:{
+                id:sessionToken.Login._id
+            }
+        }]
+      
+       
+  })
+      
+       
+  }
+
+
+
 
 
 
@@ -40,8 +102,15 @@ if(loading){
         <NotFoundPage />
     )
 }
-    if(data){    
+if(data || userData){   
+
+    console.log(sessionToken.Login.isPremium )
+
         const {TeamInformation} = data
+
+        const {GetUserById} = userData
+        const followers_list = GetUserById.followingTeamID
+
         console.log(TeamInformation)
         let Flag = false
           if(TeamInformation === null){
@@ -66,6 +135,39 @@ if(loading){
 
                                   <div className="d-flex"> 
                                       <p className="ml-2 tablehead">{TeamInformation.teamName}</p>
+
+
+                                <div className='d-flex'>
+                                { sessionToken  && sessionToken.Login.isPremium ===true ?(
+                                <>          
+
+                        { followers_list.includes(teamID.toString())?(
+                            <div className='col-md-4'>
+                            <button className='btn btn-success' onClick={(event) => handle_unfollow()}>UNFOLLOW</button>
+                            </div>
+                            
+                        )
+                        : (
+                        <div className='col-md-4'>
+                            <button className='btn btn-success' onClick={(event) => handle_follow(event)}>FOLLOW</button>
+                            </div>)
+                        }
+                        </>
+                    )
+                        
+                        
+                    :(
+                        <div>
+                        
+                    </div>
+                    )
+                    
+                    }
+
+
+
+
+
                                   </div>
                                   
                               </div>
@@ -221,7 +323,7 @@ if(loading){
     
     
             </div>
-                
+              </div>  
           
         )
         

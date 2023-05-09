@@ -357,6 +357,33 @@ module.exports = {
     }
     
     else return [0];   
+  },
+
+  GetFollowedTeamsInfo: async (_, args) => {
+
+    let key_exists = await client.exists(args.userId +"_TeamFollowing");
+    let index;
+    let newArray=[];
+    if(key_exists){
+      console.log("helllo");
+      const length = await client.lLen(args.userId +"_TeamFollowing");
+      for(let i=0; i<length; i++){
+          const result = await client.lIndex(args.userId +"_TeamFollowing", i);
+          //console.log(typeof(result))
+          console.log(typeof(parseInt(JSON.parse(result))));
+          // let newObject= {teamID: parseInt(JSON.parse(result))}
+          newArray.push(parseInt(JSON.parse(result)));        
+      }
+      
+      if(newArray.length!== 0) {
+        console.log(newArray)
+          return newArray;
+      } else{
+          return [0];
+      }
+    }
+    
+    else return [0];   
   }
 
 },
