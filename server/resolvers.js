@@ -296,23 +296,24 @@ module.exports = {
     CreateUser: async (_, args) => {
       console.log("Create User args")
       console.log(args)
-            const oneUser = await user.createUser(
-                args.username,
-                args.password,
-                args.dob,
-                args.phone, 
-                args.email, 
-                args.country, 
-                args.profilePic, 
-                args.bio, 
-                args.isPremium );
-            
-            if(oneUser.errors){
-                    return oneUser.errors[0].message
-            }
-            else{
-                return (oneUser);
-            }
+        const oneUser = await user.createUser(
+          args.username,
+          args.password,
+          args.dob,
+          args.phone, 
+          args.email, 
+          args.country, 
+          args.profilePic, 
+          args.bio, 
+          args.isPremium 
+        );
+
+        if(oneUser.errors){
+          return oneUser.errors[0].message
+        }
+        else{
+          return (oneUser);
+        }
     },
 
     DeleteUser: async(_,args)=>{
@@ -322,7 +323,8 @@ module.exports = {
                 return deleteone.errors[0].message
             }
             else{
-                return (deleteone);
+
+               return (deleteone);
             }
     },
 
@@ -335,10 +337,10 @@ module.exports = {
                 return loggedIn.errors[0].message
             }
             else{
+              // await redis.set(`session:${args.username}`, JSON.stringify(loggedIn));
                 return (loggedIn);
             }
     },
-
     AddTeamFollowing: async(_,args)=>{
         const addTeam = await user.addTeamFollowing(args.userId,args.teamID);
             if(addTeam.errors){
