@@ -52,6 +52,12 @@ redis-server
 ```
 npm start
 ```
+
+# Endpoints
+
+Access the product at:
+http://localhost:4000/
+
 4. Open another terminal and navigate to client
 
 ```
@@ -69,7 +75,10 @@ npm install
 ```
 npm start
 ```
+# Endpoints
 
+Access the product at:
+http://localhost:3000/
 
 
 ## Video Presentation
