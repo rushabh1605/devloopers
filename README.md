@@ -80,6 +80,18 @@ npm start
 Access the product at:
 http://localhost:3000/
 
+# Credentials
+
+We have created 6 users. Below are the username of those 6 users -
+
+- johnwick
+- rohitsharma
+- messi
+- john
+- jordan
+- jeet
+
+Qwerty@123 is the password for each user.
 
 ## Video Presentation
 
