@@ -36,8 +36,18 @@ cd server
 ```
 npm install
 ```
+3. Populate the Database
 
-3. Run the server
+```
+npm run seed
+```
+4. Start the redis server
+
+```
+redis-server
+```
+
+5. Run the server
 
 ```
 npm start
