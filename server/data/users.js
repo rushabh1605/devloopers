@@ -198,7 +198,7 @@ const addPlayerFollowing = async (userId,playerID) => {
   userId = userId.trim();
   const userscollection = await users();
   const exists = await userscollection.findOne({_id:new ObjectId(userId)});
-  if(!exists) throw {error:"User not found",statusCode:400};
+  if(!exists) throw {error:"User not found",statusCode:404};
   if(exists.followingPlayerID.includes(playerID)) throw {error:"PLayer Already exist in following list", statusCode:400};
   const users_data = await userscollection.updateOne({ _id: new ObjectId(userId) },{ $push: { followingPlayerID: playerID } })
   if (users_data.modifiedCount === 0) throw {error:'Cannot Add the player to following list ', statusCode:500};
@@ -227,7 +227,7 @@ const deleteTeamFollowing = async (userId,teamID) => {
   userId = userId.trim();
   const userscollection = await users();
   const exists = await userscollection.findOne({_id:new ObjectId(userId)});
-  if(!exists) throw {error:"User not found",statusCode:400};
+  if(!exists) throw {error:"User not found",statusCode:404};
   else{
     const users_data = await userscollection.updateOne({ _id: new ObjectId(userId) },{ $pull: { followingTeamID: teamID } })
     if (users_data.modifiedCount === 0) throw {error:'Cannot remove the team from following list ', statusCode:500};
@@ -257,7 +257,7 @@ const deletePlayerFollowing = async (userId,playerID) => {
   userId = userId.trim();
   const userscollection = await users();
   const exists = await userscollection.findOne({_id:new ObjectId(userId)});
-  if(!exists) throw {error:"User not found",statusCode:400};
+  if(!exists) throw {error:"User not found",statusCode:404};
   const users_data = await userscollection.updateOne({ _id: new ObjectId(userId) },{ $pull: { followingPlayerID: playerID } })
   if (users_data.modifiedCount === 0) throw {error:'Cannot remove the player from following list ', statusCode:500};
   const data = await getUserById(userId);
