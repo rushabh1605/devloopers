@@ -38,7 +38,8 @@ const SignIn = () => {
       Swal.fire({
         icon: 'error',
         title: 'Error!',
-
+        text: error.message.split(':')[1].trim().replace(/"/g, ''),
+        confirmButtonText: "Fix it",
       });
       console.log(error.message.split(':')[1].trim().replace(/"/g, ''));
       console.log('User not created');
@@ -68,7 +69,7 @@ const SignIn = () => {
   };
 
   return (
-    <div class="col-md-6 align-items-center ">
+    <div class="col-md-4  offset-4 align-items-center ">
       <div className="wsk-cp-matches" >
         <form onSubmit={handleSubmit}>
           <div className="form-group">

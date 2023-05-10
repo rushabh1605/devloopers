@@ -129,7 +129,7 @@ function Landing() {
               return (
                 <Link to={`/league/${x.id}`}>
                   <div className='row col-md-12'>
-                    <button type="button" class="btn top-leagues" >
+                    <div  class="btn top-leagues" >
                       <div class="row m-6">
                         <div class="col-md-4">
                           <div>
@@ -142,7 +142,7 @@ function Landing() {
                           </div>
                         </div>
                       </div>
-                    </button>
+                    </div>
                     <br></br>
                   </div>
                 </Link>
@@ -158,7 +158,7 @@ function Landing() {
                 {LeagueInformation.map((x) => {
                   return (
                     <div className='row col-md-12'>
-                      <button type="button" class="btn all-leagues">
+                      <div  class="btn all-leagues">
                         <div class="row m-6">
                           <div class="col-md-4">
                             <div>
@@ -171,7 +171,7 @@ function Landing() {
                             </div>
                           </div>
                         </div>
-                      </button> <br></br>
+                      </div> <br></br>
                     </div>
                   )
                 })}
