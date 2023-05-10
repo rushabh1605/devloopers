@@ -72,9 +72,8 @@ const SignIn = () => {
   };
 
   return (
-    <div class="row justify-content-center" id='home'>
-      <div class="col-md-6">
-        <div className="wsk-cp-matches" >
+    <div class="col-md-4  offset-4 align-items-center ">
+      <div className="wsk-cp-matches" >
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="username" className='teamname'>Username</label>
@@ -167,9 +166,6 @@ const SignIn = () => {
         </form>
       </div>
       </div>
-
-      
-    </div>
     
   );
 };

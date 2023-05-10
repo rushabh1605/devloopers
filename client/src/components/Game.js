@@ -11,7 +11,7 @@ const moment = require('moment');
 const Game = () => {
 
   const sessionToken = JSON.parse(sessionStorage.getItem('sessionToken'));
-    let now = new Date("2023-05-13");
+    let now = new Date();
     let dateString = moment(now).format('YYYY-MM-DD');
     const hours = now.getHours()
    
@@ -103,7 +103,8 @@ if(data && ALLgameData){
   
     return(
         <div className="row justify-content-center" id='home'>
-            {FixtureByDateInformation.map((x) => {
+          {FixtureByDateInformation.length ? 
+            (FixtureByDateInformation.map((x) => {
                 let hrs = x.matchTime.split(':');
                 let exact = parseInt(hrs[0])+parseInt(2)
                 
@@ -143,8 +144,8 @@ if(data && ALLgameData){
                   </div>
 
                   
-                  {/* {include_id.includes(x.id) || exact < hours? */}
-                  {include_id.includes(x.id) ?
+                  {include_id.includes(x.id) || exact < hours?
+                  // {include_id.includes(x.id) ?
                   <div>
                     <p className='teamname '
                     >Predict time is finished come back tommorow</p>
@@ -169,7 +170,11 @@ if(data && ALLgameData){
                                 
             </div>
             </div>);
-            })}
+            }) ): (
+              <div class="alert alert-danger" role="alert">
+                  No Match scheduled on this date, Come back tommorow to bet!!!
+              </div>
+            )}
         </div>
 
     )
