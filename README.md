@@ -95,8 +95,8 @@ Qwerty@123 is the password for each user.
 
 ## Video Presentation
 
-- [YouTube](www.youtube.com)
-- [GoogleDrive](drive.google.com)
+- [YouTube](https://youtu.be/COs_Fq4LKvE)
+- [GoogleDrive](https://drive.google.com/file/d/1JAXqywmrRK8Gu0iiB99LHOgp5I9ij_vM/view?usp=sharing)
 
 ## Members
 
