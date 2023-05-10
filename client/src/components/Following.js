@@ -49,7 +49,10 @@ const Following = () => {
     <div className="row justify-content-center" id='home'>
        <p className="mr-4 tablehead">Your Player Following List</p>
     <div className='col-md-11'>
-    {GetFollowedPlayersInfo.map((x) => {
+
+
+    {GetFollowedPlayersInfo[0].playerId !== null ? 
+    (GetFollowedPlayersInfo.map((x) => {
      return ( 
           
             <div className="wsk-cp-matches mt-3" >
@@ -66,7 +69,12 @@ const Following = () => {
         )
 
 
-    })}
+      })
+      ): (
+        <div class="alert alert-danger" role="alert">
+            You don't follow any Player!!!
+        </div>
+      )}
       </div>
         </div> 
     )
