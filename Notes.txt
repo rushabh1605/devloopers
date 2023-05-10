@@ -1,12 +1,6 @@
 nav bar: leagues are left
 
 
-
-signup login left: UI improvement requred
-
-
-
-
 4 characters req for search
 matches show uI
 single player
@@ -26,4 +20,9 @@ xss attacks
 
 Username validation for duplicate username
 
-when we change the date, readme mai likhna hai , atleast wait for 5-6 seconds for the data to load
+when we change the date atleast wait for 5-6 seconds for the data to load
+
+link to access graphql backend:
+https://project-backend.azurewebsites.net/api/{*segments}?code=76d1Yszodo31NHWxJGA3CucfGEst8y3ADX7eHZM9o0KBAzFusLGVuw==
+
+

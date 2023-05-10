@@ -31,7 +31,7 @@ import {
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({
-    uri: 'http://localhost:4000'
+    uri: 'https://devlooperbackend.azurewebsites.net/api/%7B*segments%7D?code=sfrMvIRi9550yQNmtIa1a4u-wfGhNq7cEyrkoxqAq7AQAzFurGhChw=='
   })
 });
 

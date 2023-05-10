@@ -1,0 +1,6 @@
+{
+    "mongoConfig": {
+      "serverUrl": "mongodb+srv://supastrikers:cs554@cluster0.oyz5sk8.mongodb.net/?retryWrites=true&w=majority",
+      "database": "devloopers"
+    }
+  }

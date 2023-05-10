@@ -22,7 +22,7 @@ const SignIn = () => {
       console.log(response);
       console.log('User exists');
       sessionStorage.setItem('sessionToken',JSON.stringify(response));
-      window.location.href = 'http://localhost:3000/';
+      window.location.href = 'devloopers.azurewebsites.net/';
 
     },
     onError: (error) => {

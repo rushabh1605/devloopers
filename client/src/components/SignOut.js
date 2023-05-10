@@ -14,7 +14,7 @@ const Signout = () => {
     //   icon: 'success',
     //   title: 'Signed out successfully!',
     // });
-    window.location.href = 'http://localhost:3000/';
+    window.location.href = 'devloopers.azurewebsites.net/';
     //window.location.reload();
     // navigate('/', { replace: true });
   // }
